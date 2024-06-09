@@ -37,12 +37,12 @@ class RegisterStudentRequest extends FormRequest
             'status' => 'nullable|numeric|between:1,2',
 
             'registration_number' => 'required|numeric|unique:students,registration_number',
-            'group' => 'required|numeric',
+            'group' => 'nullable|numeric',
 
             'residence' => 'required|string',
             'batch' => 'required|string',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after:start_date',
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date|after:start_date',
 
             'phone' => 'required|numeric|unique:students,phone',
             'email' => 'required|email|unique:students,email',

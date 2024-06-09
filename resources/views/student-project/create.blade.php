@@ -7,14 +7,48 @@
 @endsection
 
 @section('content')
-    <h4 class="fw-bold py-3 mb-4">
+    <style>
+               .loading-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 5px solid #3498db;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-overlay.show {
+    display: flex;
+}
+
+
+    </style>
+      <h4 class="fw-bold py-3 mb-4">
         <span class="text-muted fw-light">{{ trans('project.dashboard') }} / {{ trans('project.project') }}/ </span>
         {{ trans('project.create_project') }}
     </h4>
     <div class="card">
         <div class="card-body">
             <h5 class="card-title">{{ trans('project.create_project') }}</h5>
-            <form method="post" action="{{ route('student.project.store') }}" enctype="multipart/form-data">
+            <form method="post" action="{{ route('student.project.store') }}" enctype="multipart/form-data" id="project-form">
                 @csrf
                 <div id="dynamic-fields">
                     <div class="row">
@@ -79,7 +113,9 @@
                 </div>
                 <div class="col-sm-12 mt-3 d-flex">
                     <div class="col d-flex justify-content-end">
-                        <button type="submit" class="btn btn-primary">{{ trans('auth/project.accept') }}</button>
+                        <button type="submit" class="btn btn-primary" id="submit-button">
+                            {{ trans('auth/project.accept') }}
+                        </button>
                     </div>
                 </div>
             </form>
@@ -91,7 +127,7 @@
             const charsLeft = document.getElementById('chars_left');
             const descriptionCount = document.getElementById('description_count');
             const maxChars = 5000;
-    
+
             description.addEventListener('input', function () {
                 const remaining = maxChars - description.value.length;
                 charsLeft.textContent = remaining;
@@ -101,11 +137,25 @@
                     descriptionCount.classList.remove('text-danger');
                 }
             });
+
+            // Animation loading spinner
+            const submitButton = document.getElementById('submit-button');
+            const loadingOverlay = document.getElementById('loading-overlay');
+            const form = document.getElementById('project-form');
+
+            form.addEventListener('submit', function (e) {
+                loadingOverlay.classList.add('show');
+                submitButton.disabled = true;
+            });
         });
     </script>
 @endsection
 
 @push('scripts')
 
-
 @endpush
+
+<!-- Animation Overlay -->
+<div class="loading-overlay" id="loading-overlay">
+    <div class="loading-spinner"></div>
+</div>

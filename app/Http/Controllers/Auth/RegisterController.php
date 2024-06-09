@@ -33,9 +33,9 @@ class RegisterController extends Controller
         return view('auth.student.register');
     }
 
-    public function register(RegisterStudentRequest $request)
-    {
-        // dd($request->all());
+    public function register(RegisterStudentRequest $request){
+        
+       // dd($request->all());
         $student = $this->students->create($request->all());
 
         $startDate = Carbon::parse($student->start_date);

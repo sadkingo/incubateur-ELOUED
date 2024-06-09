@@ -296,7 +296,7 @@
                                             </small>
                                         @enderror
                                     </div>
-                                    <div class="col-sm-12 col-md-6 mb-2">
+                                    {{-- <div class="col-sm-12 col-md-6 mb-2">
                                         <label for="group"
                                             class="form-label">{{ trans('auth/student.group') }}</label>
                                         <input type="text"
@@ -308,7 +308,7 @@
                                                 {{ $message }}
                                             </small>
                                         @enderror
-                                    </div>
+                                    </div> --}}
                                     <div class="col-sm-12 col-md-6 mb-2">
                                         <label for="batch"
                                             class="form-label">{{ trans('auth/student.batch') }}</label>
@@ -322,7 +322,7 @@
                                             </small>
                                         @enderror
                                     </div>
-                                    <div class="col-sm-12 col-md-3 mb-2">
+                                    {{-- <div class="col-sm-12 col-md-3 mb-2">
                                         <label for="start_date"
                                             class="form-label">{{ trans('auth/student.start_date') }}</label>
                                         <input type="date"
@@ -334,8 +334,8 @@
                                                 {{ $message }}
                                             </small>
                                         @enderror
-                                    </div>
-                                    <div class="col-sm-12 col-md-3 mb-2">
+                                    </div> --}}
+                                    {{-- <div class="col-sm-12 col-md-3 mb-2">
                                         <label for="end_date"
                                             class="form-label">{{ trans('auth/student.end_date') }}</label>
                                         <input type="date"
@@ -347,7 +347,7 @@
                                                 {{ $message }}
                                             </small>
                                         @enderror
-                                    </div>
+                                    </div> --}}
                                     <div class="f1-buttons col-12 mt-3 d-flex">
                                         <div class="col d-flex justify-content-start">
                                             <button type="button"

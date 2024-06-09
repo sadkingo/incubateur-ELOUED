@@ -163,13 +163,13 @@
                                         <span class="text-red">{{ $message }}</span>
                                     @enderror
                                 </div>
-                                <div class="col-xl-6 col-lg-6 col-12 form-group">
+                                {{-- <div class="col-xl-6 col-lg-6 col-12 form-group">
                                     <label>{{ __('group') }}</label>
                                     <input type="text" name="group" placeholder="" class="form-control group">
                                     @error('group')
                                         <span class="text-red">{{ $message }}</span>
                                     @enderror
-                                </div>
+                                </div> --}}
                                 <div class="f1-buttons col-12 row px-0 mx-0">
                                     <div class="col ">
                                         <button type="button" class="btn btn-previous">{{ __('Previous') }}</button>

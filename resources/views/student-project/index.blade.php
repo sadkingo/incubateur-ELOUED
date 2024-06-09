@@ -173,6 +173,7 @@
                                         {{-- perPage  
                                     </div>
                                 </form> --}}
+                               
                                 <div class="row">
                                     <div class="form-group col-md-2 px-1 mt-4">
                                         <a href="{{ route('student.account.create') }}" class="btn btn-primary text-white">
