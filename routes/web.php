@@ -13,6 +13,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Dashboard\Commission\CommissionController;
 use App\Http\Controllers\Student\AccountController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\Note\NoteController;
@@ -27,6 +28,7 @@ use App\Http\Controllers\Dashboard\Attendence\AttendenceController;
 use App\Http\Controllers\Dashboard\Evaluation\EvaluationController;
 use App\Http\Controllers\Dashboard\Certificate\CertificateController;
 use App\Http\Controllers\Dashboard\ExcelImport\ExcelImportController;
+use App\Http\Controllers\Dashboard\Project\ProjetController;
 use App\Http\Controllers\Project\ProjectController;
 use App\Http\Controllers\Teacher\TeacherDashboardController;
 
@@ -57,7 +59,7 @@ Route::group([], function () {
     });
 });
 
-Route::get('/', function (Request $request) {
+Route::get('/login', function (Request $request) {
     Session::put('locale', 'ar');
     return to_route('auth.login');
 });
@@ -91,15 +93,25 @@ Route::prefix('dashboard')->name('dashboard.')->middleware('auth:admin,teacher')
     Route::post('/analyse/gender', [DashboardController::class, 'analyseGetStudentByGender']);
     Route::post('/analyse/point', [DashboardController::class, 'analyseGetStudentByPoint']);
 
+
+
     Route::resource('admins', AdminController::class);
     Route::resource('students', StudentController::class);
     Route::post('import-student-excel', [ExcelImportController::class, 'import'])->name('student.import.excel');
-
+    
+    
     // import ExcelImportController
     Route::resource('teachers', TeacherController::class);
-
+    Route::resource('commission', CommissionController::class);
     Route::resource('attendence', AttendenceController::class);
 
+    Route::resource('projet',ProjetController::class);
+    
+    Route::get('project/{project}', [ProjetController::class, 'show'])->name('dashboard.project.show');
+    Route::get('projects/{project}/add-commission', [ProjetController::class, 'addCommissionForm'])->name('projects.add_commission');
+    Route::post('projects/{project}/add-commission', [ProjetController::class, 'storeCommission'])->name('projects.store_commission');
+    Route::post('update_project_status', [ProjetController::class, 'updateProjectStatus'])->name('update_project_status');
+    
     Route::resource('subjects', SubjectController::class);
     Route::resource('evaluations', EvaluationController::class);
     Route::get('evaluations/create/{id}', [EvaluationController::class, 'create'])->name('evaluations.create');
@@ -147,6 +159,13 @@ Route::prefix('download')->middleware('auth:admin,student')->controller(PrintCon
 /* ----------------------- End Dashboard -----------------------*/
 
 
-Route::get('/home', function () {
+Route::get('/', function () {
     return view('front.home.index');
+});
+
+Route::get('/about', function(){
+    return view('front.home.about');
+});
+Route::get('/service', function(){
+    return view('front.home.service');
 });

@@ -19,7 +19,7 @@
     <div class="navbar-brand app-brand demo d-none d-xl-flex py-0 me-4">
         <a href="{{ url('/') }}" class="app-brand-link gap-2">
             <span class="app-brand-logo demo">
-                <img width="150" src="{{ asset('assets/logo/kaid-logo.png') }}" alt="brand-logo" srcset="">
+                <img width="150" src="{{ asset('assets/logo/logo.jpg') }}" alt="brand-logo" srcset="">
 
                 {{-- @include('_partials.macros', ['width' => 25, 'withbg' => '#696cff']) --}}
             </span>
@@ -106,7 +106,7 @@
     <li class="nav-item navbar-dropdown dropdown-user dropdown">
         <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
             <div class="avatar avatar-online">
-                <img class="w-px-40 h-auto rounded-circle" src="{{ asset('assets/logo/kaid-logo.png') }}" alt="brand-logo" srcset="">
+                <img class="w-px-40 h-auto rounded-circle" src="{{ asset('assets/logo/logo.jpg') }}" alt="brand-logo" srcset="">
 
                 {{-- <img src="{{ asset('assets/img/avatars/1.png') }}" alt class="w-px-40 h-auto rounded-circle"> --}}
             </div>
@@ -120,7 +120,7 @@
                                 {{-- <img src="{{ asset('assets/img/avatars/1.png') }}" alt
                                     class="w-px-40 h-auto rounded-circle"> --}}
 
-                                    <img class="w-px-40 h-auto rounded-circle" src="{{ asset('assets/logo/kaid-logo.png') }}" alt="brand-logo" srcset="">
+                                    <img class="w-px-40 h-auto rounded-circle" src="{{ asset('assets/logo/logo.jpg') }}" alt="brand-logo" srcset="">
 
                             </div>
                         </div>

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Teacher extends Authenticatable
@@ -17,13 +18,15 @@ class Teacher extends Authenticatable
         'lastname_ar',
         'lastname_fr',
         'gender',
+        'grade',
         'birthday',
         'phone',
         'email',
         'password',
         'address',
         'photo',
-        'status'
+        'status',
+        'id_commission',
     ];
 
     public function setPasswordAttribute($value): void
@@ -35,4 +38,10 @@ class Teacher extends Authenticatable
     {
         return ucwords("{$this->firstname_ar} {$this->lastname_ar}");
     }
+
+    public function commission()
+    {
+        return $this->belongsTo(Commission::class, 'id_commission');
+    }
+
 }

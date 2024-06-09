@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard\Teacher;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Commission;
 use App\Repositories\Teacher\TeacherRepository;
 
 class TeacherController extends Controller
@@ -26,7 +27,7 @@ class TeacherController extends Controller
     public function index(Request $request)
     {
         $teachers = $this->teachers->paginate($perPage = 10, $request->search);
-        dd($teachers);
+       // dd($teachers);
         return view('dashboard.teacher.index',compact('teachers'));
     }
 
@@ -37,7 +38,8 @@ class TeacherController extends Controller
      */
     public function create()
     {
-        return view('dashboard.teacher.create');
+        $commissions = Commission::all();
+        return view('dashboard.teacher.create', compact('commissions'));
     }
 
     /**
@@ -48,6 +50,7 @@ class TeacherController extends Controller
      */
     public function store(Request $request)
     {
+       // dd($request->all());
         $this->teachers->create($request->all());
         toastr()->success(trans('message.success.create'));
         return redirect()->route('dashboard.teachers.index');

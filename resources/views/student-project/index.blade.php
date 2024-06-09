@@ -22,7 +22,7 @@
                 <h5 class="card-header">
                     <div class="d-flex justify-content-between">
                         <div class="">
-                            {{ trans('app.review') }}
+                            {{ trans('app.student') }}
                         </div>
                         {{-- <div class="">
                             @if ($account->tests->count() > 0)
@@ -58,7 +58,7 @@
                     <div class="card-body">
                         <div class="card">
                             <h5 class="card-header pt-0 mt-1">
-                                <form action="" method="GET" id="filterStudentForm" class="">
+                                {{-- <form action="" method="GET" id="filterStudentForm" class="">
                                     <div class="row">
                                         @if (auth('admin')->check())
                                             <div class="form-group col-md-2 px-1 mt-4">
@@ -170,9 +170,9 @@
                     
                                             </select>
                                         </div>
-                                        {{-- perPage  --}}
+                                        {{-- perPage  
                                     </div>
-                                </form>
+                                </form> --}}
                                 <div class="row">
                                     <div class="form-group col-md-2 px-1 mt-4">
                                         <a href="{{ route('student.account.create') }}" class="btn btn-primary text-white">

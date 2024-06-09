@@ -13,4 +13,5 @@ return [
     'certificates'  => 'الشهادات',
     'settings'=> 'الاعدادات',
     'projects'=> 'المشاريع',
+    'commissions' => 'اللجان',
 ];

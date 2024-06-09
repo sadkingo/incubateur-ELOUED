@@ -31,7 +31,7 @@
                         </div>
                         <div class="col-sm-12 col-md-6 mb-2">
                             <label for="description" class="form-label">{{ trans('auth/project.description_project') }}</label>
-                            <textarea name="description" id="description" cols="30" rows="10"
+                            <textarea name="description" id="description" cols="50" rows="0"
                                     class="form-control @error('description') is-invalid @enderror">{{ old('description') }}</textarea>
                             <div id="description_count" class="small text-muted">
                                 {{ trans('project.characters_remaining') }}: <span id="chars_left">5000</span>

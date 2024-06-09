@@ -98,6 +98,30 @@
                         @enderror
                     </div>
                     <div class="col-sm-12 col-md-6 mb-2">
+                        <label for="grade" class="form-label">{{ trans('app.label.grade') }}</label>
+                        <input type="text" class="form-control @error('grade') is-invalid @enderror" name="grade"
+                            value="{{ old('grade') }}" placeholder="{{ trans('app.placeholder.grade') }}">
+                        @error('grade')
+                            <small class="text-danger d-block">
+                                {{ $message }}
+                            </small>
+                        @enderror
+                    </div>
+                    <div class="col-sm-12 col-md-6 mb-2">
+                        <label for="commission" class="form-label">{{ trans('app.label.commission') }}</label>
+                        <select class="form-control" name="id_commission" >
+                            <option >{{ trans('app.placeholder.commissions')}}</option>
+                            @foreach ($commissions as $commission)
+                                <option value="{{ $commission->id}}">{{$commission->name_ar}}</option>
+                            @endforeach
+                        </select>
+                        @error('grade')
+                            <small class="text-danger d-block">
+                                {{ $message }}
+                            </small>
+                        @enderror
+                    </div>
+                    <div class="col-sm-12 col-md-6 mb-2">
                         <label for="email" class="form-label">{{ trans('app.label.email') }}</label>
                         <input type="text" class="form-control @error('email') is-invalid @enderror" name="email"
                             value="{{ old('email') }}" placeholder="{{ trans('app.placeholder.email') }}">

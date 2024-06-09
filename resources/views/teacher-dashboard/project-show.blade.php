@@ -42,7 +42,7 @@
                     <div class="row">
                         @foreach($projectImages as $image)
                             <div class="col-lg-4 col-md-12 mb-4 mb-lg-0">
-                                <img src="{{ asset('storage/public/projects/images/'.$image->image) }}" class="w-100 shadow-1-strong rounded mb-4" alt="{{ $image->description }}">
+                                <img src="{{ asset('storage/images/'.$image->image) }}" class="w-100 shadow-1-strong rounded mb-4" alt="{{ $image->description }}">
                             </div>
                         @endforeach
                     </div>
@@ -51,14 +51,14 @@
                     <div class="text-start mb-1-6 wow fadeIn">
                         <h2 class="mb-0 text-primary">{{trans('project.label.bmc_project')}}</h2>
                     </div>
-                    <a href="{{ asset('storage/public/projects/bmc/'.$project->bmc) }}" target="_blank">{{ trans('project.label.download_bmc')}}</a>
+                    <a href="{{ asset('storage/bmc/'.$project->bmc) }}" target="_blank">{{ trans('project.label.download_bmc')}}</a>
                 </div>
                 <br>
                 <div class="wow fadeIn">
                     <div class="text-start mb-1-6 wow fadeIn">
                         <h2 class="mb-0 text-primary">{{trans('project.label.project_video')}}</h2>
                     </div>
-                    <a href="{{ asset('storage/public/projects/videos/'.$project->video) }}" target="_blank">{{ trans('project.label.download_video')}}</a>
+                    <a href="{{ asset('storage/videos/'.$project->video) }}" target="_blank">{{ trans('project.label.download_video')}}</a>
                 </div>
             </div>
         </div>

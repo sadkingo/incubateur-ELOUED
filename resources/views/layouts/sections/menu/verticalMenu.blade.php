@@ -4,7 +4,7 @@
     <div class="app-brand demo">
         <a href="{{ route('dashboard.index') }}" class="app-brand-link">
             <span class="app-brand-logo demo">
-                <img width="150" src="{{ asset('assets/logo/kaid-logo.png') }}" alt="brand-logo" srcset="">
+                <img width="150" src="{{ asset('assets/logo/logo.jpg') }}" alt="brand-logo" srcset="" style="width:  70px; height: 70px; border-radius: 50%">
                 {{-- @include('_partials.macros',["width"=>25,"withbg"=>'#696cff']) --}}
             </span>
             {{-- <span class="app-brand-text demo menu-text fw-bold text-capitalize ms-2">
@@ -42,10 +42,22 @@
                     <div>{{ trans('menu.teachers') }}</div>
                 </a>
             </li>
+            <li class="menu-item {{ request()->routeIs('dashboard.commission.index') ? 'active' : '' }}">
+                <a href="{{ route('dashboard.commission.index') }}" class="menu-link">
+                    <i class="text-success menu-icon fa fa-users" aria-hidden="true"></i>
+                    <div>{{ trans('menu.commissions') }}</div>
+                </a>
+            </li>
             <li class="menu-item {{ request()->routeIs('dashboard.students.index') ? 'active' : '' }}">
                 <a href="{{ route('dashboard.students.index') }}" class="menu-link">
                     <i class="text-warning menu-icon fa fa-graduation-cap" aria-hidden="true"></i>
                     <div>{{ trans('menu.students') }}</div>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="{{ route('dashboard.projet.index')}}" class="menu-link">
+                    <i class='bx bx-buildings bx-flip-horizontal' ></i>               
+                    <div >{{ trans('menu.projects') }}</div>
                 </a>
             </li>
         @elseif(auth('student')->check())

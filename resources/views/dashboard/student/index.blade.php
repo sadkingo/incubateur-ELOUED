@@ -11,7 +11,7 @@
         <span class="text-muted fw-light">{{ trans('student.dashboard') }} /</span> {{ trans('student.students') }}
     </h4>
     <div class="card">
-        <h5 class="card-header pt-0 mt-1">
+        {{-- <h5 class="card-header pt-0 mt-1">
             <form action="" method="GET" id="filterStudentForm" class="">
                 <div class="row">
                     @if (auth('admin')->check())
@@ -137,7 +137,7 @@
                                     100</option>
                         </select>
                     </div>
-                    {{-- perPage  --}}
+                    {{-- perPage  
                 </div>
             </form>
             <div class="row">
@@ -165,7 +165,7 @@
                     </div>
                 @endif
             </div>
-        </h5>
+        </h5> --}}
         <div class="table-responsive text-nowrap">
             <table class="table mb-2">
                 <thead>

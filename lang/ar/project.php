@@ -8,7 +8,10 @@
     'project' => 'مشروع',
     
     'create_project' => 'أَضف مشروع',
-
+    'member' => "عضو",
+    'tow_members' => "عضوين",
+    "members" => "أعضاء",
+    'no_members' => "لا يوجد اعضاء",
     'status_project' =>[
         'status' => 'حالة المشروع',
        

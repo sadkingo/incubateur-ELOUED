@@ -13,6 +13,8 @@ class StudentController extends Controller
     private $students;
 
     /**
+     * Mm@KnB@S*9
+     * >jX!HE7qU3c
      * StudentController constructor.
      * @param StudentRepository $students
      */
@@ -27,6 +29,7 @@ class StudentController extends Controller
      */
     public function index(Request $request)
     {
+        
         $students = $this->students->paginate($request->perPage ? $request->perPage : PAGINATE_COUNT, $request->year,$request->start_date,$request->end_date, $request->search, $request->registration_number,$request->batch, $request->group,$request->rank,$request->passport);
         return view('dashboard.student.index', compact('students'));
     }

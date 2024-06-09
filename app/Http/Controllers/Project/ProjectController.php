@@ -48,8 +48,7 @@ class ProjectController extends Controller
      * @return \Illuminate\Http\Response
      */
     // StoreStudentRequest
-    public function store(Request $request)
-    {
+    public function store(Request $request){
         $student = $this->students->find(auth('student')->id());
     
         $validator = Validator::make($request->all(), [
@@ -115,7 +114,7 @@ class ProjectController extends Controller
 
         toastr()->success(trans('message.success.create'));
         return redirect()->route('student.index');
-}
+    }
 
 
 }

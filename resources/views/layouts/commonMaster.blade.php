@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-  <title>@yield('title') | القايد </title>
+  <title>@yield('title') </title>
   <meta name="description" content="{{ config('variables.templateDescription') ? config('variables.templateDescription') : '' }}" />
   <meta name="keywords" content="{{ config('variables.templateKeyword') ? config('variables.templateKeyword') : '' }}">
   <!-- laravel CRUD token -->
@@ -16,7 +16,7 @@
   <link rel="canonical" href="{{ config('variables.productPage') ? config('variables.productPage') : '' }}">
   <!-- Favicon -->
   {{-- <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/favicon/favicon.ico') }}" /> --}}
-  <link rel="icon" type="image/x-icon" href="{{ asset('assets/logo/favicon.jpg') }}" />
+  <link rel="icon" type="image/x-icon" href="{{ asset('assets/logo/logo.jpg') }}" />
   {{-- logo-print.jpg --}}
   <!-- Include Styles -->
   @include('layouts/sections/styles')

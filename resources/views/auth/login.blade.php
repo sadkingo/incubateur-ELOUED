@@ -17,7 +17,7 @@
                         <!-- Logo -->
                         <div class="app-brand justify-content-center">
                             <a href="{{ url('/') }}" class="app-brand-link">
-                                <img class="app-brand-logo" height="100px" src="{{ asset('assets/logo/kaid-logo.png') }}"
+                                <img class="app-brand-logo" height="100px" src="{{ asset('assets/logo/logo.jpg') }}"
                                     alt="" srcset="">
                                 {{-- <span class="app-brand-text demo text-body fw-bolder">{{ config('app.name') }}</span> --}}
                             </a>
