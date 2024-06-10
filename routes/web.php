@@ -106,7 +106,9 @@ Route::prefix('dashboard')->name('dashboard.')->middleware('auth:admin,teacher')
     Route::resource('attendence', AttendenceController::class);
 
     Route::resource('projet',ProjetController::class);
-    
+
+
+
     Route::get('project/{project}', [ProjetController::class, 'show'])->name('dashboard.project.show');
     Route::get('projects/{project}/add-commission', [ProjetController::class, 'addCommissionForm'])->name('projects.add_commission');
     Route::post('projects/{project}/add-commission', [ProjetController::class, 'storeCommission'])->name('projects.store_commission');

@@ -59,7 +59,7 @@ class ProjetController extends Controller
         $project->id_commission = $request->commission_id;
         $project->save();
 
-        return redirect()->route('dashboard.project.index')->with('success', 'Commission added successfully');
+        return redirect('/dashboard/projet')->with('success', 'Commission added successfully');
     }
 }
 

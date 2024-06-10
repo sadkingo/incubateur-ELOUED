@@ -5,7 +5,7 @@ return [
     'dashboard' => 'لوحــة التحكـــــم',
     'commissions' => 'اللجان',
     'commission'  => 'اللجنة',
-
+    'save' => "حفظ",
     'name_ar' => 'اسم اللحنة',
     'name_fr' => 'Nom du commission',
     'teacher_count' => 'عدد الاساتذة الموجوجين في اللجنة',

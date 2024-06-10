@@ -30,7 +30,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-primary">{{ trans('general.save') }}</button>
+                        <button type="submit" class="btn btn-primary">{{ trans('commission.save') }}</button>
                     </form>
                 </div>
             </div>

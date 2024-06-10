@@ -35,7 +35,7 @@
                             <div class="mb-3">
                                 <label for="email" class="form-label">{{ trans('auth/auth.email') }}</label>
                                 <input type="text" class="form-control mb-1 @error('email') is-invalid @enderror"
-                                    id="email" name="email" placeholder="ahmed@kaid.com" autofocus>
+                                    id="email" name="email" placeholder="ahmed@admin.com" autofocus>
                                 @error('email')
                                     <small class="text-danger d-block">
                                         {{ $message }}
