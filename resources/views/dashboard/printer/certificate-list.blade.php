@@ -76,7 +76,7 @@
     <div class="header-print-page" style="margin-top: 15px">
         <div class="row">
             <div class="col-3 text-right">
-                <img style="height: 100px; width:200px" src="{{ asset('assets/logo/logo-print.jpg') }}" alt=""
+                <img style="height: 100px; width:200px" src="{{ asset('assets/logo/logo.jpg') }}" alt=""
                     srcset="">
             </div>
             <div class="col-6">
@@ -91,8 +91,8 @@
 
             </div>
             <div class="col-3">
-                <img style="height: 100px; width:200px" src="{{ asset('assets/logo/kaid-logo.png') }}" alt=""
-                    srcset="">
+                {{-- <img style="height: 100px; width:200px" src="{{ asset('assets/logo/kaid-logo.png') }}" alt=""
+                    srcset=""> --}}
             </div>
         </div>
     </div>

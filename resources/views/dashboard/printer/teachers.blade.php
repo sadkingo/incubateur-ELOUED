@@ -76,7 +76,7 @@
     <div class="header-print-page" style="margin-top: 15px">
         <div class="row">
             <div class="col-3 text-right">
-                <img style="height: 100px; width:200px" src="{{ asset('assets/logo/logo-print.jpg') }}" alt=""
+                <img style="height: 100px; width:200px" src="{{ asset('assets/logo/logo.jpg') }}" alt=""
                     srcset="">
             </div>
             <div class="col-6">
@@ -84,10 +84,10 @@
                 <h5 class="text-center">{{ trans('print.date_print') }} : {{ date('Y-m-d H:i') }}</h5>
 
             </div>
-            <div class="col-3">
-                <img style="height: 100px; width:200px" src="{{ asset('assets/logo/kaid-logo.png') }}" alt=""
-                    srcset="">
-            </div>
+            {{-- <div class="col-3">
+                <img style="height: 100px; width:200px" src="{{ asset('assets/logo/logo.jpg') }}" alt=""
+                srcset="">
+            </div> --}}
         </div>
     </div>
 
