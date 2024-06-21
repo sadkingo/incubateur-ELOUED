@@ -23,6 +23,10 @@ return [
 
     'residence'=> 'الإقامة',
     'batch'=> 'الدفعة',
+    'specialty'=> 'تخصص',
+    'academicLevel'=> 'المستوى الدراسي',
+    'department'=> 'القسم',
+    'faculty'=> 'الكلية',
     'start_date'=> 'تاريخ بداية التربص',
     'end_date'=> 'تاريخ نهاية التربص',
 
@@ -53,7 +57,11 @@ return [
 
         'residence'=> 'أدخل الاقامة',
         'batch'=> 'أدخل الدفعة',
-
+        'specialty'=> 'تخصص',
+        'academicLevel'=> 'المستوى الدراسي',
+        'department'=> 'القسم',
+        'faculty'=> 'الكلية',
+        
         'phone'    => 'أدخل رقم الهاتف',
         'email'    => 'أدخل البريد الإلكتروني',
         'password' => 'كلمة السر',

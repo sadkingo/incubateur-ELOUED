@@ -35,6 +35,10 @@ class Student extends Authenticatable
         'registration_number',
         'residence',
         'batch',
+        'academicLevel',
+        'specialty',
+        'faculty',
+        'department',
         'start_date',
         'end_date',
 

@@ -66,19 +66,14 @@
                     <fieldset>
                         <div id="personal_information">
                             <div class="row text-right">
+                                
                                 <div class="col-xl-3 col-lg-6 col-12 form-group">
                                     <label>{{ trans('auth/student.firstname_ar') }}</label>
                                     <input type="text" name="firstname_ar" placeholder=""
-                                        class="form-control firstname_ar @error('firstname_ar') is-invalid @enderror">
-                                    {{-- 
+                                           class="form-control firstname_ar @error('firstname_ar') is-invalid @enderror"
+                                           pattern="[\u0621-\u064A\s]+" title="الرجاء إدخال الأحرف العربية فقط">
                                     @error('firstname_ar')
-                                        <span class="text-red">{{ $message }}</span>
-                                    @enderror 
-                                    --}}
-                                    @error('firstname_ar')
-                                        <small class="text-danger d-block mt-1">
-                                            {{ $message }}
-                                        </small>
+                                        <small class="text-danger d-block mt-1">{{ $message }}</small>
                                     @enderror
                                 </div>
 
@@ -93,7 +88,8 @@
                                 <div class="col-xl-3 col-lg-6 col-12 form-group">
                                     <label>{{ trans('auth/student.lastname_ar') }}</label>
                                     <input type="text" name="lastname_ar" placeholder=""
-                                        class="form-control lastname_ar  @error('lastname_ar') is-invalid @enderror">
+                                           class="form-control lastname_ar @error('lastname_ar') is-invalid @enderror"
+                                           pattern="[\u0621-\u064A\s]+" title="الرجاء إدخال الأحرف العربية فقط">
                                     @error('lastname_ar')
                                         <div class="alert alert-danger">{{ $message }}</div>
                                     @enderror
@@ -273,11 +269,11 @@
                                     <input type="text" name="registration_number" id="registration_number"
                                         placeholder="" class="form-control" disabled>
                                 </div>
-                                <div class="col-xl-6 col-lg-6 col-12 form-group">
+                                {{-- <div class="col-xl-6 col-lg-6 col-12 form-group">
                                     <label>{{ trans('auth/student.group') }}</label>
                                     <input type="text" name="group" id="group" class="form-control"
                                         disabled>
-                                </div>
+                                </div> --}}
                                 <div class="col-xl-6 col-lg-6 col-12 form-group">
                                     <label>{{ trans('auth/student.email') }}</label>
                                     <input type="text" name="email" id="email" class="form-control"
@@ -352,9 +348,9 @@
         $('#education_information .registration_number').on('change', function() {
             $('#review_information #registration_number').val($(this).val());
         });
-        $('#education_information .group').on('change', function() {
-            $('#review_information #group').val($(this).val());
-        });
+        // $('#education_information .group').on('change', function() {
+        //     $('#review_information #group').val($(this).val());
+        // });
 
 
         $('#next-review-step').on('click', function() {

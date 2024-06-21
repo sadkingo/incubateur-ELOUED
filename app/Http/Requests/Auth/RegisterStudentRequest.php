@@ -25,8 +25,8 @@ class RegisterStudentRequest extends FormRequest
             'firstname_fr' => 'required|string',
             'lastname_fr' => 'required|string',
 
-            'firstname_ar' => 'required|string',
-            'lastname_ar' => 'required|string',
+            'firstname_ar' => ['required', 'string', 'regex:/^[\p{Arabic}\s]+$/u'],
+            'lastname_ar' => ['required', 'string', 'regex:/^[\p{Arabic}\s]+$/u'],
 
             'birthday' => 'required|date',
             'gender' => 'required|numeric|between:1,2',
@@ -41,6 +41,11 @@ class RegisterStudentRequest extends FormRequest
 
             'residence' => 'required|string',
             'batch' => 'required|string',
+            'academicLevel' => 'required|string',
+            'specialty' => 'required|string',
+            'faculty' => 'required|string',
+            'department' => 'required|string',
+            
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after:start_date',
 
