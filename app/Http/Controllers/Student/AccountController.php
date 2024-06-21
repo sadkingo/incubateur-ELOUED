@@ -49,24 +49,23 @@ class AccountController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-
-
+    public function store(Request $request){
         $student = $this->students->find(auth('student')->id());
-        
+    
         $request->validate([
-            'inputs.*.firstname_ar' => 'required',
-            'inputs.*.lastname_ar'  => 'required',
-            'inputs.*.firstname_fr' => 'required',
-            'inputs.*.lastname_fr'  => 'required',
-            'inputs.*.gender'       => 'required',
-            'inputs.*.birthday'     => 'required',
+            'inputs.*.firstname_ar' => ['required', 'regex:/^[\p{Arabic}\s]+$/u'],
+        'inputs.*.lastname_ar'  => ['required', 'regex:/^[\p{Arabic}\s]+$/u'],
+        'inputs.*.firstname_fr' => 'required',
+        'inputs.*.lastname_fr'  => 'required',
+        'inputs.*.gender'       => 'required',
+        'inputs.*.birthday'     => 'required',
         ],[
-            'inputs.*.firstname_ar' => 'First name arabic is required',
-            'inputs.*.lastname_ar'  => 'Last name arabic is required',
+            'inputs.*.firstname_ar.required' => 'First name arabic is required',
+            'inputs.*.firstname_ar.regex' => 'First name arabic must be in Arabic letters only',
+            'inputs.*.lastname_ar.required'  => 'Last name arabic is required',
+            'inputs.*.lastname_ar.regex' => 'Last name arabic must be in Arabic letters only',
             'inputs.*.firstname_fr' => 'First name fr is required',
-            'inputs.*.lastname_fr' => 'First name fr is required',
+            'inputs.*.lastname_fr' => 'Last name fr is required',
             'inputs.*.gender' => 'Gender is required',
             'inputs.*.birthday' => 'Date of birthday is required',
         ]);
@@ -84,8 +83,48 @@ class AccountController extends Controller
         }
         toastr()->success(trans('message.success.create'));
         return redirect()->route('student.index');
-    
     }
+
+    public function edit($id){
+        $studentGroup = StudentGroup::findOrFail($id);
+        return view('student-dashboard.edit', compact('studentGroup'));
+    }
+
+    public function update(Request $request, $id){
+        $request->validate([
+            'firstname_ar' => ['required', 'regex:/^[\p{Arabic}\s]+$/u'],
+            'lastname_ar'  => ['required', 'regex:/^[\p{Arabic}\s]+$/u'],
+            'firstname_fr' => 'required',
+            'lastname_fr'  => 'required',
+            'gender'       => 'required',
+            'birthday'     => 'required',
+        ], [
+            'firstname_ar.required' => 'First name arabic is required',
+            'firstname_ar.regex' => 'First name arabic must be in Arabic letters only',
+            'lastname_ar.required'  => 'Last name arabic is required',
+            'lastname_ar.regex' => 'Last name arabic must be in Arabic letters only',
+            'firstname_fr.required' => 'First name fr is required',
+            'lastname_fr.required' => 'Last name fr is required',
+            'gender.required' => 'Gender is required',
+            'birthday.required' => 'Date of birthday is required',
+        ]);
+    
+        $studentGroup = StudentGroup::findOrFail($id);
+        $studentGroup->update($request->all());
+    
+        toastr()->success(trans('message.success.update'));
+        return redirect()->route('student.index');
+    }
+    
+
+    public function destroy($id){
+        $studentGroup = StudentGroup::findOrFail($id);
+        $studentGroup->delete();
+
+        toastr()->success(trans('message.success.delete'));
+        return redirect()->route('student.index');
+    }
+
 
     /**
      * Display the specified resource.
@@ -104,10 +143,10 @@ class AccountController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
-    }
+    // public function edit($id)
+    // {
+    //     //
+    // }
 
     /**
      * Update the specified resource in storage.
@@ -116,13 +155,13 @@ class AccountController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
-    // public function update(UpdateStudentRequest $request)
-    {
-        $this->students->update($request->id,$request->all());
-        toastr()->success(trans('message.success.update'));
-        return redirect()->back();
-    }
+    // public function update(Request $request)
+    // // public function update(UpdateStudentRequest $request)
+    // {
+    //     $this->students->update($request->id,$request->all());
+    //     toastr()->success(trans('message.success.update'));
+    //     return redirect()->back();
+    // }
 
     /**
      * Remove the specified resource from storage.
@@ -130,8 +169,8 @@ class AccountController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
-    }
+    // public function destroy($id)
+    // {
+    //     //
+    // }
 }

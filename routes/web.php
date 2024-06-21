@@ -144,7 +144,11 @@ Route::name('student.')->middleware('auth:student')->group(function () {
     Route::resource('account', AccountController::class);
     Route::resource('project', ProjectController::class);
     Route::post('notes', [NoteController::class, 'store'])->name('notes.store');
+    Route::delete('account/{id}', [AccountController::class, 'destroy'])->name('account.destroy');
+    Route::put('account/{id}', [AccountController::class, 'update'])->name('account.update');
 });
+
+
 
 Route::name('teacher.')->middleware('auth:teacher')->group(function () {
     Route::resource('students', TeacherDashboardController::class);

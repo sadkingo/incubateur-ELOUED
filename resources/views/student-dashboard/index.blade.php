@@ -207,6 +207,7 @@
                                             <th>{{ trans('student.name') }}</th>
                                             <th>{{ trans('student.birthday') }}</th>
                                             <th>{{ trans('student.gender') }}</th>
+                                            <th>{{ trans('app.actions') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -215,8 +216,27 @@
                                                 <td>{{ $studentGroup->firstname_ar }} {{$studentGroup->lastname_ar}}</td>
                                                 <td>{{ $studentGroup->birthday }}</td>
                                                 <td>{{ $studentGroup->gender == 1 ? trans('student.male') : trans('student.female') }}</td>
+                                                <td>
+                                                    <div class="dropdown">
+                                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                                            data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i>
+                                                        </button>
+                                                        <div class="dropdown-menu">
+                                                            <a class="dropdown-item"
+                                                                href="{{ route('student.account.edit', $studentGroup->id) }}">
+                                                                <i class="bx bx-edit-alt me-2"></i>
+                                                                {{ trans('student.edit') }}
+                                                            </a>
+                                                            <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
+                                                                data-bs-target="#deleteStudentModal{{ $studentGroup->id }}">
+                                                                <i class="bx bx-trash me-2"></i>
+                                                                {{ trans('student.delete') }}
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </td>
                                             </tr>
-                                            @include('dashboard.student.delete')
+                                            @include('student-dashboard.delete')
                                         @empty
                                             <tr>
                                                 <td colspan="10" class="text-center text-danger"><em>@lang('لا يوجد سجلات.')</em></td>

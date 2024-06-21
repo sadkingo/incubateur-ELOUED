@@ -63,6 +63,7 @@ return [
         'passport' => 'الجواز الذهبي',
         'perPage' => 'عدد الطلبة',
         'commission' => 'اللجنة',
+        'action' => "اضافة طالب",
     ],
     'placeholder' => [
         'name_ar' => 'اسم اللجنة بالعربية',

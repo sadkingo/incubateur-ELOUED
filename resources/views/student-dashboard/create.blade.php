@@ -20,9 +20,10 @@
                     <div class="row">
                         <div class="col-sm-12 col-md-3 mb-2">
                             <label for="firstname_ar" class="form-label">{{ trans('auth/student.firstname_ar') }}</label>
-                             <input type="text" class="form-control @error('firstname_ar') is-invalid @enderror"
-                            name="inputs[0][firstname_ar]" value="{{ old('inputs.0.firstname_ar') }}"
-                            placeholder="{{ trans('auth/student.placeholder.firstname_ar') }}">
+                            <input type="text" class="form-control @error('firstname_ar') is-invalid @enderror"
+                                   name="inputs[0][firstname_ar]" value="{{ old('inputs.0.firstname_ar') }}"
+                                   placeholder="{{ trans('auth/student.placeholder.firstname_ar') }}"
+                                   pattern="[\u0600-\u06FF\s]+" title="الرجاء إدخال حروف عربية فقط">
                             @error('inputs.0.firstname_ar')
                             <small class="text-danger d-block mt-1">
                                 {{ $message }}
@@ -32,14 +33,16 @@
                         <div class="col-sm-12 col-md-3 mb-2">
                             <label for="lastname_ar" class="form-label">{{ trans('auth/student.lastname_ar') }}</label>
                             <input type="text" class="form-control @error('lastname_ar') is-invalid @enderror"
-                                name="inputs[0][lastname_ar]" value="{{ old('inputs.0.lastname_ar') }}"
-                                placeholder="{{ trans('auth/student.placeholder.lastname_ar') }}">
+                                   name="inputs[0][lastname_ar]" value="{{ old('inputs.0.lastname_ar') }}"
+                                   placeholder="{{ trans('auth/student.placeholder.lastname_ar') }}"
+                                   pattern="[\u0600-\u06FF\s]+" title="الرجاء إدخال حروف عربية فقط">
                             @error('inputs.0.lastname_ar')
-                                <small class="text-danger d-block">
-                                    {{ $message }}
-                                </small>
+                            <small class="text-danger d-block">
+                                {{ $message }}
+                            </small>
                             @enderror
                         </div>
+                        
                         <div class="col-sm-12 col-md-3 mb-2">
                             <label for="firstname_fr" class="form-label">{{ trans('auth/student.firstname_fr') }}</label>
                             <input type="text" class="form-control @error('firstname_fr') is-invalid @enderror"
