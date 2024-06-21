@@ -97,11 +97,11 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    @if ($project->id_commission)
+                                                    {{-- @if ($project->id_commission)
                                                         {{ $project->commission->name_ar }}
                                                     @else
                                                         <a href="{{ route('dashboard.projects.add_commission', $project->id) }}" class="btn btn-primary btn-sm">{{ trans('commission.add_commission') }}</a>
-                                                    @endif
+                                                    @endif --}}
                                                 </td>
                                             </tr>
                                         @endforeach

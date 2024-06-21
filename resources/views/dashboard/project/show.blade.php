@@ -44,16 +44,31 @@
                         <h2 class="h1 mb-0 text-primary">{{trans('project.label.name')}}</h2>
                     </div>
                     <br>
-                   <h1 class="">{{$project->name}}</h1>
+                   <h1 class="text-black">{{$project->name}}</h1>
                 </div>
                 <div class="mb-5 wow fadeIn">
                     <div class="text-start mb-1-6 wow fadeIn">
                         <h2 class="h1 mb-0 text-primary">{{ trans('project.label.description') }}</h2>
                     </div>
                     <br>
-                    <div class="project-description">
+                    <div class="project-description text-black">
                         {!! nl2br(e($project->description)) !!}
                     </div>
+                </div>
+                <div class="mb-5 wow fadeIn">
+                    <div class="text-start mb-1-6 wow fadeIn">
+                        <h2 class="h1 mb-0 text-primary">
+                            {{ trans('project.label.type_project') }}:<span class="mb-0 text-black">
+                                @if($project->type_project === 'commercial') {{trans('auth/project.project_commercial')}}
+                                @elseif($project->type_project === 'industrial') {{trans('auth/project.project_industrial')}}
+                                @elseif($project->type_project === 'agricultural') {{trans('auth/project.project_agricultural')}}
+                                @else {{trans('project_service')}}
+                                @endif
+                        </span> 
+                        </h2>
+                    </div>
+                    <br>
+                    
                 </div>
                 
                 
@@ -76,14 +91,14 @@
                     <div class="text-start mb-1-6 wow fadeIn">
                         <h2 class="mb-0 text-primary">{{trans('project.label.bmc_project')}}</h2>
                     </div>
-                    <a href="{{ asset('storage/public/projects/bmc/'.$project->bmc) }}" target="_blank">{{ trans('project.label.download_bmc')}}</a>
+                    <a href="{{ asset('storage/public/projects/bmc/'.$project->bmc) }}" class="text-black" target="_blank">{{ trans('project.label.download_bmc')}}</a>
                 </div>
                 <br>
                 <div class="wow fadeIn">
                     <div class="text-start mb-1-6 wow fadeIn">
                         <h2 class="mb-0 text-primary">{{trans('project.label.project_video')}}</h2>
                     </div>
-                    <a href="{{ asset('storage/public/projects/videos/'.$project->video) }}" target="_blank">{{ trans('project.label.download_video')}}</a>
+                    <a href="{{ asset('storage/public/projects/videos/'.$project->video) }}" class="text-black" target="_blank">{{ trans('project.label.download_video')}}</a>
                 </div>
             </div>
         </div>

@@ -7,41 +7,36 @@
 @endsection
 
 @section('content')
-    <style>
-               .loading-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255, 255, 255, 0.8);
-    z-index: 9999;
-    justify-content: center;
-    align-items: center;
-}
-
-.loading-spinner {
-    width: 50px;
-    height: 50px;
-    border: 5px solid #f3f3f3;
-    border-radius: 50%;
-    border-top: 5px solid #3498db;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-.loading-overlay.show {
-    display: flex;
-}
-
-
-    </style>
-      <h4 class="fw-bold py-3 mb-4">
+<style>
+    .loading-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.8);
+        z-index: 9999;
+        justify-content: center;
+        align-items: center;
+    }
+    .loading-spinner {
+        width: 50px;
+        height: 50px;
+        border: 5px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 5px solid #3498db;
+        animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    .loading-overlay.show {
+        display: flex;
+    }
+</style>
+    <h4 class="fw-bold py-3 mb-4">
         <span class="text-muted fw-light">{{ trans('project.dashboard') }} / {{ trans('project.project') }}/ </span>
         {{ trans('project.create_project') }}
     </h4>
@@ -71,6 +66,21 @@
                                 {{ trans('project.characters_remaining') }}: <span id="chars_left">5000</span>
                             </div>
                             @error('description')
+                            <small class="text-danger d-block">
+                                {{ $message }}
+                            </small>
+                            @enderror
+                        </div>
+                        <div class="col-sm-12 col-md-6 mb-2">
+                            <label for="project_type" class="form-label">{{ trans('auth/project.project_type') }}</label>
+                            <select name="project_type" id="project_type" class="form-control @error('project_type') is-invalid @enderror">
+                                <option value="">{{ trans('auth/project.select_project_type') }}</option>
+                                <option value="commercial">{{ trans('auth/project.project_commercial') }}</option>
+                                <option value="industrial">{{ trans('auth/project.project_industrial') }}</option>
+                                <option value="agricultural">{{ trans('auth/project.project_agricultural') }}</option>
+                                <option value="service">{{ trans('auth/project.project_service') }}</option>
+                            </select>
+                            @error('project_type')
                             <small class="text-danger d-block">
                                 {{ $message }}
                             </small>
@@ -138,7 +148,6 @@
                 }
             });
 
-            // Animation loading spinner
             const submitButton = document.getElementById('submit-button');
             const loadingOverlay = document.getElementById('loading-overlay');
             const form = document.getElementById('project-form');

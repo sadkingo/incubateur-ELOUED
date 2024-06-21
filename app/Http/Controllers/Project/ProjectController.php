@@ -56,8 +56,12 @@ class ProjectController extends Controller
             'description' => 'required|max:5000', 
             'project_image.*' => 'required|mimes:png,jpeg,jpg',
             'bmc' => 'required|max:10000|mimes:pdf,ppt,pptx', 
-            'video' => 'nullable|max:10240|mimes:mp4,mov,avi', 
+            'video' => 'required|max:10240|mimes:mp4,mov,avi',
+            'project_type' =>'required' 
         ], [
+            'name_project.required' => "The name is required",
+            'description.required' => 'The description is required',
+            'project_type.required' => 'The project type is requires',
             'video.max' => 'The video file must be less than 10MB.',
             'bmc.max' => 'The BMC file must be less than 10MB.',
             'description.max' => 'The description may not be greater than 5000 characters.',
@@ -70,7 +74,7 @@ class ProjectController extends Controller
         $project = new Project;
         $project->name = $request->input('name_project');
         $project->description = $request->input('description');
-
+        $project->type_project = $request->input('project_type');
         if ($request->hasFile('video')) {
             $video = $request->file('video');
             if ($video->getSize() > 10240000) {

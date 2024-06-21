@@ -30,6 +30,7 @@
         'download_bmc' => "تحميل ملف bmc",
         'project_video' => 'فيديو المشروع',
         'download_video' => 'تحميل فيديو ',
+        "type_project" => "تصنيف المشروع"
         
     ],
 
