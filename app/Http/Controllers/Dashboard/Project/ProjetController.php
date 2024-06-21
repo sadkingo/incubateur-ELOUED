@@ -10,6 +10,7 @@ use App\Models\ProjectImage;
 use App\Models\Commission;
 class ProjetController extends Controller
 {
+    private $commission;
     public function index()
     {
 
@@ -61,6 +62,8 @@ class ProjetController extends Controller
 
         return redirect('/dashboard/projet')->with('success', 'Commission added successfully');
     }
+
+    
 }
 
 

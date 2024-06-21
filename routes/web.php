@@ -102,7 +102,13 @@ Route::prefix('dashboard')->name('dashboard.')->middleware('auth:admin,teacher')
     
     // import ExcelImportController
     Route::resource('teachers', TeacherController::class);
+
     Route::resource('commission', CommissionController::class);
+    Route::get('commission/{commission}/edit', [CommissionController::class, 'edit'])->name('dashboard.commission.edit');
+    Route::put('commission/{commission}', [CommissionController::class, 'update'])->name('dashboard.commission.update');
+    Route::delete('commission/{commission}', [CommissionController::class, 'destroy'])->name('dashboard.commission.destroy');
+
+
     Route::resource('attendence', AttendenceController::class);
 
     Route::resource('projet',ProjetController::class);

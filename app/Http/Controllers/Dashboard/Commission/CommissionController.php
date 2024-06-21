@@ -46,4 +46,50 @@ class CommissionController extends Controller{
         toastr()->success(trans('message.success.create'));
         return redirect()->route('dashboard.commission.index');
     }
+
+    public function edit($id)
+    {
+        $commission = Commission::find($id);
+        if (!$commission) {
+            return redirect()->route('dashboard.commission.index')->with('error', 'Commission not found.');
+        }
+        return view('dashboard.commission.edit', compact('commission'));
+    }
+
+    // دالة update لتحديث بيانات العمولة
+    public function update(Request $request, $id)
+    {
+        // التحقق من صحة البيانات
+        $request->validate([
+            'name_ar' => 'required|string|max:255',
+            'name_fr' => 'required|string|max:255',
+        ]);
+
+        // البحث عن السجل في قاعدة البيانات
+        $commission = Commission::find($id);
+        if (!$commission) {
+            return redirect()->back()->with('error', 'Commission not found.');
+        }
+
+        // تحديث بيانات العمولة
+        $commission->name_ar = $request->input('name_ar');
+        $commission->name_fr = $request->input('name_fr');
+        $commission->save();
+
+        // إعادة التوجيه مع رسالة نجاح
+        return redirect()->route('dashboard.commission.index')->with('success', trans('message.success.update'));
+    }
+
+    // دالة destroy لحذف بيانات العمولة
+    public function destroy($id)
+    {
+        $commission = Commission::find($id);
+        if (!$commission) {
+            return redirect()->route('dashboard.commission.index')->with('error', 'Commission not found.');
+        }
+
+        $commission->delete();
+
+        return redirect()->route('dashboard.commission.index')->with('success', trans('message.success.delete'));
+    }
 }

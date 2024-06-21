@@ -35,6 +35,7 @@ return [
 
     'label' => [
         'name_ar' => 'اسم اللجنة بالعربية',
+        'name_fr' => 'Nom en français',
         'name'   => 'الإسم الكامل',
         'phone'  => 'رقم الهاتف',
         'email'  => 'البريد الإلكتروني',

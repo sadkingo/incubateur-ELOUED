@@ -12,30 +12,12 @@
     </h4>
     <div class="card">
         <h5 class="card-header pt-0 mt-1">
-            <div class="row  justify-content-between">
+            <div class="row justify-content-between">
                 <div class="form-group col-md-4 mr-5 mt-4">
                     <a href="{{ route('dashboard.commission.create') }}" class="btn btn-primary text-white">
                         <span class="tf-icons bx bx-plus"></span>&nbsp; {{ trans('commission.create') }}
                     </a>
                 </div>
-
-                {{-- <div class="form-group col-md-4" dir="{{ config('app.locale') == 'ar' ? 'rtl' : 'ltr' }}">
-                    <form action="" method="GET" id="filterTeacherForm">
-                        <label for="search" class="form-label">{{ trans('teacher.label.name') }}</label>
-                        <input type="text" id="search" name="search" value="{{ Request::get('search') }}"
-                            class="form-control input-solid"
-                            placeholder="{{ Request::get('search') != '' ? '' : trans('teacher.placeholder.name') }}">
-                    </form>
-                </div> --}}
-                {{-- <div class="form-group col-md-2 mr-5 mt-4">
-                    @if (count($teachers))
-                        <button target="_blank" id="printTeacher" data-url="{{ route('dashboard.print.teachers') }}"
-                            class="btn
-                        btn-primary text-white">
-                            <span class="bx bxs-printer"></span>&nbsp; {{ trans('app.print') }}
-                        </button>
-                    @endif
-                </div> --}}
             </div>
         </h5>
         <div class="table-responsive text-nowrap">
@@ -59,18 +41,35 @@
                                 <td>{{ $commission->name_fr }}</td>
                                 <td>{{ $commission->teachers_count }}</td>
                                 <td>{{ $commission->projects_count }}</td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                            <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="{{ url('dashboard/commission/' . $commission->id . '/edit') }}">
+                                                <i class="bx bx-edit-alt me-2"></i>
+                                                {{ trans('commission.edit') }}
+                                            </a>
+                                            <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
+                                                data-bs-target="#deleteCommissionModal{{ $commission->id }}">
+                                                <i class="bx bx-trash me-2"></i>
+                                                {{ trans('commission.delete') }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                </td>
                             </tr>
-                            {{-- @include('dashboard.teacher.delete') --}}
+                            @include('dashboard.commission.delete')
                         @endforeach
                     @else
                         <tr>
-                            <td colspan="9"><em>@lang('لا يوجد سجلات.')</em></td>
+                            <td colspan="6"><em>@lang('لا يوجد سجلات.')</em></td>
                         </tr>
                     @endif
                 </tbody>
             </table>
             {{ $commissions->links() }}
-
         </div>
     </div>
 @endsection
@@ -93,12 +92,12 @@
                 timer = setTimeout(function() {
                     submitForm();
                 }, 4000);
-
-            })
+            });
 
             function submitForm() {
                 $("#filterTeacherForm").submit();
             }
+
             $("#printTeacher").click(function(e) {
                 let url = $(this).attr('data-url');
                 var printWindow = window.open(url, '_blank', 'height=auto,width=auto');
