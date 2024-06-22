@@ -27,4 +27,17 @@ class Project extends Model
     {
         return $this->belongsTo(Commission::class, 'id_commission');
     }
+
+    public function supervisingTeachers()
+    {
+        return $this->hasManyThrough(
+            SupervisingTeacher::class,
+            SupervisingTeacherProject::class,
+            'id_project', // Foreign key on SupervisingTeacherProject table
+            'id', // Foreign key on SupervisingTeacher table
+            'id', // Local key on Project table
+            'id_supervisor' // Local key on SupervisingTeacherProject table
+        );
+    }
+ 
 }

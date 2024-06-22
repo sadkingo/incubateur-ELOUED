@@ -37,7 +37,7 @@
                 <div class="card-body pt-0">
                     <div class="card-body">
                         <div class="card">
-                            <div class="table-responsive text-nowrap">
+                            <div >
                                 <table class="table table-striped">
                                     <thead>
                                         <tr>
@@ -45,6 +45,7 @@
                                             <th scope="col">{{ trans('project.status_project.status')}}</th>
                                             <th scope="col">{{trans('student.firstname')}} & {{trans('student.lastname')}}</th>
                                             <th scope="col">{{trans('student.groups')}}</th>
+                                            <th scope="col">{{trans('supervisor.supervisors')}}</th>
                                             <th scope="col">{{trans('commission.commission')}}</th>
                                         </tr>
                                     </thead>
@@ -97,11 +98,22 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    {{-- @if ($project->id_commission)
+                                                    @if($project->supervisingTeachers->isEmpty())
+                                                        <p>{{ trans('supervisor.no_supervisors_available') }}</p>
+                                                    @else
+                                                        <ul>
+                                                            @foreach($project->supervisingTeachers as $supervisor)
+                                                                <li>{{ $supervisor->firstname_ar }} {{ $supervisor->lastname_ar }}</li>
+                                                            @endforeach
+                                                        </ul>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if ($project->commission)
                                                         {{ $project->commission->name_ar }}
                                                     @else
                                                         <a href="{{ route('dashboard.projects.add_commission', $project->id) }}" class="btn btn-primary btn-sm">{{ trans('commission.add_commission') }}</a>
-                                                    @endif --}}
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @endforeach

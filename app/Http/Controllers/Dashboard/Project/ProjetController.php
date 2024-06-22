@@ -13,8 +13,7 @@ class ProjetController extends Controller
     private $commission;
     public function index()
     {
-
-        $projects = Project::with('commission', 'student')->paginate(10);
+        $projects = Project::with(['commission', 'student', 'supervisingTeachers'])->paginate(10);
         return view('dashboard.project.index', compact('projects'));
     }
 
@@ -51,17 +50,17 @@ class ProjetController extends Controller
         return view('dashboard.project.add_commission', compact('project', 'commissions'));
     }
 
-    public function storeCommission(Request $request, Project $project)
-    {
-        $request->validate([
-            'commission_id' => 'required|exists:commissions,id',
-        ]);
+    public function storeCommission(Request $request, Project $project){
+    $request->validate([
+        'commission_id' => 'required|exists:commissions,id',
+    ]);
 
-        $project->id_commission = $request->commission_id;
-        $project->save();
+    $project->id_commission = $request->commission_id;
+    $project->save();
 
-        return redirect('/dashboard/projet')->with('success', 'Commission added successfully');
-    }
+    return redirect()->route('dashboard.project.index')->with('success', 'Commission added successfully');
+}
+
 
     
 }

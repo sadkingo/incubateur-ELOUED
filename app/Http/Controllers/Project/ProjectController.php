@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Project;
 use App\Http\Controllers\Controller;
 use App\Models\Project;
 use App\Models\ProjectImage;
+use App\Models\SupervisingTeacher;
+use App\Models\SupervisingTeacherProject;
 use Illuminate\Http\Request;
 use App\Repositories\Student\StudentRepository;
 use Illuminate\Support\Facades\Validator;
@@ -116,7 +118,27 @@ class ProjectController extends Controller
                 $image->save();
             }
         }
-
+        $supervisor = SupervisingTeacher::where('id_student', $student->id)->first();
+        if ($supervisor) {
+            $supervisorProject = SupervisingTeacherProject::where('id_student', $student->id)
+                                                        ->where('id_supervisor', $supervisor->id)
+                                                        ->first();
+            if ($supervisorProject) {
+                $supervisorProject->id_project = $project->id;
+                $supervisorProject->save();
+            } else {
+                $supervisorProject = new SupervisingTeacherProject;
+                $supervisorProject->id_student = $student->id;
+                $supervisorProject->id_project = $project->id;
+               // $supervisorProject->id_supervisor = $supervisor->id;
+                $supervisorProject->save();
+            }
+        } else {
+            toastr()->success(trans('message.success.create'));
+            toastr()->warning(trans('message.warning.project'));
+            return redirect()->route('student.index');
+        }
+       
         toastr()->success(trans('message.success.create'));
         return redirect()->route('student.index');
     }
@@ -195,24 +217,20 @@ class ProjectController extends Controller
     public function destroy($id) {
         $project = Project::findOrFail($id);
     
-        // حذف الفيديو إذا كان موجودًا
         if ($project->video) {
             Storage::delete('public/projects/videos/' . $project->video);
         }
     
-        // حذف ملف BMC إذا كان موجودًا
         if ($project->bmc) {
             Storage::delete('public/projects/bmc/' . $project->bmc);
         }
     
-        // حذف الصور المرتبطة بالمشروع
         $images = ProjectImage::where('id_project', $project->id)->get();
         foreach ($images as $img) {
             Storage::delete('public/projects/images/' . $img->image);
             $img->delete();
         }
     
-        // حذف المشروع
         $project->delete();
     
         toastr()->success(trans('message.success.delete'));

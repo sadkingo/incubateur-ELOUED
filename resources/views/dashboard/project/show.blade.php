@@ -94,11 +94,20 @@
                     <a href="{{ asset('storage/public/projects/bmc/'.$project->bmc) }}" class="text-black" target="_blank">{{ trans('project.label.download_bmc')}}</a>
                 </div>
                 <br>
+                
                 <div class="wow fadeIn">
                     <div class="text-start mb-1-6 wow fadeIn">
                         <h2 class="mb-0 text-primary">{{trans('project.label.project_video')}}</h2>
                     </div>
-                    <a href="{{ asset('storage/public/projects/videos/'.$project->video) }}" class="text-black" target="_blank">{{ trans('project.label.download_video')}}</a>
+                    <br>
+                    <div class="col-lg-4 col-md-4 col-sm-6 mb-4 ">
+                        <video controls class="w-100 shadow-1-strong rounded mb-4">
+                            <source src="{{ asset('storage/public/projects/videos/'.$project->video) }}" type="video/mp4">
+                            <source src="{{ asset('storage/public/projects/videos/'.$project->video) }}" type="video/ogg">
+                                {{ trans('auth/project.video_not_supported') }}
+                        </video>
+                    </div>    
+                    {{-- <a href="{{ asset('storage/public/projects/videos/'.$project->video) }}" class="text-black" target="_blank">{{ trans('project.label.download_video')}}</a> --}}
                 </div>
             </div>
         </div>

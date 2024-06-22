@@ -30,6 +30,7 @@ use App\Http\Controllers\Dashboard\Certificate\CertificateController;
 use App\Http\Controllers\Dashboard\ExcelImport\ExcelImportController;
 use App\Http\Controllers\Dashboard\Project\ProjetController;
 use App\Http\Controllers\Project\ProjectController;
+use App\Http\Controllers\Supervisor\SupervisingTeacherController;
 use App\Http\Controllers\Teacher\TeacherDashboardController;
 
 /*
@@ -143,10 +144,13 @@ Route::name('student.')->middleware('auth:student')->group(function () {
     Route::get('student/{student_id}', [StudentDashboardController::class, 'indexAdmin'])->name('index.admin');
     Route::resource('account', AccountController::class);
     Route::resource('project', ProjectController::class);
+    Route::resource('supervisor', SupervisingTeacherController::class);
     Route::post('notes', [NoteController::class, 'store'])->name('notes.store');
     Route::delete('account/{id}', [AccountController::class, 'destroy'])->name('account.destroy');
     Route::put('account/{id}', [AccountController::class, 'update'])->name('account.update');
+    Route::post('supervisor/assign/{id}', [SupervisingTeacherController::class, 'assign'])->name('supervisor.assign');
 });
+
 
 
 

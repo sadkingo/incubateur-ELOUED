@@ -1,9 +1,10 @@
 <?php
 
 return [
-    'title' => 'الطلاب',
+    'title' => 'أستاذ مشرف',
     'dashboard' => 'لوحــة التحكـــــم',
-    'students' => 'الطلاب',
+    'supervisors' => 'استاذة المشرفون',
+    'supervisor' => 'مشرف',
     'groups' => 'الأعضاء',    
     'title-dashboard' => 'الصفحة الرئيسية',
     'profile' => 'معلومات الحساب',
@@ -28,16 +29,23 @@ return [
     'email' => 'البريد الإلكتروني',
     
     
-    'create'=> 'إضافة طالب',
+    'create'=> 'إضافة مشرف',
     'create_project'=> 'إضافة مشروع',
     'Add_students' => 'إضافة طلاب',
     'Add_project' => 'إضافة مشروع',
     'Add_supervisor' => 'اضافة مشرف',
+    'no_supervisors_available' => 'لا يوجد مشرفين متاحين',
+    'select_supervisor' => 'اختر مشرف',
     'import' => 'رفع ملف الطلبة',
-    'edit' => 'تعديل بيانات الطالب',
-    'delete' => 'حذف الطالب',
-    'delete_confirmation' => 'هل أنت متأكد من عملية حذف هذ الطالب ؟',
-
+    'edit' => 'تعديل بيانات المشرف',
+    'accept' => 'حفظ البيانات',
+    'delete' => 'حذف المشرف',
+    'assign' => 'تعيين',
+    'delete_confirmation' => 'هل أنت متأكد من عملية حذف هذ المشرف ؟',
+    'speciality'  => "التخصص",
+    'faculty' => "الكلية",
+    "departement" => "القسم",
+    "grade" => "رتبة",
     'label' =>[
         'name' => 'الإسم',
         'batch' => 'الدفعة',

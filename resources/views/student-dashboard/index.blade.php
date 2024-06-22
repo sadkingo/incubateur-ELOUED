@@ -197,6 +197,11 @@
                                             <span class="tf-icons bx bx-plus"></span>&nbsp; {{ trans('student.Add_project') }}
                                         </a>
                                     </div>
+                                    <div class="form-group col-md-2 px-1 mt-4">
+                                        <a href="{{ route('student.supervisor.create') }}" class="btn btn-primary text-white">
+                                            <span class="tf-icons bx bx-plus"></span>&nbsp; {{ trans('student.Add_supervisor') }}
+                                        </a>
+                                    </div>
                                     
                                 </div>
                             </h5>
