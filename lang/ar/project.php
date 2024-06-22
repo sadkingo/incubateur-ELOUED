@@ -21,6 +21,10 @@
         'complete_project' => 'الرجاء استكمال المشروع', //  3
     ],
     'characters_remaining' => 'الحروف المتبقية',
+    'edit_project' => 'تحديث المشروع',
+    'delete'  => 'حذف المشروع',
+    'delete_confirmation' => 'هل أنت متأكد من عملية حذف هذا المشروع ؟',
+
     'label' =>[
         'name' => 'اسم المشروع',
         'description' => 'وصف المشروع',

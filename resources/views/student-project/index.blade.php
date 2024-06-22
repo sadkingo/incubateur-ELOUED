@@ -195,6 +195,7 @@
                                         <tr>
                                             <th scope="col">{{trans('project.label.name')}}</th>
                                             <th scope="col">{{ trans('project.status_project.status')}}</th>
+                                            <th scope="col">{{ trans('app.actions') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -212,11 +213,43 @@
                                                         <span class="text-danger">{{ trans('project.status_project.rejected') }}</span>
                                                     @endif
                                                 </td>
+                                                <td>
+                                                    <div class="dropdown">
+                                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                                            data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i>
+                                                        </button>
+                                                        <div class="dropdown-menu">
+                                                            <a href="{{ route('student.project.edit', $project->id) }}" class="btn  btn-sm">
+                                                                <i class="bx bx-edit-alt me-2"></i>
+                                                                {{ trans('project.edit_project') }}
+                                                            </a>
+                                                            <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#deleteProjectModal{{ $project->id }}">
+                                                                <i class="bx bx-trash me-2"></i>
+                                                                {{ trans('project.delete') }}
+                                                            </a>
+
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                {{-- <td>
+                                                    <a href="{{ route('student.project.edit', $project->id) }}" class="btn btn-warning btn-sm">
+                                                        {{ trans('app.edit') }}
+                                                    </a>
+                                                    <form action="{{ route('student.project.destroy', $project->id) }}" method="POST" style="display:inline-block;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('{{ trans('app.confirm_delete') }}');">
+                                                            {{ trans('app.delete') }}
+                                                        </button>
+                                                    </form>
+                                                </td> --}}
                                             </tr>
+                                            @include('student-project.delete')
                                         @endforeach
                                     </tbody>
                                 </table>
                             </div>
+                            
                         </div>
                         
                     </div>

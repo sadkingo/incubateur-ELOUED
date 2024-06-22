@@ -2,7 +2,7 @@
 return [
 
     'register' => 'إنشاء مشروع',
-
+   'edit_project' => 'تحديث المشروع',
     'name_project' => 'اسم المشروع',
     'description_project' => 'وصف المشروع',
     'project_images' => 'صور المشروع',
@@ -23,6 +23,8 @@ return [
         'bmc' => 'اختر ملف bmc',
     ],
 
-    
-    'accept' => 'حفظ البيانات'
+
+    'video_not_supported' => 'الفيديو غير مدعوم',
+    'accept' => 'حفظ البيانات',
+    "edit" => 'تحديث البيانات'
 ];
