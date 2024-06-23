@@ -54,30 +54,62 @@ class ProjetController extends Controller
         return redirect()->route('dashboard.project.index');
     }
 
-     public function editAllDatesForm()
-     {
-         return view('dashboard.project.edit_all_dates');
-     }
+    public function editAllDatesForm(){
+        return view('dashboard.project.edit_all_dates');
+    }
  
-     public function updateAllDates(Request $request)
-     {
-         $request->validate([
-             'start_date' => 'required|date',
-             'end_date' => 'required|date|after_or_equal:start_date',
-         ]);
+    public function updateAllDates(Request $request){
+        $request->validate([
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+        ]);
  
-         $projects = Project::all();
-         foreach ($projects as $project) {
-             $project->start_date = $request->input('start_date');
-             $project->end_date = $request->input('end_date');
-             $project->save();
-         }
-         
-         toastr()->success(trans('message.success.update'));
-         return redirect('/dashboard/projet');
+        $projects = Project::all();
+        foreach ($projects as $project) {
+            $project->start_date = $request->input('start_date');
+            $project->end_date = $request->input('end_date');
+            $project->save();
         }
-      
-            
+         
+        toastr()->success(trans('message.success.update'));
+        return redirect('/dashboard/projet');
+    }
+    
+   // DashboardController.php
+
+   public function studentReports()
+   {
+       $acceptedProjectsCount = Project::where('status', 2)->count();
+       $rejectedProjectsCount = Project::where('status', 0)->count();
+       $underStudyingProjectsCount = Project::where('status', 1)->count();
+       $completeProjectsCount = Project::where('status', 3)->count();
+       $totalProjectsCount = Project::count();
+
+       return view('dashboard.student.reports', [
+           'acceptedProjectsCount' => $acceptedProjectsCount,
+           'rejectedProjectsCount' => $rejectedProjectsCount,
+           'underStudyingProjectsCount' => $underStudyingProjectsCount,
+           'completeProjectsCount' => $completeProjectsCount,
+           'totalProjectsCount' => $totalProjectsCount,
+       ]);
+   }
+
+   public function printStudentReport()
+   {
+       $acceptedProjectsCount = Project::where('status', 2)->count();
+       $rejectedProjectsCount = Project::where('status', 0)->count();
+       $underStudyingProjectsCount = Project::where('status', 1)->count();
+       $completeProjectsCount = Project::where('status', 3)->count();
+       $totalProjectsCount = Project::count();
+
+       return view('dashboard.printer.project_report', [
+           'acceptedProjectsCount' => $acceptedProjectsCount,
+           'rejectedProjectsCount' => $rejectedProjectsCount,
+           'underStudyingProjectsCount' => $underStudyingProjectsCount,
+           'completeProjectsCount' => $completeProjectsCount,
+           'totalProjectsCount' => $totalProjectsCount,
+       ]);
+   }
     
 }
 

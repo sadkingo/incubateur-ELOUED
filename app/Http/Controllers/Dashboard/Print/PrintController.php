@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard\Print;
 use Carbon\Carbon;
 use App\Models\Student;
 use App\Models\Teacher;
+use App\Models\Project;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Response;
@@ -82,6 +83,22 @@ class PrintController extends Controller
         return view('dashboard.printer.teachers', compact('teachers'));
     }
 
+    public function raport(){
+        $acceptedProjectsCount = Project::where('status', 2)->count();
+        $rejectedProjectsCount = Project::where('status', 0)->count();
+        $underStudyingProjectsCount = Project::where('status',1)->count();
+        $completeProjectsCount = Project::where('status',3)->count();
+        $totalProjectsCount = Project::count();
+       // $progressPercentage = ($totalProjectsCount > 0) ? (($acceptedProjectsCount / $totalProjectsCount) * 100) : 0;
+
+        return view('dashboard.student.reports', [
+            'acceptedProjectsCount'      => $acceptedProjectsCount,
+            'rejectedProjectsCount'      => $rejectedProjectsCount,
+            'underStudyingProjectsCount' => $underStudyingProjectsCount,
+            'completeProjectsCount'      => $completeProjectsCount,
+            //'progressPercentage'         => $progressPercentage,
+        ]);
+    }
 
 
     public function review(Request $request)

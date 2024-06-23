@@ -112,10 +112,12 @@ Route::prefix('dashboard')->name('dashboard.')->middleware('auth:admin,teacher')
 
     Route::resource('attendence', AttendenceController::class);
 
-    Route::resource('projet',ProjetController::class);
+    Route::resource('projet', ProjetController::class);
     Route::get('projects/edit-all-dates', [ProjetController::class, 'editAllDatesForm'])->name('projects.edit_all_dates');
     Route::post('projects/update-all-dates', [ProjetController::class, 'updateAllDates'])->name('projects.update_all_dates');
-
+    Route::get('reports', [ProjetController::class, 'studentReports'])->name('student.reports');
+    Route::get('print/project-report', [ProjetController::class, 'printStudentReport'])->name('dashboard.print.studentReport');
+    
 
 
     Route::get('project/{project}', [ProjetController::class, 'show'])->name('dashboard.project.show');

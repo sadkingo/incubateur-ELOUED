@@ -1,12 +1,13 @@
 <?php
  return [
     'title' => 'المشروع',
+    'title_project' => 'تقرير المشاريع',
     'dashboard' => 'لوحــة التحكـــــم',
     'projects' => 'المشاريع',
     
     'title-dashboard' => 'الصفحة الرئيسية',
     'project' => 'مشروع',
-    
+    'raport' => 'تقرير المشاريع',
     'create_project' => 'أَضف مشروع',
     'member' => "عضو",
     'tow_members' => "عضوين",
