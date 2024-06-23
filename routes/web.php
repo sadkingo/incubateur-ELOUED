@@ -113,6 +113,8 @@ Route::prefix('dashboard')->name('dashboard.')->middleware('auth:admin,teacher')
     Route::resource('attendence', AttendenceController::class);
 
     Route::resource('projet',ProjetController::class);
+    Route::get('projects/edit-all-dates', [ProjetController::class, 'editAllDatesForm'])->name('projects.edit_all_dates');
+    Route::post('projects/update-all-dates', [ProjetController::class, 'updateAllDates'])->name('projects.update_all_dates');
 
 
 

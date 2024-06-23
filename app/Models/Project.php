@@ -16,6 +16,8 @@ class Project extends Model
         'video',
         'bmc',
         'id_commission' ,
+        'start_date',
+        'end_date'
     ];
 
     public function student()

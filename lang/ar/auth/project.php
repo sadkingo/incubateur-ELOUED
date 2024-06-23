@@ -2,7 +2,9 @@
 return [
 
     'register' => 'إنشاء مشروع',
-   'edit_project' => 'تحديث المشروع',
+    'edit_project' => 'تحديث المشروع',
+    'start_date' => 'تاريخ بداية التعديل',
+    'end_date' => 'تاريخ نهاية التعديل',
     'name_project' => 'اسم المشروع',
     'description_project' => 'وصف المشروع',
     'project_images' => 'صور المشروع',

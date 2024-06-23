@@ -216,7 +216,7 @@ class ProjectController extends Controller
 
     public function destroy($id) {
         $project = Project::findOrFail($id);
-    
+        
         if ($project->video) {
             Storage::delete('public/projects/videos/' . $project->video);
         }
@@ -237,6 +237,7 @@ class ProjectController extends Controller
         return redirect()->route('student.index');
     }
     
-
+    
+   
 
 }

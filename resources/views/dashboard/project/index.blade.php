@@ -1,9 +1,3 @@
-@php
-    use App\Models\StudentGroup;
-    $isMenu = false;
-    $navbarHideToggle = false;
-@endphp
-
 @extends('layouts/contentNavbarLayout')
 
 @section('title', trans('student.title-dashboard'))
@@ -16,9 +10,8 @@
     <style>
         .btn-custom-gray {
             background-color: #d3d3d3; 
-            
         }
-    
+
         .status-list li {
             padding-bottom: 10px; 
         }
@@ -37,7 +30,19 @@
                 <div class="card-body pt-0">
                     <div class="card-body">
                         <div class="card">
-                            <div >
+                            <h5 class="card-header pt-0 mt-1">
+                                <div class="row">
+                                    <div class="form-group col-md-6 px-1 mt-4">
+                                        <a href="{{ route('dashboard.projects.edit_all_dates') }}" class="btn btn-primary text-white">
+                                            <span class="tf-icons bx bx-plus"></span>&nbsp; {{ trans('project.add_deadline') }}
+                                        </a>
+                                    </div>
+                                    
+                                </div>
+                            </h5>
+                            
+
+                            <div>
                                 <table class="table table-striped">
                                     <thead>
                                         <tr>
@@ -46,6 +51,7 @@
                                             <th scope="col">{{trans('student.firstname')}} & {{trans('student.lastname')}}</th>
                                             <th scope="col">{{trans('student.groups')}}</th>
                                             <th scope="col">{{trans('supervisor.supervisors')}}</th>
+                                            
                                             <th scope="col">{{trans('commission.commission')}}</th>
                                         </tr>
                                     </thead>
@@ -108,6 +114,7 @@
                                                         </ul>
                                                     @endif
                                                 </td>
+                                                
                                                 <td>
                                                     @if ($project->commission)
                                                         {{ $project->commission->name_ar }}
@@ -128,6 +135,7 @@
         </div>
     </div>
 @endsection
+
 
 @section('scripts')
     <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
@@ -169,25 +177,29 @@
             });
         }
 
-         $(document).ready(function() {
-             $.ajaxSetup({
-                 headers: {
-                     "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-                 },
-             });
-     
-             $("#downloadCertificate").click(function(e) {
-                 let url = $(this).attr('data-url');
-                 var printWindow = window.open(url, '_blank', 'height=auto,width=auto');
-                 printWindow.print();
-             });
-     
-             $("#downloadReview").click(function(e) {
-                 let url = $(this).attr('data-url');
-                 var printWindow = window.open(url, '_blank', 'height=auto,width=auto');
-                 printWindow.print();
-             });
-         });
-     </script>
-     
+        function openDeadlineModal(projectId) {
+            var url = '{{ url("dashboard/project") }}/' + projectId + '/add_deadline';
+            var modalWindow = window.open(url, '_blank', 'width=800,height=600');
+        }
+
+        $(document).ready(function() {
+            $.ajaxSetup({
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                },
+            });
+
+            $("#downloadCertificate").click(function(e) {
+                let url = $(this).attr('data-url');
+                var printWindow = window.open(url, '_blank', 'height=auto,width=auto');
+                printWindow.print();
+            });
+
+            $("#downloadReview").click(function(e) {
+                let url = $(this).attr('data-url');
+                var printWindow = window.open(url, '_blank', 'height=auto,width=auto');
+                printWindow.print();
+            });
+        });
+    </script>
 @endsection
