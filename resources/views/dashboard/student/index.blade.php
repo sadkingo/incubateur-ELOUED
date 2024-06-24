@@ -192,9 +192,12 @@
                             $rowNumber = ($students->currentPage() - 1) * $students->perPage() + $loop->index + 1;
                         @endphp
                         <tr>
+                           
+
                             <th scope="row">{{ $rowNumber }}</th>
                             <td>
-                                {{ $student->name }}
+                                <a href="{{ url('dashboard/students/' . $student->id . '/profile') }}">{{ $student->name }}</a>
+
                             </td>
                             <td>{{ $student->email }}</td>
                             <td>{{ $student->phone }}</td>

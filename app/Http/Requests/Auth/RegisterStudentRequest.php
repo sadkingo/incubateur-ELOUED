@@ -33,7 +33,7 @@ class RegisterStudentRequest extends FormRequest
             'state_of_birth' => 'required|string',
             'place_of_birth' => 'required|string',
 
-            'photo' => 'nullable|mimes:jpeg,png,jpg',
+            'photo' => 'required',
             'status' => 'nullable|numeric|between:1,2',
 
             'registration_number' => 'required|numeric|unique:students,registration_number',

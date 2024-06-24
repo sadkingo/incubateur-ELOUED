@@ -34,7 +34,7 @@ return [
     'email' => 'البريد الإلكتروني',
     'password' => 'كلمة السر',
     'confirme_password' => 'تأكيد كلمة السر',
-
+    'image' => "صورة الشخصية",
     'personal_information'  => 'معلومات الشخصية',
     'account_information'   => 'معلومات تسجيل',
     'education_information' => 'المعلومات الدراسية',
@@ -61,6 +61,7 @@ return [
         'academicLevel'=> 'المستوى الدراسي',
         'department'=> 'القسم',
         'faculty'=> 'الكلية',
+        'image' => "صورة الشخصية",
         
         'phone'    => 'أدخل رقم الهاتف',
         'email'    => 'أدخل البريد الإلكتروني',

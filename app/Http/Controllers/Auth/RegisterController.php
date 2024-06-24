@@ -36,7 +36,10 @@ class RegisterController extends Controller
     public function register(RegisterStudentRequest $request){
         
        // dd($request->all());
-        $student = $this->students->create($request->all());
+       $data = $request->all();
+
+       
+        $student = $this->students->create($data);
 
         $startDate = Carbon::parse($student->start_date);
         $endDate = Carbon::parse($student->end_date);

@@ -99,7 +99,9 @@ Route::prefix('dashboard')->name('dashboard.')->middleware('auth:admin,teacher')
     Route::resource('admins', AdminController::class);
     Route::resource('students', StudentController::class);
     Route::post('import-student-excel', [ExcelImportController::class, 'import'])->name('student.import.excel');
-    
+    Route::get('students/{student}/profile', [StudentController::class, 'showProfile'])->name('dashboard.students.profile');
+    Route::get('students/{id}/edit-stage', [StudentController::class, 'editStage'])->name('dashboard.students.editStage');
+    Route::post('students/{id}/updateStage', [StudentController::class, 'updateStage'])->name('dashboard.students.updateStage');
     
     // import ExcelImportController
     Route::resource('teachers', TeacherController::class);

@@ -77,8 +77,7 @@ class ProjetController extends Controller
     
    // DashboardController.php
 
-   public function studentReports()
-   {
+   public function studentReports(){
        $acceptedProjectsCount = Project::where('status', 2)->count();
        $rejectedProjectsCount = Project::where('status', 0)->count();
        $underStudyingProjectsCount = Project::where('status', 1)->count();
@@ -94,8 +93,7 @@ class ProjetController extends Controller
        ]);
    }
 
-   public function printStudentReport()
-   {
+   public function printStudentReport(){
        $acceptedProjectsCount = Project::where('status', 2)->count();
        $rejectedProjectsCount = Project::where('status', 0)->count();
        $underStudyingProjectsCount = Project::where('status', 1)->count();

@@ -17,6 +17,12 @@
   <!-- Favicon -->
   {{-- <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/favicon/favicon.ico') }}" /> --}}
   <link rel="icon" type="image/x-icon" href="{{ asset('assets/logo/logo.jpg') }}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+ <!-- SweetAlert CSS -->
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+ <!-- SweetAlert JS -->
+ <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   {{-- logo-print.jpg --}}
   <!-- Include Styles -->
   @include('layouts/sections/styles')

@@ -270,6 +270,19 @@
                                             </small>
                                         @enderror
                                     </div>
+                                    <div class="col-sm-12 col-md-3 mb-2">
+                                        <label for="photo"
+                                            class="form-label">{{ trans('auth/student.photo') }}</label>
+                                        <input type="file"
+                                            class="form-control photo @error('photo') is-invalid @enderror"
+                                            name="photo" value="{{ old('residence') }}"
+                                            placeholder="{{ trans('auth/student.placeholder.photo') }}">
+                                        @error('photo')
+                                            <small class="text-danger d-block">
+                                                {{ $message }}
+                                            </small>
+                                        @enderror
+                                    </div>
                                     <div class="col-12 row px-0 mx-0 mt-3 d-flex ">
                                         <div class="col-sm-12 col-md-6 d-flex justify-content-start"></div>
                                         <div class="col-sm-12 col-md-6 d-flex justify-content-end">

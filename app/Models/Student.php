@@ -47,7 +47,8 @@ class Student extends Authenticatable
         'password',
 
         'moyenFinal',
-        'created_by'
+        'created_by',
+        'project_stage',
     ];
 
     protected $dates = [

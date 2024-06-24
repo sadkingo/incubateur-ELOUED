@@ -7,14 +7,15 @@ use App\Http\Controllers\Controller;
 use App\Repositories\Student\StudentRepository;
 use App\Http\Requests\Student\StoreStudentRequest;
 use App\Http\Requests\Student\UpdateStudentRequest;
+use App\Models\Project;
+use App\Models\StudentGroup;
+use App\Models\SupervisingTeacher;
 
 class StudentController extends Controller
 {
     private $students;
 
     /**
-     * Mm@KnB@S*9
-     * >jX!HE7qU3c
      * StudentController constructor.
      * @param StudentRepository $students
      */
@@ -113,4 +114,48 @@ class StudentController extends Controller
         toastr()->success(trans('message.success.delete'));
         return redirect()->route('dashboard.students.index');
     }
+
+    // StudentController.php
+
+    private function getProjectStageInfo($projectStage){
+        $stages = [
+            1 => ['key' => 'business_model_preparation', 'percentage' => 25],
+            2 => ['key' => 'prototype_development', 'percentage' => 50],
+            3 => ['key' => 'startup_dz_registration', 'percentage' => 75],
+            4 => ['key' => 'discussion', 'percentage' => 100],
+        ];
+    
+        $stage = $stages[$projectStage] ?? ['key' => 'unknown', 'percentage' => 0];
+        $stage['name'] = trans('student.' . $stage['key']);
+    
+        return $stage;
+    }
+
+    public function showProfile($id){
+        $student = $this->students->find($id);
+        $project = Project::where('id_student',$student->id)->get()->first();
+        $studentGroups = StudentGroup::where('id_student', $student->id)->get();
+        $supervisors = SupervisingTeacher::where('id_student',$student->id)->get();
+        $stageInfo = $this->getProjectStageInfo($student->project_stage);
+        return view('dashboard.student.profile', compact('student','project','studentGroups','supervisors', 'stageInfo'));
+    }
+    public function editStage($id)
+    {
+        $student = $this->students->find($id);
+        
+        return view('dashboard.student.edit_stage', compact('student'));
+    }
+    
+    public function updateStage(Request $request, $id){
+        $student = $this->students->find($id);
+        if ($student) {
+            $student->project_stage = $request->input('stage');
+            $student->save();
+            toastr()->success(trans('message.success.update'));
+            return redirect('/dashboard/students/'.$student->id.'/profile');
+        }
+
+        return response()->json(['success' => false, 'message' => 'Student not found']);
+    }
+
 }
