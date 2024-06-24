@@ -2,6 +2,7 @@
 
 return [
     'title' => 'الطلاب',
+    'profile_title' => 'صفحة الطالب',
     'dashboard' => 'لوحــة التحكـــــم',
     'students' => 'الطلاب',
     'groups' => 'الأعضاء',    

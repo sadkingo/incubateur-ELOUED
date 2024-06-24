@@ -133,9 +133,13 @@ class StudentController extends Controller
 
     public function showProfile($id){
         $student = $this->students->find($id);
-        $project = Project::where('id_student',$student->id)->get()->first();
+        $project = Project::whereHas('supervisingTeacherProjects', function($query) use ($student) {
+            $query->where('id_student', $student->id);
+        })->first();
         $studentGroups = StudentGroup::where('id_student', $student->id)->get();
-        $supervisors = SupervisingTeacher::where('id_student',$student->id)->get();
+        $supervisors = SupervisingTeacher::whereHas('supervisingTeacherProjects', function($query) use ($student) {
+            $query->where('id_student', $student->id);
+        })->get();
         $stageInfo = $this->getProjectStageInfo($student->project_stage);
         return view('dashboard.student.profile', compact('student','project','studentGroups','supervisors', 'stageInfo'));
     }

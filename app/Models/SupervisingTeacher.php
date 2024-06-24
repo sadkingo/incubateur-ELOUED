@@ -27,4 +27,8 @@ class SupervisingTeacher extends Model
         'grade',
         'id_student',
     ];
+
+    public function supervisingTeacherProjects() {
+        return $this->hasMany(SupervisingTeacherProject::class, 'id_supervisor', 'id');
+    }
 }

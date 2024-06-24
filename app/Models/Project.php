@@ -41,5 +41,9 @@ class Project extends Model
             'id_supervisor' // Local key on SupervisingTeacherProject table
         );
     }
+
+    public function supervisingTeacherProjects() {
+        return $this->hasMany(SupervisingTeacherProject::class, 'id_project', 'id');
+    }
  
 }
