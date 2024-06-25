@@ -256,37 +256,48 @@
                                           class="material-icons text-info mr-2">{{ trans('student.info_supervisor') }}</i>
                                   </h6>
                                   @if ($supervisors->count() > 0)
-                                      <table class="table">
-                                          <thead>
-                                              <tr>
-                                                  <th>{{ trans('student.nameSupervisor') }}</th>          
-                                                  <th>{{ trans('auth/student.department') }}</th>
-                                                  <th>{{ trans('auth/student.specialty') }}</th>
-                                              </tr>
-                                          </thead>
-                                          <tbody>
-                                              @foreach ($supervisors as $supervisor)
-                                                  <tr>
-                                                      <td>
-                                                        @php
-                                                          $locale = app()->getLocale();
-                                                          $name =
-                                                          $locale === 'ar'
-                                                            ? $supervisor->firstname_ar . ' ' . $supervisor->lastname_ar
-                                                            : $supervisor->firstname_fr . ' ' . $supervisor->lastname_fr;
-                                                        @endphp
-                                                        {{ $name }} 
-                                                      </td>
-                                                      <td>{{ $supervisor->departement }}</td>
-                                                      <td>{{ $supervisor->speciality }}</td>
-                                                  </tr>
-                                              @endforeach
-                                          </tbody>
-                                      </table>
+                                    <div id="supervisors-list" >
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>{{ trans('student.nameSupervisor') }}</th>          
+                                                    <th>{{ trans('auth/student.department') }}</th>
+                                                    <th>{{ trans('auth/student.specialty') }}</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($supervisors as $supervisor)
+                                                    <tr>
+                                                        <td>
+                                                          @php
+                                                            $locale = app()->getLocale();
+                                                            $name =
+                                                            $locale === 'ar'
+                                                              ? $supervisor->firstname_ar . ' ' . $supervisor->lastname_ar
+                                                    
+                                                              : $supervisor->firstname_fr . ' ' . $supervisor->lastname_fr;
+                                                          @endphp
+                                                          {{ $name }} 
+                                                        </td>
+                                                        <td>{{ $supervisor->departement }}</td>
+                                                        <td>{{ $supervisor->speciality }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                    </table>    
+                                    </div>   
+                                  
                                   @else
                                       <small>{{ trans('student.no_supervisor') }}</small>
                                   @endif
                               </div>
+                              @if (count($supervisors))
+                              <button id="printSupervisors" data-url="{{ url('dashboard/print/supervisors/:student_id') }}" data-student-id="{{ $student->id }}"
+                                class="btn btn-primary text-white">
+                                <span class="bx bxs-printer"></span>&nbsp; {{ trans('app.print') }}
+                            </button>
+                                @endif
+                              {{-- <button onclick="printSupervisors()">Print Supervisors</button> --}}
                             </div>
                         </div>
                     </div>
@@ -295,61 +306,26 @@
         </div>
     </div>
     <script>
-        document.getElementById('editStageBtn').addEventListener('click', function() {
-            Swal.fire({
-                title: '{{ trans('student.edit_stage') }}',
-                input: 'select',
-                inputOptions: {
-                    1: '{{ trans('student.business_model_preparation') }}',
-                    2: '{{ trans('student.prototype_development') }}',
-                    3: '{{ trans('student.startup_dz_registration') }}',
-                    4: '{{ trans('student.discussion') }}'
-                },
-                inputPlaceholder: '{{ trans('student.select_stage') }}',
-                showCancelButton: true,
-                inputValidator: function(value) {
-                    return new Promise(function(resolve, reject) {
-                        if (value) {
-                            resolve();
-                        } else {
-                            reject('{{ trans('student.select_stage_error') }}');
-                        }
-                    });
-                }
-            }).then(function(result) {
-                if (result.isConfirmed) {
-                    // إرسال المرحلة الجديدة إلى الخادم لتحديثها
-                    updateProjectStage(result.value);
-                }
+        $(document).ready(function() {
+            $("#printSupervisors").click(function(e) {
+                // منع الحدث الافتراضي للنقر
+                e.preventDefault();
+
+                // الحصول على معرّف الطالب
+                let studentId = $(this).data('student-id');
+
+                // الحصول على الـ URL وتعويض معرّف الطالب
+                let url = $(this).attr('data-url').replace(':student_id', studentId);
+
+                // فتح نافذة جديدة للطباعة
+                var printWindow = window.open(url, '_blank', 'height=auto,width=auto');
+
+                // انتظار تحميل النافذة قبل الطباعة
+                printWindow.onload = function() {
+                    printWindow.print();
+                };
             });
         });
-
-        function updateProjectStage(stage) {
-            fetch('{{ url('/students/' . $student->id . '/updateStage') }}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({
-                        stage: stage
-                    })
-                }).then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        Swal.fire({
-                            title: '{{ trans('student.update_success') }}',
-                            icon: 'success'
-                        }).then(() => {
-                            location.reload();
-                        });
-                    } else {
-                        Swal.fire({
-                            title: '{{ trans('student.update_error') }}',
-                            icon: 'error'
-                        });
-                    }
-                });
-        }
+       
     </script>
 @endsection

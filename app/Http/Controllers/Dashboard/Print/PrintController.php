@@ -6,8 +6,10 @@ use Carbon\Carbon;
 use App\Models\Student;
 use App\Models\Teacher;
 use App\Models\Project;
+use App\Models\SupervisingTeacher;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\StudentGroup;
 use Illuminate\Support\Facades\Response;
 
 use Illuminate\Support\Facades\Storage;
@@ -126,5 +128,24 @@ class PrintController extends Controller
         $filePath = storage_path('app/public/student-model-file.xlsx');
         $newFilename = 'إستمارة معلومات المتربصين.xlsx';
         return Response::download($filePath, $newFilename);
+    }
+
+    public function printSupervisors($student_id){
+        
+        $student = Student::find($student_id);
+        if (!$student) {
+            return redirect()->back()->with('error', 'Student not found');
+        }
+        $studentGroups = StudentGroup::where('id_student',$student->id)->get();
+        $project = Project::whereHas('supervisingTeacherProjects', function($query) use ($student) {
+            $query->where('id_student', $student->id);
+        })->first();
+        $studentGroups = StudentGroup::where('id_student', $student->id)->get();
+        $supervisors = SupervisingTeacher::whereHas('supervisingTeacherProjects', function($query) use ($student) {
+            $query->where('id_student', $student->id);
+        })->get();
+        
+
+        return view('dashboard.printer.supervisor_raport', compact('student', 'supervisors', 'studentGroups','project'));
     }
 }

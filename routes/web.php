@@ -131,13 +131,14 @@ Route::prefix('dashboard')->name('dashboard.')->middleware('auth:admin,teacher')
     Route::resource('evaluations', EvaluationController::class);
     Route::get('evaluations/create/{id}', [EvaluationController::class, 'create'])->name('evaluations.create');
 
-    Route::prefix('print')->controller(PrintController::class)->name('print.')->group(function () {
-        Route::get('students', 'students')->name('students');
-        Route::get('teachers', 'teachers')->name('teachers');
-        Route::get('attendence', 'attendence')->name('attendence');
-        Route::get('review', 'review')->name('review');
-        Route::get('certificate', 'certificate')->name('certificate');
-        Route::get('trainee_notebook/{student_id}', 'trainee_notebook')->name('trainee_notebook');
+    Route::prefix('print')->name('print.')->group(function () {
+        Route::get('students', [PrintController::class, 'students'])->name('students');
+        Route::get('teachers', [PrintController::class, 'teachers'])->name('teachers');
+        Route::get('attendence', [PrintController::class, 'attendence'])->name('attendence');
+        Route::get('review', [PrintController::class, 'review'])->name('review');
+        Route::get('certificate', [PrintController::class, 'certificate'])->name('certificate');
+        Route::get('trainee_notebook/{student_id}', [PrintController::class, 'trainee_notebook'])->name('trainee_notebook');
+        Route::get('supervisors/{student_id}', [PrintController::class, 'printSupervisors'])->name('supervisors');
     });
 
     Route::resource('certificates', CertificateController::class);

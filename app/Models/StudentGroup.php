@@ -20,6 +20,12 @@ class StudentGroup extends Authenticatable
         'lastname_fr',
         'gender',
         'birthday',
+        'state_of_birth',
+        'registration_number',
+        'academicLevel',
+        'specialty',
+        'faculty',
+        'department',
         'photo',        
     ];
 }
