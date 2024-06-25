@@ -117,7 +117,7 @@ public function assign(Request $request, $id)
         } else {
             $supervisorProject = new SupervisingTeacherProject;
             $supervisorProject->id_student = $student->id;
-            $supervisorProject->id_project = $project->id;
+           // $supervisorProject->id_project = $project->id;
             $supervisorProject->id_supervisor = $supervisingTeacher->id;
             $supervisorProject->save();
         }
