@@ -54,20 +54,32 @@ class AccountController extends Controller
     
         $request->validate([
             'inputs.*.firstname_ar' => ['required', 'regex:/^[\p{Arabic}\s]+$/u'],
-        'inputs.*.lastname_ar'  => ['required', 'regex:/^[\p{Arabic}\s]+$/u'],
-        'inputs.*.firstname_fr' => 'required',
-        'inputs.*.lastname_fr'  => 'required',
-        'inputs.*.gender'       => 'required',
-        'inputs.*.birthday'     => 'required',
-        ],[
-            'inputs.*.firstname_ar.required' => 'First name arabic is required',
-            'inputs.*.firstname_ar.regex' => 'First name arabic must be in Arabic letters only',
-            'inputs.*.lastname_ar.required'  => 'Last name arabic is required',
-            'inputs.*.lastname_ar.regex' => 'Last name arabic must be in Arabic letters only',
-            'inputs.*.firstname_fr' => 'First name fr is required',
-            'inputs.*.lastname_fr' => 'Last name fr is required',
-            'inputs.*.gender' => 'Gender is required',
-            'inputs.*.birthday' => 'Date of birthday is required',
+            'inputs.*.lastname_ar'  => ['required', 'regex:/^[\p{Arabic}\s]+$/u'],
+            'inputs.*.firstname_fr' => 'required',
+            'inputs.*.lastname_fr'  => 'required',
+            'inputs.*.gender'       => 'required',
+            'inputs.*.birthday'     => 'required',
+            'inputs.*.place_of_birth' => 'required',
+            'inputs.*.registration_number' => 'required|numeric',
+            'inputs.*.academicLevel' => 'required',
+            'inputs.*.specialty' => 'required',
+            'inputs.*.faculty' => 'required',
+            'inputs.*.department' => 'required',
+            ],[
+                'inputs.*.firstname_ar.required' => 'First name arabic is required',
+                'inputs.*.firstname_ar.regex' => 'First name arabic must be in Arabic letters only',
+                'inputs.*.lastname_ar.required'  => 'Last name arabic is required',
+                'inputs.*.lastname_ar.regex' => 'Last name arabic must be in Arabic letters only',
+                'inputs.*.firstname_fr' => 'First name fr is required',
+                'inputs.*.lastname_fr' => 'Last name fr is required',
+                'inputs.*.gender' => 'Gender is required',
+                'inputs.*.birthday' => 'Date of birthday is required',
+                'inputs.*.place_of_birth' => 'Place of birthday is required',
+                'inputs.*.registration_number' => 'Registration number is required',
+                'inputs.*.academicLevel' => 'Academic level is required',
+                'inputs.*.specialty' => 'Specialty is required',
+                'inputs.*.faculty' => 'Faculty is required',
+                'inputs.*.department' => 'Department is required',
         ]);
 
         foreach($request->inputs as $key => $value){
@@ -78,12 +90,19 @@ class AccountController extends Controller
             $studentGroupe->lastname_ar = $value['lastname_ar'];
             $studentGroupe->birthday = $value['birthday'];
             $studentGroupe->gender = $value['gender'];
+            $studentGroupe->state_of_birth = $value['place_of_birth'];
+            $studentGroupe->registration_number  = $value['registration_number'];
+            $studentGroupe->academicLevel  = $value['academicLevel'];
+            $studentGroupe->specialty  = $value['specialty'];
+            $studentGroupe->faculty  = $value['faculty'];
+            $studentGroupe->department  = $value['department'];
             $studentGroupe->id_student = $student->id;
             $studentGroupe->save();
         }
         toastr()->success(trans('message.success.create'));
         return redirect()->route('student.index');
     }
+    
 
     public function edit($id){
         $studentGroup = StudentGroup::findOrFail($id);

@@ -42,7 +42,6 @@
                             </small>
                             @enderror
                         </div>
-                        
                         <div class="col-sm-12 col-md-3 mb-2">
                             <label for="firstname_fr" class="form-label">{{ trans('auth/student.firstname_fr') }}</label>
                             <input type="text" class="form-control @error('firstname_fr') is-invalid @enderror"
@@ -65,36 +64,111 @@
                                 </small>
                             @enderror
                         </div>
-                    <div class="col-sm-12 col-md-2 mb-2">
-                        <label for="gender" class="form-label">{{ trans('app.label.gender') }}</label>
-                        <select class="form-select @error('gender') is-invalid @enderror"
-                            name="inputs[0][gender]" value="{{ old('inputs.0.gender') }}">
-                            <option value="" selected>-- {{ trans('app.select_gender') }} --</option>
-                            <option value="1">{{ trans('app.male') }}</option>
-                            <option value="2">{{ trans('app.female') }}</option>
-                        </select>
-                        @error('inputs.0.gender')
-                            <small class="text-danger d-block">
-                                {{ $message }}
-                            </small>
-                        @enderror
-                    </div>
-                    <div class="col-sm-12 col-md-2 mb-2">
-                        <label for="birthday" class="form-label">{{ trans('app.label.birthday') }}</label>
-                        <input type="date" class="form-control @error('birthday') is-invalid @enderror" name="inputs[0][birthday]"
-                            value="{{ old('inputs.0.birthday') }}">
-                        @error('inputs.0.birthday')
-                            <small class="text-danger d-block">
-                                {{ $message }}
-                            </small>
-                        @enderror
-                    </div>
+                        <div class="col-sm-12 col-md-2 mb-2">
+                            <label for="gender" class="form-label">{{ trans('app.label.gender') }}</label>
+                            <select class="form-select @error('gender') is-invalid @enderror"
+                                name="inputs[0][gender]" value="{{ old('inputs.0.gender') }}">
+                                <option value="" selected>-- {{ trans('app.select_gender') }} --</option>
+                                <option value="1">{{ trans('app.male') }}</option>
+                                <option value="2">{{ trans('app.female') }}</option>
+                            </select>
+                            @error('inputs.0.gender')
+                                <small class="text-danger d-block">
+                                    {{ $message }}
+                                </small>
+                            @enderror
+                        </div>
+                        <div class="col-sm-12 col-md-2 mb-2">
+                            <label for="birthday" class="form-label">{{ trans('app.label.birthday') }}</label>
+                            <input type="date" class="form-control @error('birthday') is-invalid @enderror" name="inputs[0][birthday]"
+                                value="{{ old('inputs.0.birthday') }}">
+                            @error('inputs.0.birthday')
+                                <small class="text-danger d-block">
+                                    {{ $message }}
+                                </small>
+                            @enderror
+                        </div>
+                        <div class="col-sm-12 col-md-2 mb-2">
+                            <label for="place_of_birth" class="form-label">{{ trans('app.label.place_of_birth') }}</label>
+                            <input type="text" class="form-control @error('place_of_birth') is-invalid @enderror" name="inputs[0][place_of_birth]"
+                                value="{{ old('inputs.0.place_of_birth') }}">
+                            @error('inputs.0.place_of_birth')
+                                <small class="text-danger d-block">
+                                    {{ $message }}
+                                </small>
+                            @enderror
+                        </div>
+                        <div class="col-sm-12 col-md-3 mb-2">
+                            <label for="registration_number"
+                                class="form-label">{{ trans('auth/student.registration_number') }}</label>
+                            <input type="text"
+                                class="form-control registration_number @error('registration_number') is-invalid @enderror"
+                                name="inputs[0][registration_number]" value="{{ old('inputs.0.registration_number') }}"
+                                placeholder="{{ trans('auth/student.placeholder.registration_number') }}">
+                            @error('inputs.0.registration_number')
+                                <small class="text-danger d-block">
+                                    {{ $message }}
+                                </small>
+                            @enderror
+                        </div>
+                        <div class="col-sm-12 col-md-3 mb-2">
+                            <label for="academicLevel"
+                                class="form-label">{{ trans('auth/student.academicLevel') }}</label>
+                            <input type="text"
+                                class="form-control academicLevel @error('academicLevel') is-invalid @enderror" name="inputs[0][academicLevel]"
+                                value="{{ old('inputs.0.academicLevel') }}"
+                                placeholder="{{ trans('auth/student.placeholder.academicLevel') }}">
+                            @error('inputs.0.academicLevel')
+                                <small class="text-danger d-block">
+                                    {{ $message }}
+                                </small>
+                            @enderror
+                        </div>
+                        <div class="col-sm-12 col-md-3 mb-2">
+                            <label for="specialty"
+                                class="form-label">{{ trans('auth/student.specialty') }}</label>
+                            <input type="text"
+                                class="form-control specialty @error('specialty') is-invalid @enderror" name="inputs[0][specialty]"
+                                value="{{ old('inputs.0.specialty') }}"
+                                placeholder="{{ trans('auth/student.placeholder.specialty') }}">
+                            @error('inputs.0.specialty')
+                                <small class="text-danger d-block">
+                                    {{ $message }}
+                                </small>
+                            @enderror
+                        </div>
+                        <div class="col-sm-12 col-md-3 mb-2">
+                            <label for="faculty"
+                                class="form-label">{{ trans('auth/student.faculty') }}</label>
+                            <input type="text"
+                                class="form-control faculty @error('faculty') is-invalid @enderror" name="inputs[0][faculty]"
+                                value="{{ old('inputs.0.faculty') }}"
+                                placeholder="{{ trans('auth/student.placeholder.faculty') }}">
+                            @error('inputs.0.faculty')
+                                <small class="text-danger d-block">
+                                    {{ $message }}
+                                </small>
+                            @enderror
+                        </div>
+                        <div class="col-sm-12 col-md-3 mb-2">
+                            <label for="department"
+                                class="form-label">{{ trans('auth/student.department') }}</label>
+                            <input type="text"
+                                class="form-control department @error('department') is-invalid @enderror" name="inputs[0][department]"
+                                value="{{ old('inputs.0.department') }}"
+                                placeholder="{{ trans('auth/student.placeholder.department') }}">
+                            @error('inputs.0.department')
+                                <small class="text-danger d-block">
+                                    {{ $message }}
+                                </small>
+                            @enderror
+                        </div>
                     </div>
                 </div>
                 <div class="col-sm-12 mt-3 d-flex">
                     <div class="col d-flex justify-content-end">
-                        <button type="button" name="add" id="add" class="btn btn-success">{{ trans('app.label.action') }}</button>
-                        <button type="submit" class="btn btn-primary">{{ trans('auth/student.accept') }}</button>
+                        <button type="button" name="add" id="add" class="btn btn-success me-4">{{ trans('app.label.action') }}</button>
+                        <button type="submit" class="btn btn-primary ">{{ trans('auth/student.accept') }}</button>
                     </div>
                 </div>
             </form>
@@ -160,6 +234,85 @@
                                 </small>
                         
                                 @enderror
+                        </div>
+                        <div class="col-sm-12 col-md-2 mb-2">
+                            <label for="place_of_birth" class="form-label">{{ trans('app.label.place_of_birth') }}</label>
+                            <input type="text" class="form-control @error('place_of_birth') is-invalid @enderror" name="inputs[${index}][place_of_birth]" value="{{ old('inputs.0.place_of_birth') }}">
+                            @error('inputs.0.place_of_birth')
+                                <small class="text-danger d-block">
+                                    {{ $message }}
+                                </small>
+                        
+                                @enderror
+                        </div>
+                        
+                        <div class="col-sm-12 col-md-3 mb-2">
+                            <label for="registration_number"
+                                class="form-label">{{ trans('auth/student.registration_number') }}</label>
+                            <input type="text"
+                                class="form-control registration_number @error('registration_number') is-invalid @enderror"
+                                name="inputs[${index}][registration_number]" value="{{ old('inputs.0.registration_number') }}"
+                                placeholder="{{ trans('auth/student.placeholder.registration_number') }}">
+                            @error('inputs.0.registration_number')
+                                <small class="text-danger d-block">
+                                    {{ $message }}
+                                </small>
+                            @enderror
+                        </div>
+                        
+                        <div class="col-sm-12 col-md-3 mb-2">
+                            <label for="academicLevel"
+                                class="form-label">{{ trans('auth/student.academicLevel') }}</label>
+                            <input type="text"
+                                class="form-control academicLevel @error('academicLevel') is-invalid @enderror" name="inputs[${index}][academicLevel]"
+                                value="{{ old('inputs.0.academicLevel') }}"
+                                placeholder="{{ trans('auth/student.placeholder.academicLevel') }}">
+                            @error('inputs.0.academicLevel')
+                                <small class="text-danger d-block">
+                                    {{ $message }}
+                                </small>
+                            @enderror
+                        </div>
+                        
+                        <div class="col-sm-12 col-md-3 mb-2">
+                            <label for="specialty"
+                                class="form-label">{{ trans('auth/student.specialty') }}</label>
+                            <input type="text"
+                                class="form-control specialty @error('specialty') is-invalid @enderror" name="inputs[${index}][specialty]"
+                                value="{{ old('inputs.0.specialty') }}"
+                                placeholder="{{ trans('auth/student.placeholder.specialty') }}">
+                            @error('inputs.0.specialty')
+                                <small class="text-danger d-block">
+                                    {{ $message }}
+                                </small>
+                            @enderror
+                        </div>
+                        
+                        <div class="col-sm-12 col-md-3 mb-2">
+                            <label for="faculty"
+                                class="form-label">{{ trans('auth/student.faculty') }}</label>
+                            <input type="text"
+                                class="form-control faculty @error('faculty') is-invalid @enderror" name="inputs[${index}][faculty]"
+                                value="{{ old('inputs.0.faculty') }}"
+                                placeholder="{{ trans('auth/student.placeholder.faculty') }}">
+                            @error('inputs.0.faculty')
+                                <small class="text-danger d-block">
+                                    {{ $message }}
+                                </small>
+                            @enderror
+                        </div>
+                        <div class="col-sm-12 col-md-3 mb-2">
+                            <label for="department"
+                                class="form-label">{{ trans('auth/student.department') }}</label>
+                            <input type="text"
+                                class="form-control department @error('faculty') is-invalid @enderror" name="inputs[${index}][department]"
+                                value="{{ old('inputs.0.department') }}"
+                                placeholder="{{ trans('auth/student.placeholder.department') }}">
+                            @error('inputs.0.department')
+                                <small class="text-danger d-block">
+                                    {{ $message }}
+                                </small>
+                            @enderror
                         </div>
                     </div>
                 `;
