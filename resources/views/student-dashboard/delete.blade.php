@@ -1,23 +1,3 @@
-<td>
-    <div class="dropdown">
-        <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i>
-        </button>
-        <div class="dropdown-menu">
-            <a class="dropdown-item"
-               href="{{ route('dashboard.students.edit', $studentGroup->id) }}">
-                <i class="bx bx-edit-alt me-2"></i>
-                {{ trans('student.edit') }}
-            </a>
-            <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
-               data-bs-target="#deleteStudentModal{{ $studentGroup->id }}">
-                <i class="bx bx-trash me-2"></i>
-                {{ trans('student.delete') }}
-            </a>
-        </div>
-    </div>
-</td>
-
 <!-- Delete Modal -->
 <div class="modal fade" id="deleteStudentModal{{ $studentGroup->id }}" tabindex="-1" role="dialog" aria-labelledby="deleteStudentModalLabel{{ $studentGroup->id }}" aria-hidden="true">
     <div class="modal-dialog" role="document">
