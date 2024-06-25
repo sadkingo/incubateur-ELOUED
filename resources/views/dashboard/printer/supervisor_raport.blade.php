@@ -3,6 +3,25 @@
 <head>
     <title>{{ trans('suporvisor_raport.title') }}</title>
     <style>
+        @page {
+            size: 21cm 27cm;
+            margin: 0;
+        }
+
+        @media print {
+            body {
+                margin: 0;
+            }
+            header, footer {
+                display: none;
+            }
+            .container {
+                page-break-before: auto;
+                page-break-after: auto;
+                page-break-inside: avoid;
+            }
+        }
+
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -11,11 +30,11 @@
         
         .header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 10px;
             position: relative;
         }
         .header img {
-            width: 100px;
+            width: 80px;
             height: auto;
             position: absolute;
             top: 0;
@@ -32,42 +51,44 @@
             width: 60%;
         }
         .header h1, .header h2, .header h3 {
-            margin: 5px 0;
+            margin: 2px 0;
+            font-size: 16px;
         }
         .sidebar {
             position: relative;
             text-align: right;
-            font-size: 16px;
-            margin-top: 20px;
-            margin-right: 20px;
+            font-size: 14px;
+            margin-top: 10px;
+            margin-right: 10px;
         }
         .sidebar p {
-            margin: 10px 0;
+            margin: 5px 0;
         }
         .center-title {
             text-align: center;
             font-family: "Times New Roman", Times, serif;
-            font-size: 30px;
-            margin-bottom: 20px;
+            font-size: 20px;
+            margin-bottom: 10px;
         }
         .signature {
             text-align: right;
-            font-size: 16px;
-            margin-top: 9px;
-            margin-right: 20px;
+            font-size: 14px;
+            margin-top: 5px;
+            margin-right: 10px;
         }
         .signature p {
-            margin: 10px 0;
+            margin: 5px 0;
         }
         .students-table, .supervisors-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin-top: 10px;
+            font-size: 12px;
         }
         .students-table th, .students-table td,
         .supervisors-table th, .supervisors-table td {
             border: 1px solid #ddd;
-            padding: 8px;
+            padding: 4px;
             text-align: right;
         }
         .students-table th, .supervisors-table th {
@@ -75,25 +96,25 @@
         }
         .additional-section {
             text-align: right;
-            margin: 20px 20px;
-            font-size: 16px;
+            margin: 10px 10px;
+            font-size: 14px;
         }
         .container {
-            border: 5px solid #000; 
-            padding: 20px; 
+            border: 1px solid #000; 
+            padding: 90px; 
             margin: 20px; 
-            box-shadow: 10px 10px 5px #888888; 
+            box-shadow: 5px 5px 2px #888888; 
         }
         .left-section {
             text-align: left;
-            margin: 20px 20px;
-            font-size: 16px;
+            margin: 10px 10px;
+            font-size: 14px;
         }
         .center-section {
             text-align: center;
-            margin: 50px 0;
-            font-size: 16px;
-            padding: 50px; 
+            margin: 10px 0;
+            font-size: 14px;
+            padding: 10px; 
         }
     </style>
 </head>
@@ -111,7 +132,7 @@
         </div>
 
         <div class="sidebar">
-            <p> {{trans('suporvisor_raport.NoIncubator')}}{{date('Y')}}</p>
+            <p>{{trans('suporvisor_raport.NoIncubator')}}{{date('Y')}}</p>
         </div>
 
         <div class="center-title">
