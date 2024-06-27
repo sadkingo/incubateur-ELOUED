@@ -91,14 +91,22 @@
                                                 <td>{{ $project->student->name }}</td>
                                                 <td>
                                                     @php
+                                                    
                                                         $allStudents = \App\Models\StudentGroup::where('id_student', $project->student->id)->get();
                                                     @endphp
-                                                    @if ($allStudents->count() == 1)
-                                                        <span>{{ trans('project.member') }}</span>
-                                                    @elseif ($allStudents->count() == 2)
-                                                        <span>{{ trans('project.two_members') }}</span>
-                                                    @elseif ($allStudents->count() > 2)
-                                                        <span>{{ $allStudents->count() }} {{ trans('project.members') }}</span>   
+                                                    @if ($allStudents->count() > 0)
+                                                        <ul>
+                                                            @foreach($allStudents as $std)
+                                                                @php
+                                                                    $locale = app()->getLocale();
+                                                                    $name =
+                                                                    $locale === 'ar'
+                                                                    ? $std->firstname_ar . ' ' . $std->lastname_ar
+                                                                    : $std->firstname_fr . ' ' . $std->lastname_fr;
+                                                                @endphp
+                                                                <li> {{$name}}</li>
+                                                            @endforeach    
+                                                        </ul>    
                                                     @else
                                                         <span>{{ trans('project.no_members') }}</span>
                                                     @endif
@@ -109,7 +117,14 @@
                                                     @else
                                                         <ul>
                                                             @foreach($project->supervisingTeachers as $supervisor)
-                                                                <li>{{ $supervisor->firstname_ar }} {{ $supervisor->lastname_ar }}</li>
+                                                                @php
+                                                                    $locale = app()->getLocale();
+                                                                    $name =
+                                                                    $locale === 'ar'
+                                                                    ? $supervisor->firstname_ar . ' ' . $supervisor->lastname_ar
+                                                                    : $supervisor->firstname_fr . ' ' . $supervisor->lastname_fr;
+                                                                @endphp
+                                                                <li>{{ $name }}</li>
                                                             @endforeach
                                                         </ul>
                                                     @endif
