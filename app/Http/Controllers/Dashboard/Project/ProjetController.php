@@ -109,6 +109,47 @@ class ProjetController extends Controller
        ]);
    }
     
+   public function addProjectType($id)
+{
+    $project = Project::findOrFail($id);
+    return view('dashboard.project.add_type', compact('project'));
+}
+
+public function storeProjectType(Request $request, $id)
+{
+    $validatedData = $request->validate([
+        'project_type' => 'required',
+    ]);
+
+    $project = Project::findOrFail($id);
+
+    $project->type_project = $validatedData['project_type'];
+    $project->save();
+
+    toastr()->success(trans('message.success.create'));
+    return redirect('/dashboard/projet');
+}
+
+public function editProjectType($id)
+{
+    $project = Project::findOrFail($id);
+    return view('dashboard.project.edit_type', compact('project',));
+}
+
+public function updateProjectType(Request $request, $id)
+{
+    $validatedData = $request->validate([
+        'project_type' => 'required',
+    ]);
+
+    $project = Project::findOrFail($id);
+
+    $project->type_project = $validatedData['project_type'];
+    $project->save();
+
+    toastr()->success(trans('message.success.update'));
+    return redirect('/dashboard/projet');
+}
 }
 
 

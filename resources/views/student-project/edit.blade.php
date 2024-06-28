@@ -72,7 +72,7 @@
                             </small>
                             @enderror
                         </div>
-                        <div class="col-sm-12 col-md-6 mb-2">
+                        {{-- <div class="col-sm-12 col-md-6 mb-2">
                             <label for="project_type" class="form-label">{{ trans('auth/project.project_type') }}</label>
                             <select name="project_type" id="project_type" class="form-control @error('project_type') is-invalid @enderror">
                                 <option value="">{{ trans('auth/project.select_project_type') }}</option>
@@ -86,7 +86,7 @@
                                 {{ $message }}
                             </small>
                             @enderror
-                        </div>
+                        </div> --}}
                         <div class="col-sm-12 col-md-6 mb-2">
                             <label for="project_image" class="form-label">{{ trans('auth/project.project_images') }}</label>
                             <input type="file" class="form-control @error('project_image.*') is-invalid @enderror"

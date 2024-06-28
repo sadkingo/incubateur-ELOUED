@@ -59,12 +59,10 @@ class ProjectController extends Controller
             'description' => 'required|max:5000', 
             'project_image.*' => 'required|mimes:png,jpeg,jpg',
             'bmc' => 'required|max:10000|mimes:pdf,ppt,pptx', 
-            'video' => 'required|max:10240|mimes:mp4,mov,avi',
-            'project_type' =>'required' 
+            'video' => 'required|max:10240|mimes:mp4,mov,avi',    
         ], [
             'name_project.required' => "The name is required",
             'description.required' => 'The description is required',
-            'project_type.required' => 'The project type is requires',
             'video.max' => 'The video file must be less than 10MB.',
             'bmc.max' => 'The BMC file must be less than 10MB.',
             'description.max' => 'The description may not be greater than 5000 characters.',
@@ -77,7 +75,8 @@ class ProjectController extends Controller
         $project = new Project;
         $project->name = $request->input('name_project');
         $project->description = $request->input('description');
-        $project->type_project = $request->input('project_type');
+        // $project->type_project = $request->input('project_type');
+
         if ($request->hasFile('video')) {
             $video = $request->file('video');
             if ($video->getSize() > 10240000) {
@@ -157,7 +156,6 @@ class ProjectController extends Controller
             'project_image.*' => 'mimes:png,jpeg,jpg',
             'bmc' => 'max:10000|mimes:pdf,ppt,pptx',
             'video' => 'max:10240|mimes:mp4,mov,avi',
-            'project_type' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -167,7 +165,8 @@ class ProjectController extends Controller
         $project = Project::findOrFail($id);
         $project->name = $request->input('name_project');
         $project->description = $request->input('description');
-        $project->type_project = $request->input('project_type');
+        // $project->type_project = $request->input('project_type');
+
 
         if ($request->hasFile('video')) {
             $video = $request->file('video');
@@ -213,7 +212,6 @@ class ProjectController extends Controller
         toastr()->success(trans('message.success.update'));
         return redirect()->route('student.index');
     }
-
     public function destroy($id) {
         $project = Project::findOrFail($id);
         
@@ -235,9 +233,7 @@ class ProjectController extends Controller
     
         toastr()->success(trans('message.success.delete'));
         return redirect()->route('student.index');
-    }
-    
+    } 
     
    
-
 }
