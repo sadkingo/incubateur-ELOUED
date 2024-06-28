@@ -162,7 +162,7 @@ class ProjetController extends Controller
         if( $validatedData['project_classification'] == '1' ||
             $validatedData['project_classification'] == '2'
           ){
-            $project->bmc_status = 1;
+            $project->bmc_status = 0;
         }
         $project->save();
 
@@ -188,7 +188,7 @@ class ProjetController extends Controller
             $validatedData['project_classification'] == '1' || 
             $validatedData['project_classification'] == '2' 
           ){
-            $project->bmc_status = 1;
+            $project->bmc_status = 0;
         }
         $project->save();
         toastr()->success(trans('message.success.update'));

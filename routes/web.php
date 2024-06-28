@@ -149,12 +149,19 @@ Route::name('student.')->middleware('auth:student')->group(function () {
     Route::get('student/{student_id}', [StudentDashboardController::class, 'indexAdmin'])->name('index.admin');
     Route::resource('account', AccountController::class);
     Route::resource('project', ProjectController::class);
+    // Route::get('project/{id}/addBmc', [ProjectController::class, 'addBmcFile'])->name('student-project.addBmc');
+
     Route::resource('supervisor', SupervisingTeacherController::class);
     Route::post('notes', [NoteController::class, 'store'])->name('notes.store');
     Route::delete('account/{id}', [AccountController::class, 'destroy'])->name('account.destroy');
     Route::put('account/{id}', [AccountController::class, 'update'])->name('account.update');
     Route::post('supervisor/assign/{id}', [SupervisingTeacherController::class, 'assign'])->name('supervisor.assign');
 });
+Route::get('student/project/{id}/addBmc', [ProjectController::class, 'addBmcFile'])->name('student.project.addBmc');
+Route::post('student/project/{id}/storeBmc', [ProjectController::class, 'storeBmcFile'])->name('student.project.storeBmcFile');
+
+Route::get('student/project/{id}/reformatBmc', [ProjectController::class, 'reformatBmcFile'])->name('student.project.reformatBmc');
+Route::post('student/project/{id}/reformatBmc', [ProjectController::class, 'updateBmcFile'])->name('student.project.updateBmc');
 
 
 

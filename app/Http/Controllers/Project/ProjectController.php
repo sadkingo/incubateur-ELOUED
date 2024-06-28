@@ -235,5 +235,65 @@ class ProjectController extends Controller
         return redirect()->route('student.index');
     } 
     
+    public function addBmcFile($id){
+        $project = Project::findOrFail($id);
+        return view('student-project.addBmc', compact('project'));
+    }
+    public function storeBmcFile(Request $request, $id){
+        $project = Project::findOrFail($id);
+
+        $validator = Validator::make($request->all(), [
+            'bmc' => 'required|max:10000|mimes:pdf,ppt,pptx', 
+                
+        ], [
+            'bmc.max' => 'The BMC file must be less than 10MB.',
+            
+        ]);
+
+        if ($request->hasFile('bmc')) {
+            $bmc = $request->file('bmc');
+            if ($bmc->getSize() > 10000000) {
+                return back()->withErrors(['bmc' => 'The BMC file must be less than 10MB.'])->withInput();
+            }
+            $bmcName = time() . '_bmc.' . $bmc->getClientOriginalExtension();
+            $bmc->storeAs('public/public/projects/bmc/', $bmcName);
+            $project->bmc = $bmcName;
+            $project->bmc_status = 3;
+            $project->save();
+            toastr()->success(trans('message.success.create'));
+            return redirect()->route('student.index');            
+        }
+    }
+
+    public function reformatBmcFile($id){
+        
+        $project = Project::findOrFail($id);
+        
+        return view('student-project.reformatBmc', compact('project'));
+    }
+
+    public function updateBmcFile(Request $request, $id){
+        $project = Project::findOrFail($id);
+        
+        $request->validate([
+            'bmc' => 'required|max:10000|mimes:pdf,ppt,pptx',
+        ]);
+
+        if ($project->count() > 0) {
+            Storage::delete('public/public/projects/bmc/' . $project->bmc);
+        }
+
+        $bmc = $request->file('bmc');
+        $bmcName = time() . '_bmc.' . $bmc->getClientOriginalExtension();
+        $bmc->storeAs('public/public/projects/bmc/', $bmcName);
+
+        $project->bmc = $bmcName;
+        $project->bmc_status = 3; 
+        $project->save();
+
+        toastr()->success(trans('message.success.update_bmc'));
+        return redirect()->route('student.index');
+    }
+
    
 }
