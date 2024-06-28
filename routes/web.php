@@ -119,6 +119,12 @@ Route::prefix('dashboard')->name('dashboard.')->middleware('auth:admin,teacher')
 
     Route::get('project/{id}/edit-type', [ProjetController::class, 'editProjectType'])->name('dashboard.projects.edit_type');
     Route::put('project/{id}/edit-type', [ProjetController::class, 'updateProjectType'])->name('dashboard.projects.update_type');
+    
+    Route::get('project/{id}/add-classification', [ProjetController::class, 'addProjectClassification'])->name('dashboard.projects.add_classification');
+    Route::post('project/{id}/add-classification', [ProjetController::class, 'storeProjectClassification'])->name('dashboard.projects.store_classification');
+
+    Route::get('project/{id}/edit-classification', [ProjetController::class, 'editProjectClassification'])->name('dashboard.projects.edit_classification');
+    Route::put('project/{id}/edit-classification', [ProjetController::class, 'updateProjectClassification'])->name('dashboard.projects.update_classification');
 
     Route::resource('subjects', SubjectController::class);
     Route::resource('evaluations', EvaluationController::class);

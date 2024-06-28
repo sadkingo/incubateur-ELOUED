@@ -107,49 +107,93 @@ class ProjetController extends Controller
            'completeProjectsCount' => $completeProjectsCount,
            'totalProjectsCount' => $totalProjectsCount,
        ]);
-   }
+    }
     
-   public function addProjectType($id)
-{
-    $project = Project::findOrFail($id);
-    return view('dashboard.project.add_type', compact('project'));
-}
+    public function addProjectType($id){
+        $project = Project::findOrFail($id);
+        return view('dashboard.project.add_type', compact('project'));
+    }
 
-public function storeProjectType(Request $request, $id)
-{
-    $validatedData = $request->validate([
-        'project_type' => 'required',
-    ]);
+    public function storeProjectType(Request $request, $id){
+        $validatedData = $request->validate([
+            'project_type' => 'required',
+        ]);
 
-    $project = Project::findOrFail($id);
+        $project = Project::findOrFail($id);
 
-    $project->type_project = $validatedData['project_type'];
-    $project->save();
+        $project->type_project = $validatedData['project_type'];
+        $project->save();
 
-    toastr()->success(trans('message.success.create'));
-    return redirect('/dashboard/projet');
-}
+        toastr()->success(trans('message.success.create'));
+        return redirect('/dashboard/projet');
+    }
 
-public function editProjectType($id)
-{
-    $project = Project::findOrFail($id);
-    return view('dashboard.project.edit_type', compact('project',));
-}
+    public function editProjectType($id){
+        $project = Project::findOrFail($id);
+        return view('dashboard.project.edit_type', compact('project',));
+    }
 
-public function updateProjectType(Request $request, $id)
-{
-    $validatedData = $request->validate([
-        'project_type' => 'required',
-    ]);
+    public function updateProjectType(Request $request, $id){
+        $validatedData = $request->validate([
+            'project_type' => 'required',
+        ]);
 
-    $project = Project::findOrFail($id);
+        $project = Project::findOrFail($id);
 
-    $project->type_project = $validatedData['project_type'];
-    $project->save();
+        $project->type_project = $validatedData['project_type'];
+        $project->save();
 
-    toastr()->success(trans('message.success.update'));
-    return redirect('/dashboard/projet');
-}
+        toastr()->success(trans('message.success.update'));
+        return redirect('/dashboard/projet');
+    }
+    public function addProjectClassification($id){
+        $project = Project::findOrFail($id);
+        return view('dashboard.project.add_classification', compact('project'));
+    }
+
+    public function storeProjectClassification(Request $request, $id){
+        $validatedData = $request->validate([
+            'project_classification' => 'required',
+        ]);
+
+        $project = Project::findOrFail($id);
+
+        $project->project_classification = $validatedData['project_classification'];
+        if( $validatedData['project_classification'] == '1' ||
+            $validatedData['project_classification'] == '2'
+          ){
+            $project->bmc_status = 1;
+        }
+        $project->save();
+
+        toastr()->success(trans('message.success.create'));
+        return redirect('/dashboard/projet');
+    }
+
+    public function editProjectClassification($id){
+        $project = Project::findOrFail($id);
+        return view('dashboard.project.edit_classification', compact('project',));
+    }
+
+    public function updateProjectClassification(Request $request, $id){
+        //dd($request->all());
+        $validatedData = $request->validate([
+            'project_classification' => 'required',
+        ]);
+
+        $project = Project::findOrFail($id);
+
+        $project->project_classification = $validatedData['project_classification'];
+        if(
+            $validatedData['project_classification'] == '1' || 
+            $validatedData['project_classification'] == '2' 
+          ){
+            $project->bmc_status = 1;
+        }
+        $project->save();
+        toastr()->success(trans('message.success.update'));
+        return redirect('/dashboard/projet');
+    }
 }
 
 

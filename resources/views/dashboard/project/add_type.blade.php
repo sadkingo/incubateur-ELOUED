@@ -1,6 +1,6 @@
 @extends('layouts.contentNavbarLayout')
 
-@section('title', trans('commission.add_commission'))
+@section('title', trans('project.project_title_type_add'))
 
 @section('content')
 <div class="container">

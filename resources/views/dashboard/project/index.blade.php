@@ -137,6 +137,11 @@
                                                             @else
                                                                 <a class="dropdown-item" href="{{ url('dashboard/project/'.$project->id.'/edit-type') }}">{{ trans('project.edit_project_type') }}</a>
                                                             @endif
+                                                            @if($project->project_classification == null)
+                                                                <a class="dropdown-item" href="{{ url('dashboard/project/'.$project->id.'/add-classification')}}">{{ trans('project.add_project_classification') }}</a>
+                                                            @else
+                                                                <a class="dropdown-item" href="{{ url('dashboard/project/'.$project->id.'/edit-classification')}}">{{ trans('project.edit_project_classification') }}</a>    
+                                                            @endif
                                                         </div>
                                                     </div>
                                                 </td>

@@ -108,7 +108,7 @@
                             </small>
                             @enderror
                         </div>
-                        <div class="col-sm-12 col-md-6 mb-2">
+                        {{-- <div class="col-sm-12 col-md-6 mb-2">
                             <label for="bmc" class="form-label">{{ trans('auth/project.bmc') }}</label>
                             <input type="file" dir="ltr" class="form-control @error('bmc') is-invalid @enderror"
                                    name="bmc" value="{{ old('bmc') }}"
@@ -118,7 +118,7 @@
                                 {{ $message }}
                             </small>
                             @enderror
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
                 <div class="col-sm-12 mt-3 d-flex">

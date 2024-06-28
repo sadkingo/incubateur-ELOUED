@@ -4,6 +4,10 @@
     'title_project' => 'تقرير المشاريع',
     'dashboard' => 'لوحــة التحكـــــم',
     'projects' => 'المشاريع',
+    'project_title_type_add' => 'اضافة نوع المشروع',   
+    'project_title_type_edit' => 'تعديل على نوع المشروع',   
+    'project_title_classification_add' => 'اضافة تصنيف المشروع',   
+    'project_title_classification_edit' => 'تعديل على تصنيف المشروع',   
     
     'title-dashboard' => 'الصفحة الرئيسية',
     'project' => 'مشروع',
@@ -30,8 +34,12 @@
     'edit_closed' => 'تم غلق باب التعديل ',
     'start_date' => 'تاريخ بداية التعديل',
     'end_date' => 'تاريخ نهاية التعديل',
-    'add_project_type' => 'اضافة تصنيف المشروع',
-    'edit_project_type' => ' تعديل تصنيف  المشروع',
+    'add_project_type' => 'اضافة نوع المشروع',
+    'edit_project_type' => ' تعديل نوع  المشروع',
+    'add_project_classification' => "اضافة تصنيف المشروع",
+    'edit_project_classification' => 'تعديل تصنيف المشروع',
+    'patent' => 'براءة اختراع',
+    'start_up' => 'مؤسسة ناشئة',
     'label' =>[
         'name' => 'اسم المشروع',
         'description' => 'وصف المشروع',
@@ -41,7 +49,7 @@
         'download_bmc' => "تحميل ملف bmc",
         'project_video' => 'فيديو المشروع',
         'download_video' => 'تحميل فيديو ',
-        "type_project" => "تصنيف المشروع"
+        "type_project" => "نوع المشروع"
         
     ],
 

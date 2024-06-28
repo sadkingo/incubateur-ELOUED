@@ -58,13 +58,13 @@ class ProjectController extends Controller
             'name_project' => 'required',
             'description' => 'required|max:5000', 
             'project_image.*' => 'required|mimes:png,jpeg,jpg',
-            'bmc' => 'required|max:10000|mimes:pdf,ppt,pptx', 
+            // 'bmc' => 'required|max:10000|mimes:pdf,ppt,pptx', 
             'video' => 'required|max:10240|mimes:mp4,mov,avi',    
         ], [
             'name_project.required' => "The name is required",
             'description.required' => 'The description is required',
             'video.max' => 'The video file must be less than 10MB.',
-            'bmc.max' => 'The BMC file must be less than 10MB.',
+            // 'bmc.max' => 'The BMC file must be less than 10MB.',
             'description.max' => 'The description may not be greater than 5000 characters.',
         ]);
 
@@ -87,15 +87,15 @@ class ProjectController extends Controller
             $project->video = $videoName;
         }
 
-        if ($request->hasFile('bmc')) {
-            $bmc = $request->file('bmc');
-            if ($bmc->getSize() > 10000000) {
-                return back()->withErrors(['bmc' => 'The BMC file must be less than 10MB.'])->withInput();
-            }
-            $bmcName = time() . '_bmc.' . $bmc->getClientOriginalExtension();
-            $bmc->storeAs('public/public/projects/bmc/', $bmcName);
-            $project->bmc = $bmcName;
-        }
+        // if ($request->hasFile('bmc')) {
+        //     $bmc = $request->file('bmc');
+        //     if ($bmc->getSize() > 10000000) {
+        //         return back()->withErrors(['bmc' => 'The BMC file must be less than 10MB.'])->withInput();
+        //     }
+        //     $bmcName = time() . '_bmc.' . $bmc->getClientOriginalExtension();
+        //     $bmc->storeAs('public/public/projects/bmc/', $bmcName);
+        //     $project->bmc = $bmcName;
+        // }
         
         $project->id_student = $student->id;
         $project->save();
@@ -154,7 +154,7 @@ class ProjectController extends Controller
             'name_project' => 'required',
             'description' => 'required|max:5000',
             'project_image.*' => 'mimes:png,jpeg,jpg',
-            'bmc' => 'max:10000|mimes:pdf,ppt,pptx',
+            // 'bmc' => 'max:10000|mimes:pdf,ppt,pptx',
             'video' => 'max:10240|mimes:mp4,mov,avi',
         ]);
 
@@ -178,15 +178,15 @@ class ProjectController extends Controller
             $project->video = $videoName;
         }
 
-        if ($request->hasFile('bmc')) {
-            $bmc = $request->file('bmc');
-            if ($bmc->getSize() > 10000000) {
-                return back()->withErrors(['bmc' => 'The BMC file must be less than 10MB.'])->withInput();
-            }
-            $bmcName = time() . '_bmc.' . $bmc->getClientOriginalExtension();
-            $bmc->storeAs('public/public/projects/bmc/', $bmcName);
-            $project->bmc = $bmcName;
-        }
+        // if ($request->hasFile('bmc')) {
+        //     $bmc = $request->file('bmc');
+        //     if ($bmc->getSize() > 10000000) {
+        //         return back()->withErrors(['bmc' => 'The BMC file must be less than 10MB.'])->withInput();
+        //     }
+        //     $bmcName = time() . '_bmc.' . $bmc->getClientOriginalExtension();
+        //     $bmc->storeAs('public/public/projects/bmc/', $bmcName);
+        //     $project->bmc = $bmcName;
+        // }
 
         $project->save();
 
