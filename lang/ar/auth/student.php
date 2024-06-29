@@ -39,7 +39,12 @@ return [
     'account_information'   => 'معلومات تسجيل',
     'education_information' => 'المعلومات الدراسية',
     'review_information'    => 'مراجعة البيانات',
-
+    'specialties' => [
+        'select'   => 'اختر التخصص',
+        'bachelor' => 'ليسانس',
+        'master'   => 'ماستر',
+        'phd'      => 'دكتوراه',
+    ],
     'placeholder' => [
         'firstname_ar' => 'ادخل الاسم بالعربية',
         'lastname_ar'  => 'ادخل اللقب بالعربية',
@@ -62,7 +67,7 @@ return [
         'department'=> 'القسم',
         'faculty'=> 'الكلية',
         'image' => "صورة الشخصية",
-        
+
         'phone'    => 'أدخل رقم الهاتف',
         'email'    => 'أدخل البريد الإلكتروني',
         'password' => 'كلمة السر',

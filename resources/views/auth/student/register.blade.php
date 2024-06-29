@@ -270,7 +270,7 @@
                                             </small>
                                         @enderror
                                     </div>
-                                    <div class="col-sm-12 col-md-3 mb-2">
+                                    {{-- <div class="col-sm-12 col-md-3 mb-2">
                                         <label for="photo"
                                             class="form-label">{{ trans('auth/student.photo') }}</label>
                                         <input type="file"
@@ -282,7 +282,7 @@
                                                 {{ $message }}
                                             </small>
                                         @enderror
-                                    </div>
+                                    </div> --}}
                                     <div class="col-12 row px-0 mx-0 mt-3 d-flex ">
                                         <div class="col-sm-12 col-md-6 d-flex justify-content-start"></div>
                                         <div class="col-sm-12 col-md-6 d-flex justify-content-end">
@@ -349,12 +349,22 @@
                                         @enderror
                                     </div>
                                     <div class="col-sm-12 col-md-6 mb-2">
-                                        <label for="specialty"
-                                            class="form-label">{{ trans('auth/student.specialty') }}</label>
-                                        <input type="text"
+                                        <label 
+                                            for="specialty" 
+                                            class="form-label">
+                                            {{ trans('auth/student.specialty') }}
+                                        </label>
+                                        <select name="specialty" id="specialty" class="form-control @error('specialty') is-invalid @enderror">
+                                            <option value="0">{{trans('auth/student.specialties.select')}}</option>
+                                            <option value="bachelor">{{ trans('auth/student.specialties.bachelor') }}</option>
+                                            <option value="master">{{ trans('auth/student.specialties.master') }}</option>
+                                            <option value="phd">{{ trans('auth/student.specialties.phd') }}</option>
+                                        </select>    
+                                        {{-- <input 
+                                            type="text"
                                             class="form-control specialty @error('specialty') is-invalid @enderror" name="specialty"
                                             value="{{ old('specialty') }}"
-                                            placeholder="{{ trans('auth/student.placeholder.specialty') }}">
+                                            placeholder="{{ trans('auth/student.placeholder.specialty') }}"> --}}
                                         @error('specialty')
                                             <small class="text-danger d-block">
                                                 {{ $message }}
