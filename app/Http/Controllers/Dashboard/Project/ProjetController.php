@@ -210,7 +210,7 @@ class ProjetController extends Controller
         $project->save();
 
         toastr()->success(trans('message.success.create'));
-        return redirect()->route('dashboard.projet.index');
+        return redirect('dashboard/project/'.$project->id.'/add-project-tracking');
     }
     public function editProjectTracking($id){
         $project = Project::findOrFail($id);
@@ -221,14 +221,27 @@ class ProjetController extends Controller
         $validatedData = $request->validate([
             'project_tracking' => 'required',
         ]);
-
         $project = Project::findOrFail($id);
         $project->project_tracking = $validatedData['project_tracking'];
+        if($project->project_classification == 3){
+            if($validatedData['project_tracking'] == 3 || $validatedData['project_tracking'] == 5 || $validatedData['project_tracking'] == 6){
+                $project->status_project_tracking = 0;
+                $project->save();
+
+                toastr()->success(trans('message.success.update'));
+                return redirect('dashboard/project/'.$project->id.'/add-project-tracking');
+            }else{
+                $project->status_project_tracking = 1;
+                $project->save();
+                toastr()->success(trans('message.success.update'));
+                return redirect('dashboard/project/'.$project->id.'/add-project-tracking');        
+            }
+        }                
         $project->status_project_tracking = 1;
         $project->save();
 
         toastr()->success(trans('message.success.update'));
-        return redirect()->route('dashboard.projet.index');
+        return redirect('dashboard/project/'.$project->id.'/add-project-tracking');
     }
     public function editStatusProjectTracking($id){
         $project = Project::findOrFail($id);
@@ -245,7 +258,7 @@ class ProjetController extends Controller
         $project->save();
 
         toastr()->success(trans('message.success.update'));
-        return redirect()->route('dashboard.projet.index');
+        return redirect('dashboard/project/'.$project->id.'/add-project-tracking');
     }
 }
 

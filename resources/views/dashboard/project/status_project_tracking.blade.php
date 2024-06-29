@@ -24,22 +24,39 @@
                             
                             <select name="status_project_tracking" id="status_project_tracking" class="form-control @error('project_tracking') is-invalid @enderror">
                                 <option value="">{{ trans('auth/project.project_tracking.select_a_stage') }}</option>
-                                @if($project->project_tracking == 1)    
-                                    <option value="1" @if($project->status_project_tracking == 1) selected @endif>{{ trans('auth/project.status_project_tracking.practice') }}</option>
-                                    <option value="2" @if($project->status_project_tracking == 2) selected @endif>{{ trans('auth/project.status_project_tracking.complete') }}</option>
-                                    <option value="3" @if($project->status_project_tracking == 3) selected @endif>{{ trans('auth/project.status_project_tracking.not_yet') }}</option>
-                                @elseif($project->project_tracking == 2 || $project->project_tracking == 3)
-                                    <option value="1" @if($project->status_project_tracking == 1) selected @endif>{{ trans('auth/project.status_project_tracking.development_mode') }}</option>
-                                    <option value="2" @if($project->status_project_tracking == 2) selected @endif>{{ trans('auth/project.status_project_tracking.accomplished') }}</option>
-                                    <option value="3" @if($project->status_project_tracking == 3) selected @endif>{{ trans('auth/project.status_project_tracking.not_completed') }}</option>
-                                @elseif($project->project_tracking == 4)
-                                    <option value="1" @if($project->status_project_tracking == 1) selected @endif>{{ trans('auth/project.status_project_tracking.not_discussed') }}</option>
-                                    <option value="2" @if($project->status_project_tracking == 2) selected @endif>{{ trans('auth/project.status_project_tracking.discuss') }}</option>
+                                @if($project->project_classification == 1 ||  $project->project_classification == 2)
+                                    @if($project->project_tracking == 1)    
+                                        <option value="1" @if($project->status_project_tracking == 1) selected @endif>{{ trans('auth/project.status_project_tracking.practice') }}</option>
+                                        <option value="2" @if($project->status_project_tracking == 2) selected @endif>{{ trans('auth/project.status_project_tracking.complete') }}</option>
+                                        <option value="3" @if($project->status_project_tracking == 3) selected @endif>{{ trans('auth/project.status_project_tracking.not_yet') }}</option>
+                                    @elseif($project->project_tracking == 2 || $project->project_tracking == 3)
+                                        <option value="1" @if($project->status_project_tracking == 1) selected @endif>{{ trans('auth/project.status_project_tracking.development_mode') }}</option>
+                                        <option value="2" @if($project->status_project_tracking == 2) selected @endif>{{ trans('auth/project.status_project_tracking.accomplished') }}</option>
+                                        <option value="3" @if($project->status_project_tracking == 3) selected @endif>{{ trans('auth/project.status_project_tracking.not_completed') }}</option>
+                                    @elseif($project->project_tracking == 4)
+                                        <option value="1" @if($project->status_project_tracking == 1) selected @endif>{{ trans('auth/project.status_project_tracking.not_discussed') }}</option>
+                                        <option value="2" @if($project->status_project_tracking == 2) selected @endif>{{ trans('auth/project.status_project_tracking.discuss') }}</option>
+                                    @else
+                                        <option value="1" @if($project->status_project_tracking == 1) selected @endif>{{ trans('auth/project.status_project_tracking.did_not_happen') }}</option>
+                                        <option value="2" @if($project->status_project_tracking == 2) selected @endif>{{ trans('auth/project.status_project_tracking.get') }}</option>
+                                        <option value="3" @if($project->status_project_tracking == 3) selected @endif>{{ trans('auth/project.status_project_tracking.exclusion_or_waiver_of_the_student') }}</option>   
+                                    @endif
                                 @else
-                                     <option value="1" @if($project->status_project_tracking == 1) selected @endif>{{ trans('auth/project.status_project_tracking.did_not_happen') }}</option>
-                                    <option value="2" @if($project->status_project_tracking == 2) selected @endif>{{ trans('auth/project.status_project_tracking.get') }}</option>
-                                    <option value="3" @if($project->status_project_tracking == 3) selected @endif>{{ trans('auth/project.status_project_tracking.exclusion_or_waiver_of_the_student') }}</option>   
-                                @endif
+                                    @if($project->project_tracking == 1)    
+                                        <option value="1" @if($project->status_project_tracking == 1) selected @endif>{{ trans('auth/project.status_project_tracking.development_mode') }}</option>
+                                        <option value="2" @if($project->status_project_tracking == 2) selected @endif>{{ trans('auth/project.status_project_tracking.accomplished') }}</option>
+                                        <option value="3" @if($project->status_project_tracking == 3) selected @endif>{{ trans('auth/project.status_project_tracking.not_completed') }}</option>
+                                    @elseif($project->project_tracking == 2 )
+                                        <option value="1" @if($project->status_project_tracking == 1) selected @endif>{{ trans('auth/project.status_project_tracking.no') }}</option>
+                                        <option value="2" @if($project->status_project_tracking == 2) selected @endif>{{ trans('auth/project.status_project_tracking.yes') }}</option>
+                                    @elseif($project->project_tracking == 4)
+                                        <option value="1" @if($project->status_project_tracking == 1) selected @endif>{{ trans('auth/project.status_project_tracking.did_not_happen') }}</option>
+                                        <option value="2" @if($project->status_project_tracking == 2) selected @endif>{{ trans('auth/project.status_project_tracking.get') }}</option>
+                                    @elseif($project->project_tracking == 7)
+                                        <option value="1" @if($project->status_project_tracking == 1) selected @endif>{{ trans('auth/project.status_project_tracking.no') }}</option>
+                                        <option value="2" @if($project->status_project_tracking == 2) selected @endif>{{ trans('auth/project.status_project_tracking.yes') }}</option>
+                                    @endif   
+                                @endif    
                             </select>
                             @error('status_project_tracking')
                             <small class="text-danger d-block">
