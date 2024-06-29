@@ -338,10 +338,17 @@
                                     <div class="col-sm-12 col-md-6 mb-2">
                                         <label for="academicLevel"
                                             class="form-label">{{ trans('auth/student.academicLevel') }}</label>
-                                        <input type="text"
+                                            <select name="academicLevel" id="academicLevel" class="form-control @error('academicLevel') is-invalid @enderror">
+                                                <option value="0">{{trans('auth/student.specialties.select')}}</option>
+                                                <option value="bachelor">{{ trans('auth/student.specialties.bachelor') }}</option>
+                                                <option value="master">{{ trans('auth/student.specialties.master') }}</option>
+                                                <option value="phd">{{ trans('auth/student.specialties.phd') }}</option>
+                                            </select> 
+
+                                            {{-- <input type="text"
                                             class="form-control academicLevel @error('academicLevel') is-invalid @enderror" name="academicLevel"
                                             value="{{ old('academicLevel') }}"
-                                            placeholder="{{ trans('auth/student.placeholder.academicLevel') }}">
+                                            placeholder="{{ trans('auth/student.placeholder.academicLevel') }}"> --}}
                                         @error('academicLevel')
                                             <small class="text-danger d-block">
                                                 {{ $message }}
@@ -354,17 +361,11 @@
                                             class="form-label">
                                             {{ trans('auth/student.specialty') }}
                                         </label>
-                                        <select name="specialty" id="specialty" class="form-control @error('specialty') is-invalid @enderror">
-                                            <option value="0">{{trans('auth/student.specialties.select')}}</option>
-                                            <option value="bachelor">{{ trans('auth/student.specialties.bachelor') }}</option>
-                                            <option value="master">{{ trans('auth/student.specialties.master') }}</option>
-                                            <option value="phd">{{ trans('auth/student.specialties.phd') }}</option>
-                                        </select>    
-                                        {{-- <input 
+                                        <input 
                                             type="text"
                                             class="form-control specialty @error('specialty') is-invalid @enderror" name="specialty"
                                             value="{{ old('specialty') }}"
-                                            placeholder="{{ trans('auth/student.placeholder.specialty') }}"> --}}
+                                            placeholder="{{ trans('auth/student.placeholder.specialty') }}">
                                         @error('specialty')
                                             <small class="text-danger d-block">
                                                 {{ $message }}
@@ -443,7 +444,7 @@
                                     <div class="col-sm-12 col-md-6 mb-2">
                                         <label for="email"
                                             class="form-label">{{ trans('auth/student.email') }}</label>
-                                        <input type="text"
+                                        <input type="email"
                                             class="form-control email @error('email') is-invalid @enderror"
                                             name="email" value="{{ old('email') }}"
                                             placeholder="{{ trans('auth/student.placeholder.email') }}">
@@ -453,6 +454,19 @@
                                             </small>
                                         @enderror
                                     </div>
+                                    {{-- <div class="col-sm-12 col-md-6 mb-2">
+                                        <label for="username"
+                                            class="form-label">{{ trans('auth/student.username') }}</label>
+                                        <input type="text"
+                                            class="form-control email @error('email') is-invalid @enderror"
+                                            name="username" value="{{ old('username') }}"
+                                            placeholder="{{ trans('auth/student.placeholder.username') }}">
+                                        @error('username')
+                                            <small class="text-danger d-block">
+                                                {{ $message }}
+                                            </small>
+                                        @enderror
+                                    </div> --}}
                                     <div class="col-sm-12 col-md-6 mb-2">
                                         <label for="phone"
                                             class="form-label">{{ trans('auth/student.phone') }}</label>
