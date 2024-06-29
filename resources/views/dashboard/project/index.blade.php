@@ -61,30 +61,31 @@
                                                     <ul class="status-list">
                                                         <li class="{{ $project->status == 0 ? 'selected' : '' }}">
                                                             <label>
-                                                                <input type="checkbox" class="form-check-input" {{ $project->status == 0 ? 'checked' : '' }} onclick="updateStatus({{ $project->id }}, 0)">
+                                                                <input type="radio" name="status_{{ $project->id }}" class="form-check-input" {{ $project->status == 0 ? 'checked' : '' }} onclick="updateStatus({{ $project->id }}, 0)">
                                                                 <span class="btn btn-sm {{ $project->status == 0 ? 'btn-danger' : 'btn-custom-gray' }}">{{ trans('project.status_project.rejected') }}</span>
                                                             </label>
                                                         </li>
                                                         <li class="{{ $project->status == 1 ? 'selected' : '' }}">
                                                             <label>
-                                                                <input type="checkbox" class="form-check-input" {{ $project->status == 1 ? 'checked' : '' }} onclick="updateStatus({{ $project->id }}, 1)">
+                                                                <input type="radio" name="status_{{ $project->id }}" class="form-check-input" {{ $project->status == 1 ? 'checked' : '' }} onclick="updateStatus({{ $project->id }}, 1)">
                                                                 <span class="btn btn-sm {{ $project->status == 1 ? 'btn-secondary' : 'btn-custom-gray' }}">{{ trans('project.status_project.under_studying') }}</span>
                                                             </label>
                                                         </li>
                                                         <li class="{{ $project->status == 2 ? 'selected' : '' }}">
                                                             <label>
-                                                                <input type="checkbox" class="form-check-input" {{ $project->status == 2 ? 'checked' : '' }} onclick="updateStatus({{ $project->id }}, 2)">
+                                                                <input type="radio" name="status_{{ $project->id }}" class="form-check-input" {{ $project->status == 2 ? 'checked' : '' }} onclick="updateStatus({{ $project->id }}, 2)">
                                                                 <span class="btn btn-sm {{ $project->status == 2 ? 'btn-success' : 'btn-custom-gray' }}">{{ trans('project.status_project.accepted') }}</span>
                                                             </label>
                                                         </li>
                                                         <li class="{{ $project->status == 3 ? 'selected' : '' }}">
                                                             <label>
-                                                                <input type="checkbox" class="form-check-input" {{ $project->status == 3 ? 'checked' : '' }} onclick="updateStatus({{ $project->id }}, 3)">
+                                                                <input type="radio" name="status_{{ $project->id }}" class="form-check-input" {{ $project->status == 3 ? 'checked' : '' }} onclick="updateStatus({{ $project->id }}, 3)">
                                                                 <span class="btn btn-sm {{ $project->status == 3 ? 'btn-warning' : 'btn-custom-gray' }}">{{ trans('project.status_project.complete_project') }}</span>
                                                             </label>
                                                         </li>
                                                     </ul>
                                                 </td>
+                                                
                                                 <td>{{ $project->student->name }}</td>
                                                 <td>
                                                     @php
