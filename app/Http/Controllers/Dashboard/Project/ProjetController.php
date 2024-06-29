@@ -22,8 +22,7 @@ class ProjetController extends Controller
         $projectImages = ProjectImage::where('id_project',$project->id)->get(); 
         return view('dashboard.project.show', compact('student','project','projectImages'));
     }
-    public function updateProjectStatus(Request $request)
-    {
+    public function updateProjectStatus(Request $request){
         $project = Project::find($request->project_id);
         if ($project) {
             $project->status = $request->status;
@@ -39,8 +38,8 @@ class ProjetController extends Controller
             ], 404);
         }
     }
-    public function addCommissionForm(Project $project)
-    {
+    public function addCommissionForm(Project $project){
+
         $commissions = Commission::all();
         return view('dashboard.project.add_commission', compact('project', 'commissions'));
     }
@@ -193,6 +192,60 @@ class ProjetController extends Controller
         $project->save();
         toastr()->success(trans('message.success.update'));
         return redirect('/dashboard/projet');
+    }
+
+    public function addProjectTracking($id){
+        $project = Project::findOrFail($id);
+        return view('dashboard.project.project_tracking', compact('project'));
+    }
+
+    public function storeProjectTracking(Request $request, $id){
+        $validatedData = $request->validate([
+            'project_tracking' => 'required',
+        ]);
+
+        $project = Project::findOrFail($id);
+        $project->project_tracking = $validatedData['project_tracking'];
+        $project->status_project_tracking = 1;
+        $project->save();
+
+        toastr()->success(trans('message.success.create'));
+        return redirect()->route('dashboard.projet.index');
+    }
+    public function editProjectTracking($id){
+        $project = Project::findOrFail($id);
+        return view('dashboard.project.edit_project_tracking', compact('project'));
+    }
+
+    public function updateProjectTracking(Request $request, $id){
+        $validatedData = $request->validate([
+            'project_tracking' => 'required',
+        ]);
+
+        $project = Project::findOrFail($id);
+        $project->project_tracking = $validatedData['project_tracking'];
+        $project->status_project_tracking = 1;
+        $project->save();
+
+        toastr()->success(trans('message.success.update'));
+        return redirect()->route('dashboard.projet.index');
+    }
+    public function editStatusProjectTracking($id){
+        $project = Project::findOrFail($id);
+        return view('dashboard.project.status_project_tracking', compact('project'));
+    }
+
+    public function updateStatusProjectTracking(Request $request, $id){
+        $validatedData = $request->validate([
+            'status_project_tracking' => 'required',
+        ]);
+
+        $project = Project::findOrFail($id);
+        $project->status_project_tracking  = $validatedData['status_project_tracking'];
+        $project->save();
+
+        toastr()->success(trans('message.success.update'));
+        return redirect()->route('dashboard.projet.index');
     }
 }
 

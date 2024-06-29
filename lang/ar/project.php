@@ -8,7 +8,7 @@
     'project_title_type_edit' => 'تعديل على نوع المشروع',   
     'project_title_classification_add' => 'اضافة تصنيف المشروع',   
     'project_title_classification_edit' => 'تعديل على تصنيف المشروع',   
-    
+    'project_title_tracking_add' => 'مرحلة المشروع',
     'title-dashboard' => 'الصفحة الرئيسية',
     'project' => 'مشروع',
     'create_bmc' => "إضافة ملف bmc",
@@ -24,7 +24,7 @@
     'classification' => [
         'no_classifi' => 'لم يتم تصنيف مشروعك بعد ',
     ],
-    
+    'project_tracking' => 'تتبع المشروع',
     'status_project' =>[
         'status' => 'حالة المشروع',
         'bcm_status' => 'حالة bmc',
@@ -49,9 +49,13 @@
     'add_project_type' => 'اضافة نوع المشروع',
     'edit_project_type' => ' تعديل نوع  المشروع',
     'add_project_classification' => "اضافة تصنيف المشروع",
+    'add_project_tracking' => "اضافة تتبع المشروع ",
+    'status_project_tracking' => "حالة تتبع المشروع ",
     'edit_project_classification' => 'تعديل تصنيف المشروع',
     'patent' => 'براءة اختراع',
     'start_up' => 'مؤسسة ناشئة',
+    'edit_project_tracking' => 'التعديل على تتبع المشروع',
+    'edit_status_project_tracking' => 'تعدل على حالة تتبع المشروع',
     'label' =>[
         'name' => 'اسم المشروع',
         'description' => 'وصف المشروع',

@@ -126,6 +126,17 @@ Route::prefix('dashboard')->name('dashboard.')->middleware('auth:admin,teacher')
     Route::get('project/{id}/edit-classification', [ProjetController::class, 'editProjectClassification'])->name('dashboard.projects.edit_classification');
     Route::put('project/{id}/edit-classification', [ProjetController::class, 'updateProjectClassification'])->name('dashboard.projects.update_classification');
 
+    Route::get('project/{id}/add-project-tracking', [ProjetController::class, 'addProjectTracking'])->name('dashboard.projects.add_tracking');
+    Route::post('project/{id}/add-project-tracking', [ProjetController::class, 'storeProjectTracking'])->name('dashboard.projects.store_tracking');
+    
+    Route::get('project/{id}/edit-project-tracking', [ProjetController::class, 'editProjectTracking'])->name('dashboard.projects.edit_tracking');
+    Route::put('project/{id}/edit-project-tracking', [ProjetController::class, 'updateProjectTracking'])->name('dashboard.projects.update_tracking');
+    
+    Route::get('project/{id}/edit-status-project-tracking', [ProjetController::class, 'editStatusProjectTracking'])->name('dashboard.projects.edit_status_tracking');
+    Route::put('project/{id}/edit-status-project-tracking', [ProjetController::class, 'updateStatusProjectTracking'])->name('dashboard.projects.update_status_tracking');
+    
+    
+
     Route::resource('subjects', SubjectController::class);
     Route::resource('evaluations', EvaluationController::class);
     Route::get('evaluations/create/{id}', [EvaluationController::class, 'create'])->name('evaluations.create');

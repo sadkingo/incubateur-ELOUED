@@ -29,8 +29,29 @@ return [
         'project_video' => 'أدخل فيديو المشروع',
         'bmc' => 'اختر ملف bmc',
     ],
+    'project_trackingg' => 'تتبع المشروع',
+    'project_tracking' => [
+         'select_a_stage' => 'اختر مرحلة',
+         'configuration_stage' => 'مرحلة التكوين',
+         'create_bmc' => 'انشاء bmc',
+         'the_stage_of_preparing_the_prototype' => 'مرحلة اعداد النموذج الاولي',
+         'discussion_stage' => 'مرحلة المناقشة',
+         'labelle_innovative_project' => 'لابل مشروع مبتكر',
 
-
+    ],
+    'status_project_tracking' => [
+            'complete' => 'أكمل',
+            'practice' => 'يتدرب',
+            'not_yet' => 'ليس بعد',
+            'accomplished' => 'أنجز',
+            'not_completed' => 'لم ينجز',
+            'development_mode' => 'طور الانجاز',
+            'discuss' => 'ناقش',
+            'not_discussed' => 'لم يناقش',
+            'get' => 'تحصل',
+            'did_not_happen' => 'لم يتحصل',
+            'exclusion_or_waiver_of_the_student' =>  'إقصاء أو تنازل الطالب'
+    ],
     'video_not_supported' => 'الفيديو غير مدعوم',
     'accept' => 'حفظ البيانات',
     "edit" => 'تحديث البيانات'
