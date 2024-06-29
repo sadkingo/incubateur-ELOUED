@@ -50,7 +50,7 @@ class ProjetController extends Controller
         $project->id_commission = $request->commission_id;
         $project->save();
         toastr()->success(trans('message.success.update'));
-        return redirect()->route('dashboard.project.index');
+        return redirect('dashboard/projet');
     }
 
     public function editAllDatesForm(){
