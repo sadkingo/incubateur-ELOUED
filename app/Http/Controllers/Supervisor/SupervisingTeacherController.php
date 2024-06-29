@@ -65,7 +65,10 @@ class SupervisingTeacherController extends Controller
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
-    
+        $existingSupervisor = SupervisingTeacher::where('phone', $request->input('phone'))->first();
+        if ($existingSupervisor) {
+            return back()->withErrors(['phone' => 'رقم الهاتف موجود بالفعل.'])->withInput();
+        }
         $supervisor = new SupervisingTeacher;
         $supervisor->phone = $request->input('phone');
         $supervisor->email = $request->input('email');
