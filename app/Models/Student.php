@@ -144,6 +144,9 @@ class Student extends Authenticatable
         return $this->hasOne(Note::class);
     }
 
-
+    public function projects()
+    {
+        return $this->hasMany(Project::class);
+    }
     // Evaluation
 }

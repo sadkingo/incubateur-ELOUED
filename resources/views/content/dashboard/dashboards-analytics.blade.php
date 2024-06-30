@@ -231,74 +231,265 @@
   </div>
 </div>
 <div class="row">
-  <!-- Order Statistics -->
+  <!-- Project Statistics -->
   <div class="col-md-6 col-lg-6 col-xl-6 order-0 mb-4">
-    <div class="card h-100">
+      <div class="card h-100">
+          <div class="card-header d-flex align-items-center justify-content-between pb-0">
+              <div class="card-title mb-0">
+                  <h5 class="m-0 me-2">{{ trans('dashboard.Project Statistics') }}</h5>
+                  <small class="text-muted">{{ $projects }}</small>
+              </div>
+          </div>
+          <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                  <div class="d-flex flex-column align-items-center gap-1">
+                      <h2 class="mb-2">{{ $projects }}</h2>
+                      <span>{{ trans('dashboard.Number of registered projects') }}</span>
+                  </div>
+                  <div class="px-2 w-100 h-100">
+                      <canvas id="myProjectChart"></canvas>
+                  </div>
+              </div>
+              <ul class="p-0 m-0">
+                  <li class="d-flex mb-4 pb-1">
+                      <div class="avatar flex-shrink-0 me-3">
+                          <span class="avatar-initial rounded bg-label-success"><i class='bx bx-check-circle'></i></span>
+                      </div>
+                      <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                          <div class="me-2">
+                              <h6 class="mb-0">{{ trans('dashboard.Number of accepted projects') }}</h6>
+                              <small class="text-muted">{{ trans('dashboard.All projects') }}</small>
+                          </div>
+                          <div class="project-progress">
+                              <small id="AcceptedProjects" class="fw-semibold">{{ $acceptedProject }}</small>
+                          </div>
+                      </div>
+                  </li>
+                  <li class="d-flex mb-4 pb-1">
+                      <div class="avatar flex-shrink-0 me-3">
+                          <span class="avatar-initial rounded bg-label-danger"><i class='bx bx-x-circle'></i></span>
+                      </div>
+                      <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                          <div class="me-2">
+                              <h6 class="mb-0">{{ trans('dashboard.Number of rejected projects') }}</h6>
+                              <small class="text-muted">{{ trans('dashboard.All projects') }}</small>
+                          </div>
+                          <div class="project-progress">
+                              <small id="RejectedProjects" class="fw-semibold">{{ $RejectedProjects }}</small>
+                          </div>
+                      </div>
+                  </li>
+                  <li class="d-flex mb-4 pb-1">
+                      <div class="avatar flex-shrink-0 me-3">
+                          <span class="avatar-initial rounded bg-label-warning"><i class='bx bx-edit-alt'></i></span>
+                      </div>
+                      <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                          <div class="me-2">
+                              <h6 class="mb-0">{{ trans('dashboard.Number of completed projects') }}</h6>
+                              <small class="text-muted">{{ trans('dashboard.All projects') }}</small>
+                          </div>
+                          <div class="project-progress">
+                              <small id="CompletedProjects" class="fw-semibold">{{ $compledProject }}</small>
+                          </div>
+                      </div>
+                  </li>
+                  <li class="d-flex mb-4 pb-1">
+                      <div class="avatar flex-shrink-0 me-3">
+                          <span class="avatar-initial rounded bg-label-info"><i class='bx bx-folder-open'></i></span>
+                      </div>
+                      <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                          <div class="me-2">
+                              <h6 class="mb-0">{{ trans('dashboard.Number of under study projects') }}</h6>
+                              <small class="text-muted">{{ trans('dashboard.All projects') }}</small>
+                          </div>
+                          <div class="project-progress">
+                              <small id="ProjectsUnderStudy" class="fw-semibold">{{ $projectsUnderStudy }}</small>
+                          </div>
+                      </div>
+                  </li>
+                  <li class="d-flex mb-4 pb-1">
+                      <div class="avatar flex-shrink-0 me-3">
+                          <span class="avatar-initial rounded bg-label-success"><i class='bx bx-folder-plus'></i></span>
+                      </div>
+                      <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                          <div class="me-2">
+                              <h6 class="mb-0">{{ trans('dashboard.Number of new projects') }}</h6>
+                              <small class="text-muted">{{ trans('dashboard.All projects') }}</small>
+                          </div>
+                          <div class="project-progress">
+                              <small id="NewProjects" class="fw-semibold">{{ $newProjects }}</small>
+                          </div>
+                      </div>
+                  </li>
+                  <li class="d-flex mb-4 pb-1">
+                      <div class="avatar flex-shrink-0 me-3">
+                          <span class="avatar-initial rounded bg-label-primary"><i class='bx bx-calendar'></i></span>
+                      </div>
+                      <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                          <div class="me-2">
+                              <h6 class="mb-0">{{ trans('dashboard.Number of projects in selected year') }}</h6>
+                              <small class="text-muted">{{ trans('dashboard.All projects') }}</small>
+                          </div>
+                          <div class="project-progress">
+                              <small id="ProjectsByYear" class="fw-semibold">{{ $projectsBySelectedYear }}</small>
+                          </div>
+                      </div>
+                  </li>
+              </ul>
+          </div>
+      </div>
+  </div>
+  <!--/ Project Statistics -->
+<!-- Project Classification Stats -->
+<div class="col-md-6 col-lg-6 col-xl-6 order-2 mb-4">
+  <div class="card h-100">
       <div class="card-header d-flex align-items-center justify-content-between pb-0">
-        <div class="card-title mb-0">
-          <h5 class="m-0 me-2">{{ trans('dashboard.Statistics based on points') }}</h5>
-          <small class="text-muted">{{ count($students) }}</small>
-        </div>
-
+          <div class="card-title mb-0">
+              <h5 class="m-0 me-2">{{ trans('dashboard.Project Classification') }}</h5>
+          </div>
       </div>
       <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <div class="d-flex flex-column align-items-center gap-1">
-            <h2 class="mb-2">{{ count($students) }}</h2>
-            <span>{{ trans('dashboard.Number of students who were castrated') }}</span>
+          <div class="d-flex flex-column align-items-center">
+              <canvas id="projectClassificationChart"></canvas>
           </div>
-          <div class="px-2 w-100 h-100">
-            <canvas id="myChartPoint"></canvas>
+      </div>
+  </div>
+</div>
+<!--/ Project Classification Stats -->
+
+<!-- Startup and Patent Label Students Stats -->
+<div class="col-md-6 col-lg-6 col-xl-6 order-3 mb-4">
+  <div class="card h-100">
+      <div class="card-header d-flex align-items-center justify-content-between pb-0">
+          <div class="card-title mb-0">
+              <h5 class="m-0 me-2">{{ trans('dashboard.Student Label Statistics') }}</h5>
           </div>
-        </div>
-        <ul class="p-0 m-0">
-          <li class="d-flex mb-4 pb-1">
-            <div class="avatar flex-shrink-0 me-3">
-              <span class="avatar-initial rounded bg-label-danger"><i class='bx bx-user'></i></span>
-            </div>
-            <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-              <div class="me-2">
-                <h6 class="mb-0">{{ trans('dashboard.The number of students who obtained more than 15') }}</h6>
-                <small class="text-muted">{{ trans('dashboard.Male and female students') }}</small>
+      </div>
+      <div class="card-body">
+          <ul class="p-0 m-0">
+              <li class="d-flex mb-4 pb-1">
+                  <div class="avatar flex-shrink-0 me-3">
+                      <span class="avatar-initial rounded bg-label-info"><i class='bx bx-rocket'></i></span>
+                  </div>
+                  <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                      <div class="me-2">
+                          <h6 class="mb-0">{{ trans('dashboard.Startup Label Students') }}</h6>
+                          <small class="text-muted">{{ trans('dashboard.Students with Startup Project Label') }}</small>
+                      </div>
+                      <div class="project-progress">
+                          <small class="fw-semibold">{{ $startupLabelStudentsCount }}</small>
+                      </div>
+                  </div>
+              </li>
+              <li class="d-flex mb-4 pb-1">
+                  <div class="avatar flex-shrink-0 me-3">
+                      <span class="avatar-initial rounded bg-label-success"><i class='bx bx-badge-check'></i></span>
+                  </div>
+                  <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                      <div class="me-2">
+                          <h6 class="mb-0">{{ trans('dashboard.Patent Label Students') }}</h6>
+                          <small class="text-muted">{{ trans('dashboard.Students with Patent Project Label') }}</small>
+                      </div>
+                      <div class="project-progress">
+                          <small class="fw-semibold">{{ $patentLabelStudentsCount }}</small>
+                      </div>
+                  </div>
+              </li>
+          </ul>
+      </div>
+  </div>
+</div>
+<!--/ Startup and Patent Label Students Stats -->
+  <!-- Chart for Projects by Year -->
+  <div class="col-md-6 col-lg-6 col-xl-6 order-1 mb-4">
+      <div class="card h-100">
+          <div class="card-header d-flex align-items-center justify-content-between pb-0">
+              <div class="card-title mb-0">
+                  <h5 class="m-0 me-2">{{ trans('dashboard.Projects by Year') }}</h5>
               </div>
-              <div class="user-progress">
-                <small id="studentMax" class="fw-semibold"></small>
+          </div>
+          <div class="card-body">
+              <div class="d-flex flex-column align-items-center">
+                  <canvas id="projectsByYearChart"></canvas>
               </div>
-            </div>
-          </li>
-          <li class="d-flex mb-4 pb-1">
-            <div class="avatar flex-shrink-0 me-3">
-              <span class="avatar-initial rounded bg-label-info"><i class='bx bx-user'></i></span>
-            </div>
-            <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-              <div class="me-2">
-                <h6 class="mb-0">{{ trans('dashboard.The number of students who obtained between 15 and 20') }}</h6>
-                <small class="text-muted">{{ trans('dashboard.Male and female students') }}</small>
-              </div>
-              <div class="user-progress">
-                <small id="studentMoyen" class="fw-semibold"></small>
-              </div>
-            </div>
-          </li>
-          <li class="d-flex mb-4 pb-1">
-            <div class="avatar flex-shrink-0 me-3">
-              <span class="avatar-initial rounded bg-label-warning"><i class='bx bx-user'></i></span>
-            </div>
-            <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-              <div class="me-2">
-                <h6 class="mb-0">{{ trans('dashboard.The number of students who scored less than 10') }}</h6>
-                <small class="text-muted">{{ trans('dashboard.Male and female students') }}</small>
-              </div>
-              <div class="user-progress">
-                <small id="studentMin" class="fw-semibold"></small>
-              </div>
-            </div>
-          </li>
-        </ul>
+          </div>
+      </div>
+  </div>
+  <!--/ Chart for Projects by Year -->
+  
+</div>
+
+
+<!--/ Project Statistics -->
+</div>
+<!-- Order Statistics -->
+{{-- <div class="col-md-6 col-lg-6 col-xl-6 order-0 mb-4">
+  <div class="card h-100">
+    <div class="card-header d-flex align-items-center justify-content-between pb-0">
+      <div class="card-title mb-0">
+        <h5 class="m-0 me-2">{{ trans('dashboard.Statistics based on points') }}</h5>
+        <small class="text-muted">{{ count($students) }}</small>
       </div>
     </div>
+    <div class="card-body">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="d-flex flex-column align-items-center gap-1">
+          <h2 class="mb-2">{{ count($students) }}</h2>
+          <span>{{ trans('dashboard.Number of students who were castrated') }}</span>
+        </div>
+        <div class="px-2 w-100 h-100">
+          <canvas id="myChartPoint"></canvas>
+        </div>
+      </div>
+      <ul class="p-0 m-0">
+        <li class="d-flex mb-4 pb-1">
+          <div class="avatar flex-shrink-0 me-3">
+            <span class="avatar-initial rounded bg-label-danger"><i class='bx bx-user'></i></span>
+          </div>
+          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+            <div class="me-2">
+              <h6 class="mb-0">{{ trans('dashboard.The number of students who obtained more than 15') }}</h6>
+              <small class="text-muted">{{ trans('dashboard.Male and female students') }}</small>
+            </div>
+            <div class="user-progress">
+              <small id="studentMax" class="fw-semibold"></small>
+            </div>
+          </div>
+        </li>
+        <li class="d-flex mb-4 pb-1">
+          <div class="avatar flex-shrink-0 me-3">
+            <span class="avatar-initial rounded bg-label-info"><i class='bx bx-user'></i></span>
+          </div>
+          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+            <div class="me-2">
+              <h6 class="mb-0">{{ trans('dashboard.The number of students who obtained between 15 and 20') }}</h6>
+              <small class="text-muted">{{ trans('dashboard.Male and female students') }}</small>
+            </div>
+            <div class="user-progress">
+              <small id="studentMoyen" class="fw-semibold"></small>
+            </div>
+          </div>
+        </li>
+        <li class="d-flex mb-4 pb-1">
+          <div class="avatar flex-shrink-0 me-3">
+            <span class="avatar-initial rounded bg-label-warning"><i class='bx bx-user'></i></span>
+          </div>
+          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+            <div class="me-2">
+              <h6 class="mb-0">{{ trans('dashboard.The number of students who scored less than 10') }}</h6>
+              <small class="text-muted">{{ trans('dashboard.Male and female students') }}</small>
+            </div>
+            <div class="user-progress">
+              <small id="studentMin" class="fw-semibold"></small>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
   </div>
-  <!--/ Order Statistics -->
+</div> --}}
+<!--/ Order Statistics -->
+
 
   <!-- Transactions -->
   <div class="col-md-6 col-lg-6 order-2 mb-4">
@@ -526,7 +717,105 @@
       });
     });
   });
+var ctx = document.getElementById('myProjectChart').getContext('2d');
+var myProjectChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['{{ trans('dashboard.Rejected') }}', '{{ trans('dashboard.Under Study') }}', '{{ trans('dashboard.New') }}' , '{{trans('dashboard.Accepted')}}' , '{{trans('dashboard.Completed')}}'],
+        datasets: [{
+            label: '{{ trans('dashboard.Projects') }}',
+            data: [{{ $RejectedProjects }}, {{ $projectsUnderStudy }}, {{ $newProjects }}, {{$acceptedProject}} , {{$compledProject}}],
+            backgroundColor: ['#ff6384', '#36a2eb', '#00A36C', '#008000' , '#2AAA8A	'],
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
 
+const projectsByYearData = @json($chartProjectsByYearData);
+    const ctxProjectsByYear = document.getElementById('projectsByYearChart').getContext('2d');
+    new Chart(ctxProjectsByYear, {
+        type: 'bar',
+        data: {
+            labels: projectsByYearData.labels,
+            datasets: [{
+                label: '{{ trans('dashboard.Projects by Year') }}',
+                data: projectsByYearData.datasets[0].data,
+                backgroundColor: projectsByYearData.datasets[0].backgroundColor,
+                borderColor: projectsByYearData.datasets[0].borderColor,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: '{{ trans('dashboard.Year') }}'
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: '{{ trans('dashboard.Number of Projects') }}'
+                    },
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+        // رسم مخطط المشاريع حسب التصنيف
+        new Chart(document.getElementById('projectClassificationChart').getContext('2d'), {
+            type: 'bar',
+            data: @json($chartProjectClassificationData),
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                // إعداد التلميح للعرض
+                                let label = context.label || '';
+                                let value = context.raw || 0;
+
+                                // إعداد التفاصيل في التلميح
+                                return `${label}: ${value} ${trans('dashboard.Projects')}`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        stacked: true,
+                    },
+                    y: {
+                        stacked: true,
+                    }
+                }
+            }
+        });
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+        // إعدادات مخطط الأعمدة لتصنيف المشاريع
+        const ctxClassification = document.getElementById('projectClassificationChart').getContext('2d');
+        new Chart(ctxClassification, {
+            type: 'bar',
+            data: @json($chartProjectClassificationData),
+            options: @json($chartProjectClassificationData['options'])
+        });
+    });
 </script>
 @endsection
 

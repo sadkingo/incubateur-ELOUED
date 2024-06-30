@@ -42,10 +42,11 @@ return [
     'delete' => 'حذف المشرف',
     'assign' => 'تعيين',
     'delete_confirmation' => 'هل أنت متأكد من عملية حذف هذ المشرف ؟',
-    'speciality'  => "التخصص",
-    'faculty' => "الكلية",
-    "departement" => "القسم",
-    "grade" => "رتبة",
+    'speciality'  => 'التخصص',
+    'faculty' => 'الكلية',
+    'departement' => 'القسم',
+    'grade' => 'رتبة',
+    'role' => 'مسؤلية الاشراف',
     'label' =>[
         'name' => 'الإسم',
         'batch' => 'الدفعة',
@@ -62,6 +63,6 @@ return [
         'group' => 'البحث بالفوج',
         'registration_number' => 'البحث برقم التسجيل',
         'batch'=> 'البحث بالدفعة',
-        'name_project' => "أدخل اسم مشروعك"
+        'name_project' => 'أدخل اسم مشروعك'
     ],
 ];

@@ -46,6 +46,7 @@ class SupervisingTeacherController extends Controller
             'grade'        => 'required',
             'phone'        => 'required',
             'email'        => 'required',
+            'supervisor_role' => 'required',
         ], [
             'firstname_ar.required' => 'First name arabic is required',
             'firstname_ar.regex' => 'First name arabic must be in Arabic letters only',
@@ -60,6 +61,7 @@ class SupervisingTeacherController extends Controller
             'grade.required' => 'Grade is required',
             'phone.required' => 'Phone is required',
             'email.required' => 'Email is required',
+            'supervisor_role.required' => 'Supervisor role is required',
         ]);
     
         if ($validator->fails()) {
@@ -81,6 +83,7 @@ class SupervisingTeacherController extends Controller
         $supervisor->faculty = $request->input('faculty');
         $supervisor->departement = $request->input('departement');
         $supervisor->grade = $request->input('grade');
+        $supervisor->role = $request->input('supervisor_role');
         $supervisor->id_student = $student->id;
         $supervisor->save();
     

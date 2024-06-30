@@ -16,8 +16,7 @@ class ProjetController extends Controller
         $projects = Project::with(['commission', 'student', 'supervisingTeachers'])->paginate(10);
         return view('dashboard.project.index', compact('projects'));
     }
-    public function show(Project $project)
-    {
+    public function show(Project $project){
         $student = Student::where('id',$project->id_student)->get();
         $projectImages = ProjectImage::where('id_project',$project->id)->get(); 
         return view('dashboard.project.show', compact('student','project','projectImages'));
@@ -26,6 +25,7 @@ class ProjetController extends Controller
         $project = Project::find($request->project_id);
         if ($project) {
             $project->status = $request->status;
+            $project->new = 2;
             $project->save();
 
             return response()->json([

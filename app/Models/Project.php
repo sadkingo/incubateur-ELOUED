@@ -17,13 +17,16 @@ class Project extends Model
         'bmc',
         'id_commission' ,
         'start_date',
-        'end_date'
+        'end_date',
+        'academic_year'
     ];
 
     public function student()
     {
         return $this->belongsTo(Student::class, 'id_student');
     }
+
+    
 
     public function commission()
     {

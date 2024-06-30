@@ -145,6 +145,18 @@
                         <small class="text-danger d-block mt-1">{{ $message }}</small>
                         @enderror
                     </div>
+                    <div class="col-sm-12 col-md-3 mb-2">
+                        <label for="role" class="form-label">{{ trans('supervisor.role') }}</label>
+                        <select name="supervisor_role" id="supervisor_role" class="form-control @error('supervisor_role') is-invalid @enderror">
+                            <option value="">{{ trans('auth/supertvisor.select_supervisor_role') }}</option>
+                            <option value="1">{{ trans('auth/supertvisor.main_supervisor') }}</option>
+                            <option value="2">{{ trans('auth/supertvisor.second_supervisor') }}</option>
+                            <option value="3">{{ trans('auth/supertvisor.assistant_supervisor') }}</option>
+                        </select>
+                        @error('supervisor_role')
+                        <small class="text-danger d-block mt-1">{{ $message }}</small>
+                        @enderror
+                    </div>
                 </div>
                 <div class="col-sm-12 mt-3 d-flex justify-content-end">
                     <button type="submit" class="btn btn-primary">{{ trans('supervisor.accept') }}</button>
