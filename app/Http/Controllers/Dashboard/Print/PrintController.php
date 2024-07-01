@@ -155,4 +155,61 @@ class PrintController extends Controller
         //dd($student);
         return view('dashboard.printer.certificat', compact('student'));
     }
+
+    public function generateCertificate($project_id, $student_id = null) {
+        $project = Project::find($project_id);
+    
+        if (!$project) {
+            return redirect()->back()->with('error', 'Project not found');
+        }
+    
+        $student = $student_id ? Student::find($student_id) : Student::where('id', $project->id_student)->first();
+    
+        if (!$student) {
+            return redirect()->back()->with('error', 'Student not found');
+        }
+    
+        $teamMembers = StudentGroup::where('id_student', $student->id)->get();
+    
+        $stages = [
+            1 => 'Étape de configuration',
+            2 => 'Créer BMC',
+            3 => 'L\'étape de préparation du prototype',
+            4 => 'Étape de discussion',
+            5 => 'Projet innovant label',
+        ];
+    
+        $currentStage = $stages[$project->project_tracking] ?? 'Unknown Stage';
+    
+        return view('student-dashboard.certificate', compact('student', 'project', 'currentStage', 'teamMembers'));
+    }
+    public function generateStudentCertificate($project_id, $student_id = null) {
+        $project = Project::find($project_id);
+    
+        if (!$project) {
+            return redirect()->back()->with('error', 'Project not found');
+        }
+    
+        //$student = $student_id ? Student::find($student_id) : Student::where('id', $project->id_student)->first();
+        $student = StudentGroup::find($student_id);
+        //dd($student);
+        if (!$student) {
+            return redirect()->back()->with('error', 'Student not found');
+        }
+    
+        $stages = [
+            1 => 'Étape de configuration',
+            2 => 'Créer BMC',
+            3 => 'L\'étape de préparation du prototype',
+            4 => 'Étape de discussion',
+            5 => 'Projet innovant label',
+        ];
+    
+        $currentStage = $stages[$project->project_tracking] ?? 'Unknown Stage';
+    
+        return view('student-dashboard.certificate_students', compact('student', 'project', 'currentStage'));
+    }
+    
+    
+
 }

@@ -8,6 +8,7 @@ use App\Repositories\Student\StudentRepository;
 use App\Http\Requests\Student\StoreStudentRequest;
 use App\Http\Requests\Student\UpdateStudentRequest;
 use App\Models\Project;
+use App\Models\Student;
 use App\Models\StudentGroup;
 use App\Models\SupervisingTeacher;
 
@@ -161,5 +162,28 @@ class StudentController extends Controller
 
         return response()->json(['success' => false, 'message' => 'Student not found']);
     }
+
+    public function certificates($student_id)
+{
+    $student = $this->students->find($student_id);
+
+    if (!$student) {
+        return redirect()->back()->withErrors(['message' => 'Student not found.']);
+    }
+
+    $project = Project::where('id_student', $student->id)->first();
+
+    if (!$project) {
+        return redirect()->back()->withErrors(['message' => 'Project not found.']);
+    }
+
+    $teamMembers = StudentGroup::where('id_student', $student->id)
+                               ->orWhere('id_student', $project->id_student) 
+                               ->get();
+
+    $hasOtherMembers = $teamMembers->count() > 1;
+
+    return view('student-dashboard.certificates', compact('student', 'project', 'teamMembers', 'hasOtherMembers'));
+}
 
 }

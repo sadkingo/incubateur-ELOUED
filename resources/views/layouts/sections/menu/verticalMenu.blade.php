@@ -73,6 +73,15 @@
                     <div >{{ trans('menu.projects') }}</div>
                 </a>
             </li>
+            <li class="menu-item {{ request()->routeIs('students.certificates') ? 'active' : '' }}">
+                <a href="{{ url('student/certificates/' . auth('student')->id()) }}" class="menu-link">
+                    <i class='bx bx-buildings bx-flip-horizontal' ></i>               
+                    <div>{{ trans('menu.certificates') }}</div>
+                </a>
+            </li>
+            
+           
+            
         @elseif(auth('teacher')->check())
             <li class="menu-item {{ request()->routeIs('student.index') ? 'active' : '' }}">
                 <a href="{{ route('teacher.students.index') }}" class="menu-link">

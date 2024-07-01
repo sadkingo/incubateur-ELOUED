@@ -31,13 +31,6 @@
                     <div class="card-body">
                         <div class="card">
                             <h5 class="card-header pt-0 mt-1">
-                                {{-- <div class="row">
-                                    <div class="form-group col-md-6 px-1 mt-4">
-                                        <a href="{{ route('dashboard.projects.edit_all_dates') }}" class="btn btn-primary text-white">
-                                            <span class="tf-icons bx bx-plus"></span>&nbsp; {{ trans('project.add_deadline') }}
-                                        </a>
-                                    </div>
-                                </div> --}}
                             </h5>
                             <div>
                                 <table class="table table-striped">
@@ -171,10 +164,10 @@
                                                 <td>
                                                     @if($project->project_classification == 1 || $project->project_classification == 2)
                                                         @if($project->status_project_tracking == 1)
-                                                        <button id="printSupervisors" data-url="{{ url('dashboard/print/certificate/'.$project->id.'/label') }}" data-student-id="{{ $project->id }}"
-                                                            class="btn btn-primary text-white">
-                                                            <span class="bx bxs-printer"></span>&nbsp; {{ trans('app.print') }}
-                                                        </button>
+                                                            <button id="printSupervisors" data-url="{{ url('dashboard/print/certificate/'.$project->id.'/label') }}" data-student-id="{{ $project->id }}"
+                                                                class="btn btn-primary text-white">
+                                                                <span class="bx bxs-printer"></span>&nbsp; {{ trans('app.print') }}
+                                                            </button>
                                                         @endif
                                                     @endif
                                                 </td>

@@ -208,14 +208,16 @@
             <p>DE PARTICIPATION A LA FORMATION </p>
         </div>
         <div class="content">
-            <p>Nous Attestons que:</p>
-            <h2> {{$student->firstname_fr}} {{$student->lastname_fr}}</h2>
-            <p>
-                A suivi avec assiduité la formation 
-                <strong> 
-                    << développement de compétences entrepreneuriale dans le cadre de l'arrêté ministériel 1275 (label)>>
-                </strong> organisée par l'incubateur de l'université d'el-Oued.
-            </p>
+            @if ($student)
+                <p>Nous Attestons que:</p>
+                <h2> {{$student->firstname_fr}} {{$student->lastname_fr}}</h2>
+                <p>
+                    A suivi avec assiduité la formation 
+                    <strong> 
+                        << {{ $currentStage }} >>
+                    </strong> organisée par l'incubateur de l'université d'el-Oued.
+                </p>
+            @endif
         </div>
         <div class="footer">
             <div class="date">Date</div>

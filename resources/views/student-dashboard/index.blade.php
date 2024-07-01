@@ -1,8 +1,40 @@
 @php
     $isMenu = false;
     $navbarHideToggle = false;
-@endphp
+    if($project != null){
+        $trackingLabels = [
+            1 => $project->project_classification == 1 || $project->project_classification == 2
+                ? trans('auth/project.project_tracking.configuration_stage')
+                : trans('auth/project.project_tracking.the_stage_of_preparing_the_prototype'),
+            2 => $project->project_classification == 1 || $project->project_classification == 2
+                ? trans('auth/project.project_tracking.create_bmc')
+                : trans('auth/project.project_tracking.write_a_descriptive_model'),
+            3 => $project->project_classification == 1 || $project->project_classification == 2
+                ? trans('auth/project.project_tracking.the_stage_of_preparing_the_prototype')
+                : trans('auth/project.project_tracking.stage_of_registering_a_patent_application'),
+            4 => $project->project_classification == 1 || $project->project_classification == 2
+                ? trans('auth/project.project_tracking.discussion_stage')
+                : trans('auth/project.project_tracking.obtain_a_certificate_of_registration_for_the_patent_filing_application'),
+            5 => trans('auth/project.project_tracking.receiving_reservations_and_amendments_requested_from_INAPI'),
+            6 => trans('auth/project.project_tracking.resend_the_amended_form_after_lifting_the_reservations'),
+        ];
 
+        $statusLabels = [
+            1 => trans('auth/project.status_project_tracking.practice'),
+            2 => trans('auth/project.status_project_tracking.complete'),
+            0 => trans('auth/project.status_project_tracking.not_yet'),
+        ];
+
+        $statusColors = [
+            1 => 'text-warning',
+            2 => 'text-success',
+            0 => 'text-danger',
+        ];
+
+        $getStatusLabel = fn($status) => $statusLabels[$status] ?? '';
+        $getStatusClass = fn($status) => $statusColors[$status] ?? 'text-light bg-dark';
+    }   
+@endphp
 @extends('layouts/contentNavbarLayout')
 
 @section('title', trans('student.title-dashboard'))
@@ -187,17 +219,17 @@
                                     </div>
                                 </form> --}}
                                 <div class="row">
-                                    <div class="form-group col-md-2 px-1 mt-4">
+                                    <div class="form-group col-md-4 px-1 mt-4">
                                         <a href="{{ route('student.account.create') }}" class="btn btn-primary text-white">
                                             <span class="tf-icons bx bx-plus"></span>&nbsp; {{ trans('student.Add_students') }}
                                         </a>
                                     </div>
-                                    <div class="form-group col-md-2 px-1 mt-4">
+                                    <div class="form-group col-md-4 px-1 mt-4">
                                         <a href="{{ route('student.project.create') }}" class="btn btn-primary text-white">
                                             <span class="tf-icons bx bx-plus"></span>&nbsp; {{ trans('student.Add_project') }}
                                         </a>
                                     </div>
-                                    <div class="form-group col-md-2 px-1 mt-4">
+                                    <div class="form-group col-md-4 px-1 mt-4">
                                         <a href="{{ route('student.supervisor.create') }}" class="btn btn-primary text-white">
                                             <span class="tf-icons bx bx-plus"></span>&nbsp; {{ trans('student.Add_supervisor') }}
                                         </a>
@@ -213,6 +245,7 @@
                                             <th>{{ trans('student.birthday') }}</th>
                                             <th>{{ trans('student.gender') }}</th>
                                             <th>{{ trans('app.actions') }}</th>
+                                            <th>{{ trans('app.print')}}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -239,6 +272,27 @@
                                                             </a>
                                                         </div>
                                                     </div>
+                                                </td>
+                                                <td>
+                                                    @if($project != null)
+                                                        @if(
+                                                            ($project->project_classification == 1 || $project->project_classification == 2) &&
+                                                            ($project->project_tracking <= 3) &&
+                                                            $project->status_project_tracking == 2
+                                                        )
+                                                            <button id="printCertificate" data-url="{{ url('print/certificate/'.$project->id.'/'.$studentGroup->id) }}" data-student-id="{{ $project->id }}" class="btn btn-primary text-white">
+                                                                <span class="bx bxs-printer"></span>&nbsp; {{ trans('app.print') }}
+                                                            </button>
+                                                        @elseif(
+                                                            ($project->project_classification != 1 && $project->project_classification != 2) &&
+                                                            ($project->project_tracking <= 3) &&
+                                                            $project->status_project_tracking == 2
+                                                        )
+                                                            <button id="printCertificate" data-url="{{ url('print/certificate/'.$project->id.'/'.$studentGroup->id) }}" data-student-id="{{ $project->id }}" class="btn btn-primary text-white">
+                                                                <span class="bx bxs-printer"></span>&nbsp; {{ trans('app.print') }}
+                                                            </button>
+                                                        @endif
+                                                @endif
                                                 </td>
                                             </tr>
                                             @include('student-dashboard.delete')
@@ -304,7 +358,14 @@
                 },
             });
 
-
+            
+            $(document).on('click', '#printCertificate', function(e) {
+                e.preventDefault();
+                let url = $(this).data('url');
+                window.open(url, '_blank', 'height=auto,width=auto').onload = function() {
+                    this.print();
+                };
+            });
             $("#downloadCertificate").click(function(e) {
                 let url = $(this).attr('data-url');
                 var printWindow = window.open(url, '_blank', 'height=auto,width=auto');

@@ -24,9 +24,9 @@ class StudentDashboardController extends Controller
         $account = $this->students->findNotes(auth('student')->id());
         $evaluationExists = Evaluation::whereStudentId(auth('student')->id())->first();
         $studentGroups= StudentGroup::where('id_student', $account->id)->get();
-        $projects = Project::where('id_student',$account->id)->get();
+        $project = Project::where('id_student',$account->id)->first();
         
-        return view('student-dashboard.index',compact('account','evaluationExists','studentGroups','projects'));
+        return view('student-dashboard.index',compact('account','evaluationExists','studentGroups','project'));
     }
 
     public function indexAdmin($id){

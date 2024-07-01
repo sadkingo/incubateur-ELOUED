@@ -11,9 +11,10 @@ use Illuminate\Support\Facades\Storage;
 class ProjetController extends Controller
 {
     private $commission;
-    public function index()
-    {
-        $projects = Project::with(['commission', 'student', 'supervisingTeachers'])->paginate(10);
+    public function index(){
+        $projects = Project::with(['commission', 'student', 'supervisingTeachers'])
+                            ->orderBy('created_at', 'desc')
+                            ->paginate(10);
         return view('dashboard.project.index', compact('projects'));
     }
     public function show(Project $project){

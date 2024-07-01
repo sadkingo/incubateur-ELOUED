@@ -168,7 +168,15 @@ Route::name('student.')->middleware('auth:student')->group(function () {
     Route::delete('account/{id}', [AccountController::class, 'destroy'])->name('account.destroy');
     Route::put('account/{id}', [AccountController::class, 'update'])->name('account.update');
     Route::post('supervisor/assign/{id}', [SupervisingTeacherController::class, 'assign'])->name('supervisor.assign');
+    
+    Route::get('student/certificates/{id}', [StudentController::class, 'certificates'])->name('certificates');
+    // Route::prefix('print')->name('print.')->group(function () {
+
+    // });
 });
+Route::get('print/certificate/{project_id}', [PrintController::class, 'generateCertificate'])->name('print.certificate');
+Route::get('print/certificate/{project_id}/{student_id?}', [PrintController::class, 'generateStudentCertificate'])->name('print.certificate');
+
 Route::get('student/project/{id}/addBmc', [ProjectController::class, 'addBmcFile'])->name('student.project.addBmc');
 Route::post('student/project/{id}/storeBmc', [ProjectController::class, 'storeBmcFile'])->name('student.project.storeBmcFile');
 
