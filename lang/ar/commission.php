@@ -18,7 +18,7 @@ return [
     'email' => 'البريد الالكتروني',
     'add_commission' => 'أضف لجنة',
     'create' => 'إضافة لجنة',
-    'edit' => 'تعديل بيانات اللجة',
+    'edit' => 'تعديل بيانات اللجان',
     'delete' => 'حذف اللجنة',
     'confirm_delete' => 'هل أنت متاكد من عملية حذف هذ اللجنة ؟',
     'Commission updated successfully' => 'تم تحديث اللجنة بنجاح',

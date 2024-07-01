@@ -148,6 +148,7 @@ Route::prefix('dashboard')->name('dashboard.')->middleware('auth:admin,teacher')
         Route::get('certificate', [PrintController::class, 'certificate'])->name('certificate');
         Route::get('trainee_notebook/{student_id}', [PrintController::class, 'trainee_notebook'])->name('trainee_notebook');
         Route::get('supervisors/{student_id}', [PrintController::class, 'printSupervisors'])->name('supervisors');
+        Route::get('certificate/{id}/label',[PrintController::class, 'label'])->name('label');
     });
     Route::resource('certificates', CertificateController::class);
     Route::resource('settings', SettingController::class)->middleware('auth:admin');

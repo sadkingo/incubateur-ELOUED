@@ -47,6 +47,7 @@
                                             <th scope="col">{{trans('project.project_tracking')}}</th>
                                             <th scope="col">{{trans('project.status_project_tracking')}}</th>
                                             <th scope="col">{{trans('app.actions')}}</th>
+                                            <th scope="col">{{ trans('app.print') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -167,6 +168,16 @@
                                                         </div>
                                                     </div>
                                                 </td>
+                                                <td>
+                                                    @if($project->project_classification == 1 || $project->project_classification == 2)
+                                                        @if($project->status_project_tracking == 1)
+                                                        <button id="printSupervisors" data-url="{{ url('dashboard/print/certificate/'.$project->id.'/label') }}" data-student-id="{{ $project->id }}"
+                                                            class="btn btn-primary text-white">
+                                                            <span class="bx bxs-printer"></span>&nbsp; {{ trans('app.print') }}
+                                                        </button>
+                                                        @endif
+                                                    @endif
+                                                </td>
                                             </tr>
                                         
                                     </tbody>
@@ -179,6 +190,29 @@
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function() {
+            $("#printSupervisors").click(function(e) {
+                // منع الحدث الافتراضي للنقر
+                e.preventDefault();
+
+                // الحصول على معرّف الطالب
+                let studentId = $(this).data('student-id');
+
+                // الحصول على الـ URL وتعويض معرّف الطالب
+                let url = $(this).attr('data-url').replace(':student_id', studentId);
+
+                // فتح نافذة جديدة للطباعة
+                var printWindow = window.open(url, '_blank', 'height=auto,width=auto');
+
+                // انتظار تحميل النافذة قبل الطباعة
+                printWindow.onload = function() {
+                    printWindow.print();
+                };
+            });
+        });
+       
+    </script>
 {{-- <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">

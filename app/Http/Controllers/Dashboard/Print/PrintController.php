@@ -148,4 +148,11 @@ class PrintController extends Controller
 
         return view('dashboard.printer.supervisor_raport', compact('student', 'supervisors', 'studentGroups','project'));
     }
+
+    public function label($project_id){
+        $project = Project::find($project_id);
+        $student = Student::where('id', '=', $project->id_student)->first();
+        //dd($student);
+        return view('dashboard.printer.certificat', compact('student'));
+    }
 }

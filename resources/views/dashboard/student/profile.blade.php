@@ -297,7 +297,6 @@
                                 <span class="bx bxs-printer"></span>&nbsp; {{ trans('app.print') }}
                             </button>
                                 @endif
-                              {{-- <button onclick="printSupervisors()">Print Supervisors</button> --}}
                             </div>
                         </div>
                     </div>
