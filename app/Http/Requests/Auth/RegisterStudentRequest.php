@@ -44,8 +44,9 @@ class RegisterStudentRequest extends FormRequest
             'academicLevel' => 'required|string',
             'specialty' => 'required|string',
             'faculty' => 'required|string',
+            //'id_faculty' => 'required|numeric',
             'department' => 'required|string',
-            
+            //'id_department' => 'required|numeric',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after:start_date',
 

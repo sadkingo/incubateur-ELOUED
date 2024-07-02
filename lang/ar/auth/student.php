@@ -46,6 +46,10 @@ return [
         'master'   => 'ماستر',
         'phd'      => 'دكتوراه',
     ],
+    'select' => [
+        'faculty'    => 'اختر كلية',
+        'department' => 'اختر قسم',
+    ],
     'placeholder' => [
         'firstname_ar' => 'ادخل الاسم بالعربية',
         'lastname_ar'  => 'ادخل اللقب بالعربية',

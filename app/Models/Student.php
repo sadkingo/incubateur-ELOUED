@@ -38,7 +38,9 @@ class Student extends Authenticatable
         'academicLevel',
         'specialty',
         'faculty',
+        'id_faculty',
         'department',
+        'id_department',
         'start_date',
         'end_date',
 

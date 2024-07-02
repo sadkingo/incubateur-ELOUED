@@ -9,6 +9,8 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Repositories\Student\StudentRepository;
 use App\Http\Requests\Auth\RegisterStudentRequest;
+use App\Models\Departement;
+use App\Models\Faculty;
 use App\Repositories\Attendence\AttendenceRepository;
 
 class RegisterController extends Controller
@@ -30,7 +32,9 @@ class RegisterController extends Controller
 
     public function registerForm()
     {
-        return view('auth.student.register');
+        $faculties = Faculty::all();
+        $departments = Departement::all();
+        return view('auth.student.register', compact('faculties', 'departments'));
     }
 
     public function register(RegisterStudentRequest $request){

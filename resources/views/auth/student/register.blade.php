@@ -372,13 +372,14 @@
                                             </small>
                                         @enderror
                                     </div>
-                                    <div class="col-sm-12 col-md-6 mb-2">
-                                        <label for="faculty"
-                                            class="form-label">{{ trans('auth/student.faculty') }}</label>
-                                        <input type="text"
-                                            class="form-control faculty @error('faculty') is-invalid @enderror" name="faculty"
-                                            value="{{ old('faculty') }}"
-                                            placeholder="{{ trans('auth/student.placeholder.faculty') }}">
+                                    {{-- <div class="col-sm-12 col-md-6 mb-2">
+                                        <label for="faculty" class="form-label">{{ trans('auth/student.faculty') }}</label>
+                                        <select class="form-select" id="faculty" name="faculty" value="{{ old('faculty') }}">
+                                            <option value="">{{trans('auth/student.select.faculty')}}</option>
+                                            @foreach ($faculties as $faculty)
+                                                <option value="{{$faculty->id}}">{{$faculty->name_ar}}</option>
+                                            @endforeach
+                                        </select>
                                         @error('faculty')
                                             <small class="text-danger d-block">
                                                 {{ $message }}
@@ -386,18 +387,49 @@
                                         @enderror
                                     </div>
                                     <div class="col-sm-12 col-md-6 mb-2">
-                                        <label for="department"
-                                            class="form-label">{{ trans('auth/student.department') }}</label>
-                                        <input type="text"
-                                            class="form-control department @error('department') is-invalid @enderror" name="department"
-                                            value="{{ old('department') }}"
-                                            placeholder="{{ trans('auth/student.placeholder.department') }}">
+                                        <label for="department" class="form-label">{{ trans('auth/student.department') }}</label>
+                                        <select class="form-select" id="department" name="department" value="{{ old('department') }}">
+                                            <option value="">{{trans('auth/student.select.department')}}</option>
+                                            @foreach ($departments as $department)
+                                                <option value="{{$department->id}}" data-faculty-id="{{$department->faculty_id}}">{{$department->name_ar}}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('department')
+                                            <small class="text-danger d-block">
+                                                {{ $message }}
+                                            </small>
+                                        @enderror
+                                    </div> --}}
+                                    
+                                    <div class="col-sm-12 col-md-6 mb-2">
+                                        <label for="faculty" class="form-label">{{ trans('auth/student.faculty') }}</label>
+                                        <select class="form-select" id="faculty" name="faculty" value="{{ old('faculty') }}">
+                                            <option value="">{{trans('auth/student.select.faculty')}}</option>
+                                            @foreach ($faculties as $faculty)
+                                                <option value="{{$faculty->name_fr}}">{{$faculty->name_ar}}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('faculty')
+                                            <small class="text-danger d-block">
+                                                {{ $message }}
+                                            </small>
+                                        @enderror
+                                    </div>
+                                    <div class="col-sm-12 col-md-6 mb-2">
+                                        <label for="department" class="form-label">{{ trans('auth/student.department') }}</label>
+                                        <select class="form-select" id="department" name="department" value="{{ old('department') }}">
+                                            <option value="">{{trans('auth/student.select.department')}}</option>
+                                            @foreach ($departments as $department)
+                                                <option value="{{$department->name_fr}}" >{{$department->name_ar}}</option>
+                                            @endforeach
+                                        </select>
                                         @error('department')
                                             <small class="text-danger d-block">
                                                 {{ $message }}
                                             </small>
                                         @enderror
                                     </div>
+                                    
                                     {{-- <div class="col-sm-12 col-md-3 mb-2">
                                         <label for="start_date"
                                             class="form-label">{{ trans('auth/student.start_date') }}</label>
@@ -566,6 +598,7 @@
                                             class="form-label">{{ trans('auth/student.registration_number') }}</label>
                                         <input type="text" class="form-control" id="registration_number" disabled>
                                     </div>
+                                    
                                     {{-- <div class="col-sm-12 col-md-6 mb-2">
                                         <label for="group"
                                             class="form-label">{{ trans('auth/student.group') }}</label>
@@ -600,5 +633,5 @@
             </div>
         </div>
     </div>
-    </div>
+    </div>    
 @endsection
