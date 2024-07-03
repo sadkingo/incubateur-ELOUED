@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Supervisor;
 
 use App\Http\Controllers\Controller;
+use App\Models\Departement;
+use App\Models\Faculty;
 use App\Models\Project;
 use App\Models\SupervisingTeacher;
 use App\Models\SupervisingTeacherProject;
@@ -25,9 +27,12 @@ class SupervisingTeacherController extends Controller
         $this->students = $students;
     }
     public function create(){
+
         $student = $this->students->find(auth('student')->id());
         $supervisors = SupervisingTeacher::where('departement', $student->department)->paginate(2); 
-        return view('supervisor.create', compact('supervisors'));
+        $faculties = Faculty::all();
+        $departments = Departement::all();
+        return view('supervisor.create', compact('supervisors','faculties','departments'));
     }
     
 

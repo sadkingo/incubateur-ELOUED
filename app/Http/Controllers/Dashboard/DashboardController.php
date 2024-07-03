@@ -9,6 +9,7 @@ use App\Models\Project;
 use App\Models\Student;
 use App\Models\StudentGroup;
 use App\Models\Test;
+use App\Models\Faculty;
 use App\Repositories\Admin\AdminRepository;
 use App\Repositories\Student\StudentRepository;
 use App\Repositories\Subject\SubjectRepository;
@@ -42,6 +43,7 @@ class DashboardController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request){
+       
         $today = now();
         $selectedYear = $request->input('year', $today->year);      
         $years = [];
@@ -76,12 +78,10 @@ class DashboardController extends Controller
             ->pluck('count')
             ->first();
         
-        // إحصاءات المشاريع حسب التصنيف
         $miniProjectCount = Project::where('project_classification', 1)->count();
         $startupProjectCount = Project::where('project_classification', 2)->count();
         $patentProjectCount = Project::where('project_classification', 3)->count();
     
-        // إحصاءات الطلاب المتحصلين على لابل "مؤسسة ناشئة" و"براءة اختراع"
         $startupLabelStudentsCount = Project::where('project_classification', 2)
                   ->where('project_tracking', 5)
                   ->where('status_project_tracking', 2)
@@ -139,7 +139,6 @@ class DashboardController extends Controller
             ]
         ];
     
-        // إحصاءات المشاريع حسب التصنيف
         $chartProjectClassificationData = [
             'labels' => [
                 trans('dashboard.Mini Project'),
@@ -177,8 +176,8 @@ class DashboardController extends Controller
                 ]
             ]
         ];
-    
-        return view('content.dashboard.dashboards-analytics',
+
+             return view('content.dashboard.dashboards-analytics',
             compact(
                 'acceptedProject',
                 'uniqueYears',
@@ -203,12 +202,15 @@ class DashboardController extends Controller
                 'compledProject',
                 'projectsBySelectedYear', 
                 'selectedYear',
-                'chartProjectClassificationData',  // إضافة هذا المتغير هنا
-                'startupLabelStudentsCount',       // إضافة هذا المتغير هنا
-                'patentLabelStudentsCount'         // إضافة هذا المتغير هنا
+                'chartProjectClassificationData',  
+                'startupLabelStudentsCount',       
+                'patentLabelStudentsCount',
+                 
+                
             )
         );
     }
+    
     
     
     

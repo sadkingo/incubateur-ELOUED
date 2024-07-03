@@ -150,5 +150,9 @@ class Student extends Authenticatable
     {
         return $this->hasMany(Project::class);
     }
-    // Evaluation
+    
+    public function department()
+    {
+        return $this->belongsTo(Departement::class);
+    }
 }

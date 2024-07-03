@@ -54,7 +54,10 @@ return [
     'Students with Patent Project Label' => 'الطلاب الحاصلين على لابل براءة اختراع',
     'Startup Label Students' => 'لابل مؤسسة نائشة',
     'Patent Label Students' => 'براءة اختراع',
-
+    'Project Classification by Faculty' => 'تصنيف المشروعات حسب الكلية',
+    'Mini Projects by Faculty' => 'مشاريع مصغرة حسب الكلية',
+    'Startup Projects by Faculty' => 'مشاريع ناشئة حسب الكلية',
+    'Patent Projects by Faculty' => 'براءات اختراع حسب الكلية',
 
 
 ];

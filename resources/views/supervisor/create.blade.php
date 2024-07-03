@@ -51,7 +51,6 @@
                     </tbody>
                 </table>
         
-                <!-- روابط الترقيم -->
                 <div class="d-flex justify-content-center">
                     {{ $supervisors->links() }}
                 </div>
@@ -125,6 +124,34 @@
                         @enderror
                     </div>
                     <div class="col-sm-12 col-md-3 mb-2">
+                        <label for="faculty" class="form-label">{{ trans('auth/student.faculty') }}</label>
+                        <select class="form-select" id="faculty" name="faculty" value="{{ old('faculty') }}">
+                            <option value="">{{trans('auth/student.select.faculty')}}</option>
+                            @foreach ($faculties as $faculty)
+                                <option value="{{$faculty->name_fr}}">{{$faculty->name_ar}}</option>
+                            @endforeach
+                        </select>
+                        @error('faculty')
+                            <small class="text-danger d-block">
+                                {{ $message }}
+                            </small>
+                        @enderror
+                    </div>
+                    <div class="col-sm-12 col-md-3 mb-2">
+                        <label for="department" class="form-label">{{ trans('auth/student.department') }}</label>
+                        <select class="form-select" id="department" name="department" value="{{ old('department') }}">
+                            <option value="">{{trans('auth/student.select.department')}}</option>
+                            @foreach ($departments as $department)
+                                <option value="{{$department->name_fr}}" >{{$department->name_ar}}</option>
+                            @endforeach
+                        </select>
+                        @error('department')
+                            <small class="text-danger d-block">
+                                {{ $message }}
+                            </small>
+                        @enderror
+                    </div>
+                    {{-- <div class="col-sm-12 col-md-3 mb-2">
                         <label for="faculty" class="form-label">{{ trans('supervisor.faculty') }}</label>
                         <input type="text" class="form-control @error('faculty') is-invalid @enderror" name="faculty" value="{{ old('faculty') }}">
                         @error('faculty')
@@ -133,11 +160,12 @@
                     </div>
                     <div class="col-sm-12 col-md-3 mb-2">
                         <label for="departement" class="form-label">{{ trans('supervisor.departement') }}</label>
+                        
                         <input type="text" class="form-control @error('departement') is-invalid @enderror" name="departement" value="{{ old('departement') }}">
                         @error('departement')
                         <small class="text-danger d-block mt-1">{{ $message }}</small>
                         @enderror
-                    </div>
+                    </div> --}}
                     <div class="col-sm-12 col-md-3 mb-2">
                         <label for="grade" class="form-label">{{ trans('supervisor.grade') }}</label>
                         <input type="text" class="form-control @error('grade') is-invalid @enderror" name="grade" value="{{ old('grade') }}">
