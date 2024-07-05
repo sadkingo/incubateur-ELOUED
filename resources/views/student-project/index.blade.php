@@ -50,6 +50,7 @@
                                             <th scope="col">{{trans('project.label.name')}}</th>
                                             <th scope="col">{{ trans('project.status_project.status')}}</th>
                                             <th scope="col">{{ trans('project.status_project.status')}}</th>
+                                            <th scope="col">{{trans('project.administrative_file')}}</th>
                                             <th scope="col">{{ trans('app.actions') }}</th>
                                         </tr>
                                     </thead>
@@ -90,6 +91,21 @@
                                                     @else
                                                         <span class="text-warning">{{ trans('project.classification.no_classifi') }}</span>
                                                     @endif
+                                                </td>
+                                                <td>
+                                                    @if($project->project_classification == 1 || $project->project_classification == 2 )
+                                                        @if($project->status != 2 )
+                                                            {{trans('project.administrative.emty')}}
+                                                        @else
+                                                            @if($project->administrative_file == null)
+                                                                <a href="{{url('project/administrative/'.$project->id.'/add')}}" class="btn btn-primary text-white">{{trans('project.administrative.add')}}</a>    
+                                                            @else
+                                                                {{trans('project.administrative.ok')}} 
+                                                            @endif                                                           
+                                                        @endif
+                                                    @else
+                                                        {{trans('project.administrative.emty')}}
+                                                    @endif    
                                                 </td>
                                                 <td>
                                                     

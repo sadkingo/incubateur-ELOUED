@@ -38,7 +38,7 @@ class SupervisingTeacherController extends Controller
 
     public function store(Request $request){
         $student = $this->students->find(auth('student')->id());
-    
+//dd($request);    
         $validator = Validator::make($request->all(), [
             'firstname_ar' => ['required', 'regex:/^[\p{Arabic}\s]+$/u'],
             'lastname_ar'  => ['required', 'regex:/^[\p{Arabic}\s]+$/u'],
@@ -91,7 +91,7 @@ class SupervisingTeacherController extends Controller
         $supervisor->role = $request->input('supervisor_role');
         $supervisor->id_student = $student->id;
         $supervisor->save();
-    
+        dd($supervisor);
         $project = Project::where('id_student', $student->id)->first();
         if ($project) {
             $supervisorProject = new SupervisingTeacherProject;

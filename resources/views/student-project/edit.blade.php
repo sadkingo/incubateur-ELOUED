@@ -111,15 +111,16 @@
                         
                         <div class="col-sm-12 col-md-6 mb-2">
                             <label for="video" class="form-label">{{ trans('auth/project.project_video') }}</label>
-                            <input type="file" dir="ltr" class="form-control @error('video') is-invalid @enderror"
+                            <input type="text" dir="ltr" class="form-control @error('video') is-invalid @enderror"
                                    name="video" value="{{ old('video') }}"
                                    placeholder="{{ trans('auth/project.placeholder.video') }}">
                             <div class="col-lg-4 col-md-4 col-sm-6 mb-4">
-                                <video controls class="w-100 shadow-1-strong rounded mb-4">
-                                    <source src="{{ asset('storage/public/projects/videos/'.$project->video) }}" type="video/mp4">
-                                    <source src="{{ asset('storage/public/projects/videos/'.$project->video) }}" type="video/ogg">
+                                <a href="{{ url($project->video) }}" class="text-black" target="_blank">{{ trans('project.label.download_video')}}</a>
+                                {{-- <video controls class="w-100 shadow-1-strong rounded mb-4">
+                                    <source src="{{ url($project->video) }}" type="video/mp4">
+                                    <source src="{{ url($project->video) }}" type="video/ogg">
                                         {{ trans('auth/project.video_not_supported') }}
-                                </video>
+                                </video> --}}
                             </div>
                                    
                             @error('video')

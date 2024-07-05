@@ -174,6 +174,9 @@ Route::name('student.')->middleware('auth:student')->group(function () {
 
     // });
 });
+Route::get('project/administrative/{id}/add', [ProjectController::class, 'administrative'])->name('project.administrative');
+Route::post('project/administrative/{id}/store', [ProjectController::class, 'storeAdministrative'])->name('project.administrative');
+
 Route::get('print/certificate/{project_id}', [PrintController::class, 'generateCertificate'])->name('print.certificate');
 Route::get('print/certificate/{project_id}/{student_id?}', [PrintController::class, 'generateStudentCertificate'])->name('print.certificate');
 

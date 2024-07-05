@@ -25,6 +25,12 @@
         'no_classifi' => 'لم يتم تصنيف مشروعك بعد ',
     ],
     'project_tracking' => 'تتبع المشروع',
+    'administrative_file' => 'الملف الاداري',
+    'administrative' =>[
+        'emty' => 'لابد ان يقبل مشروع في الاول',
+        'add'  => 'ادخل ملفك الاداري',
+        'ok' => 'تم رفع الملف',
+    ],
     'status_project' =>[
         'status' => 'حالة المشروع',
         'bcm_status' => 'حالة bmc',
@@ -53,6 +59,7 @@
     'status_project_tracking' => "حالة تتبع المشروع ",
     'edit_project_classification' => 'تعديل تصنيف المشروع',
     'patent' => 'براءة اختراع',
+    'mini_project' => 'مؤسسة مصغرة',
     'start_up' => 'مؤسسة ناشئة',
     'edit_project_tracking' => 'التعديل على تتبع المشروع',
     'edit_status_project_tracking' => 'تعدل على حالة تتبع المشروع',
@@ -65,7 +72,8 @@
         'download_bmc' => "تحميل ملف bmc",
         'project_video' => 'فيديو المشروع',
         'download_video' => 'تحميل فيديو ',
-        "type_project" => "نوع المشروع"
+        "type_project" => "نوع المشروع",
+        "cassification_project" => "تصنيف المشروع",
         
     ],
 

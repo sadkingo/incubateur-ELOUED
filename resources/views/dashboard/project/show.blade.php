@@ -59,16 +59,31 @@
                     <div class="text-start mb-1-6 wow fadeIn">
                         <h2 class="h1 mb-0 text-primary">
                             {{ trans('project.label.type_project') }}:<span class="mb-0 text-black">
-                                @if($project->type_project === 'commercial') {{trans('auth/project.project_commercial')}}
+                                @if($project->type_project == null) {{trans('auth/project.type_null')}}
+                                @elseif($project->type_project === 'commercial') {{trans('auth/project.project_commercial')}}
                                 @elseif($project->type_project === 'industrial') {{trans('auth/project.project_industrial')}}
                                 @elseif($project->type_project === 'agricultural') {{trans('auth/project.project_agricultural')}}
-                                @else {{trans('project_service')}}
+                                @else {{trans('auth/project.project_service')}}
                                 @endif
                         </span> 
                         </h2>
                     </div>
                     <br>
-                    
+                </div>
+
+                <div class="mb-5 wow fadeIn">
+                    <div class="text-start mb-1-6 wow fadeIn">
+                        <h2 class="h1 mb-0 text-primary">
+                            {{ trans('project.label.cassification_project') }}:<span class="mb-0 text-black">
+                                @if($project->project_classification == null) {{trans('auth/project.classification_null')}}
+                                @elseif($project->project_classification  === 1) {{trans('project.mini_project')}}
+                                @elseif($project->project_classification  === 2) {{trans('project.start_up')}}
+                                @elseif($project->project_classificationt === 3) {{trans('project.patent')}}
+                                @endif
+                        </span> 
+                        </h2>
+                    </div>
+                    <br>
                 </div>
                 
                 
@@ -87,25 +102,32 @@
                     </div>
                     
                 </div>
-                <div class="wow fadeIn">
-                    <div class="text-start mb-1-6 wow fadeIn">
-                        <h2 class="mb-0 text-primary">{{trans('project.label.bmc_project')}}</h2>
-                    </div>
-                    <a href="{{ asset('storage/public/projects/bmc/'.$project->bmc) }}" class="text-black" target="_blank">{{ trans('project.label.download_bmc')}}</a>
-                </div>
-                <br>
-                
+                @if($project->bmc != null)
+                    @if( $project->bmc_status == 2)
+                        <div class="wow fadeIn">
+                            <div class="text-start mb-1-6 wow fadeIn">
+                                <h2 class="mb-0 text-primary">{{trans('project.label.bmc_project')}}</h2>
+                            </div>
+                            <a href="{{ asset('storage/public/projects/bmc/'.$project->bmc) }}" class="text-black" target="_blank">{{ trans('project.label.download_bmc')}}</a>
+                        </div>
+                        <br>
+                    @else
+                        edit
+                    @endif        
+                @endif    
                 <div class="wow fadeIn">
                     <div class="text-start mb-1-6 wow fadeIn">
                         <h2 class="mb-0 text-primary">{{trans('project.label.project_video')}}</h2>
                     </div>
                     <br>
                     <div class="col-lg-4 col-md-4 col-sm-6 mb-4 ">
-                        <video controls class="w-100 shadow-1-strong rounded mb-4">
+                        <a href="{{ url($project->video) }}" class="text-black" target="_blank">{{ trans('project.label.download_video')}}</a>
+                        {{-- <video controls class="w-100 shadow-1-strong rounded mb-4">
                             <source src="{{ asset('storage/public/projects/videos/'.$project->video) }}" type="video/mp4">
                             <source src="{{ asset('storage/public/projects/videos/'.$project->video) }}" type="video/ogg">
                                 {{ trans('auth/project.video_not_supported') }}
-                        </video>
+                        </video> --}}
+                        
                     </div>    
                     {{-- <a href="{{ asset('storage/public/projects/videos/'.$project->video) }}" class="text-black" target="_blank">{{ trans('project.label.download_video')}}</a> --}}
                 </div>

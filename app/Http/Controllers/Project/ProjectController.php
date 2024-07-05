@@ -59,7 +59,7 @@ class ProjectController extends Controller
             'description' => 'required|max:5000', 
             'project_image.*' => 'required|mimes:png,jpeg,jpg',
             // 'bmc' => 'required|max:10000|mimes:pdf,ppt,pptx', 
-            'video' => 'required|max:10240|mimes:mp4,mov,avi',    
+            'video' => 'required',    
         ], [
             'name_project.required' => "The name is required",
             'description.required' => 'The description is required',
@@ -75,17 +75,18 @@ class ProjectController extends Controller
         $project = new Project;
         $project->name = $request->input('name_project');
         $project->description = $request->input('description');
+        $project->video = $request->input('video');
         // $project->type_project = $request->input('project_type');
 
-        if ($request->hasFile('video')) {
-            $video = $request->file('video');
-            if ($video->getSize() > 10240000) {
-                return back()->withErrors(['video' => 'The video file must be less than 10MB.'])->withInput();
-            }
-            $videoName = time() . '_video.' . $video->getClientOriginalExtension();
-            $video->storeAs("public/public/projects/videos", $videoName);
-            $project->video = $videoName;
-        }
+        // if ($request->hasFile('video')) {
+        //     $video = $request->file('video');
+        //     if ($video->getSize() > 10240000) {
+        //         return back()->withErrors(['video' => 'The video file must be less than 10MB.'])->withInput();
+        //     }
+        //     $videoName = time() . '_video.' . $video->getClientOriginalExtension();
+        //     $video->storeAs("public/public/projects/videos", $videoName);
+        //     
+        // }
 
         // if ($request->hasFile('bmc')) {
         //     $bmc = $request->file('bmc');
@@ -295,5 +296,37 @@ class ProjectController extends Controller
         return redirect()->route('student.index');
     }
 
+    public function administrative($id){
+        $project = Project::find($id);
+        if($project){
+            return view('student-project.administrative',compact('project'));
+        }
+    }
+
+    public function storeAdministrative(Request $request, $id){
+        $project = Project::find($id);
+        if($project){
+            $validator = Validator::make($request->all(), [
+                'administrative' => 'required|mimes:pdf', 
+                    
+            ], [
+                'administrative.required' => 'The Administrative file is required.',
+                
+            ]);
+            if ($request->hasFile('administrative')) {
+                $administrative = $request->file('administrative');
+                // if ($bmc->getSize() > 10000000) {
+                //     return back()->withErrors(['bmc' => 'The BMC file must be less than 10MB.'])->withInput();
+                // }
+                $administrativeName = time() . '_administrative.' . $administrative->getClientOriginalExtension();
+                $administrative->storeAs('public/public/projects/administrative/', $administrativeName);
+                $project->administrative_file = $administrativeName;
+                $project->save();
+                toastr()->success(trans('message.success.create'));
+                return redirect()->route('student.index');            
+            } 
+        }
+
+    }
    
 }

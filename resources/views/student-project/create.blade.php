@@ -99,7 +99,7 @@
                         </div>
                         <div class="col-sm-12 col-md-6 mb-2">
                             <label for="video" class="form-label">{{ trans('auth/project.project_video') }}</label>
-                            <input type="file" dir="ltr" class="form-control @error('video') is-invalid @enderror"
+                            <input type="text" dir="ltr" class="form-control @error('video') is-invalid @enderror"
                                    name="video" value="{{ old('video') }}"
                                    placeholder="{{ trans('auth/project.placeholder.video') }}">
                             @error('video')
