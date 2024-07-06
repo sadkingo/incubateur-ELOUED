@@ -31,6 +31,7 @@ use App\Http\Controllers\Dashboard\ExcelImport\ExcelImportController;
 use App\Http\Controllers\Dashboard\Project\ProjetController;
 use App\Http\Controllers\Project\ProjectController;
 use App\Http\Controllers\Supervisor\SupervisingTeacherController;
+use App\Http\Controllers\Supervisor\SupervisorController;
 use App\Http\Controllers\Teacher\TeacherDashboardController;
 
 /*
@@ -161,8 +162,6 @@ Route::name('student.')->middleware('auth:student')->group(function () {
     Route::get('student/{student_id}', [StudentDashboardController::class, 'indexAdmin'])->name('index.admin');
     Route::resource('account', AccountController::class);
     Route::resource('project', ProjectController::class);
-    // Route::get('project/{id}/addBmc', [ProjectController::class, 'addBmcFile'])->name('student-project.addBmc');
-
     Route::resource('supervisor', SupervisingTeacherController::class);
     Route::post('notes', [NoteController::class, 'store'])->name('notes.store');
     Route::delete('account/{id}', [AccountController::class, 'destroy'])->name('account.destroy');
@@ -170,10 +169,8 @@ Route::name('student.')->middleware('auth:student')->group(function () {
     Route::post('supervisor/assign/{id}', [SupervisingTeacherController::class, 'assign'])->name('supervisor.assign');
     
     Route::get('student/certificates/{id}', [StudentController::class, 'certificates'])->name('certificates');
-    // Route::prefix('print')->name('print.')->group(function () {
-
-    // });
 });
+
 Route::get('project/administrative/{id}/add', [ProjectController::class, 'administrative'])->name('project.administrative');
 Route::post('project/administrative/{id}/store', [ProjectController::class, 'storeAdministrative'])->name('project.administrative');
 

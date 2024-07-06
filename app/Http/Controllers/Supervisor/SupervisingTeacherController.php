@@ -11,7 +11,7 @@ use App\Models\SupervisingTeacherProject;
 use Illuminate\Http\Request;
 use App\Repositories\Student\StudentRepository;
 use Illuminate\Support\Facades\Validator;
-
+use Illuminate\Support\Facades\DB;
 class SupervisingTeacherController extends Controller
 {
     private $students;
@@ -36,9 +36,9 @@ class SupervisingTeacherController extends Controller
     }
     
 
+
     public function store(Request $request){
-        $student = $this->students->find(auth('student')->id());
-//dd($request);    
+        $student = $this->students->find(auth('student')->id());   
         $validator = Validator::make($request->all(), [
             'firstname_ar' => ['required', 'regex:/^[\p{Arabic}\s]+$/u'],
             'lastname_ar'  => ['required', 'regex:/^[\p{Arabic}\s]+$/u'],
@@ -47,7 +47,7 @@ class SupervisingTeacherController extends Controller
             'gender'       => 'required',
             'speciality'   => 'required',
             'faculty'      => 'required',
-            'departement'  => 'required',
+            'department'  => 'required',
             'grade'        => 'required',
             'phone'        => 'required',
             'email'        => 'required',
@@ -62,7 +62,7 @@ class SupervisingTeacherController extends Controller
             'gender.required' => 'Gender is required',
             'speciality.required' => 'Speciality is required',
             'faculty.required' => 'Faculty is required',
-            'departement.required' => 'Departement is required',
+            'department.required' => 'department is required',
             'grade.required' => 'Grade is required',
             'phone.required' => 'Phone is required',
             'email.required' => 'Email is required',
@@ -86,12 +86,11 @@ class SupervisingTeacherController extends Controller
         $supervisor->gender = $request->input('gender');
         $supervisor->speciality = $request->input('speciality');
         $supervisor->faculty = $request->input('faculty');
-        $supervisor->departement = $request->input('departement');
+        $supervisor->departement = $request->input('department');
         $supervisor->grade = $request->input('grade');
         $supervisor->role = $request->input('supervisor_role');
         $supervisor->id_student = $student->id;
         $supervisor->save();
-        dd($supervisor);
         $project = Project::where('id_student', $student->id)->first();
         if ($project) {
             $supervisorProject = new SupervisingTeacherProject;

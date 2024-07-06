@@ -11,6 +11,7 @@ class SupervisingTeacher extends Model
 {
     use HasFactory, SoftDeletes;
 
+   // protected $table = 'supervising_teachers';
     protected $fillable = [
         'firstname_ar',
         'firstname_fr',
@@ -20,7 +21,6 @@ class SupervisingTeacher extends Model
         'grade',
         'phone',
         'email',
-        'photo',
         'speciality',
         'faculty',
         'departement',
