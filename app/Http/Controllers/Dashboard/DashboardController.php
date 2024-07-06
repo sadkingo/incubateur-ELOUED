@@ -177,7 +177,246 @@ class DashboardController extends Controller
             ]
         ];
 
-             return view('content.dashboard.dashboards-analytics',
+        $miniProjectsInTraining = Project::where('project_classification', 1)
+            ->where('project_tracking', 1)
+            ->where('status_project_tracking', 1)
+            ->count();
+
+        $miniProjectsUnderTraining = Project::where('project_classification', 1)
+            ->where('project_tracking', 1)
+            ->where('status_project_tracking', 2)
+            ->count();
+
+        $miniProjectsCompleted = Project::where('project_classification', 1)
+            ->where('project_tracking', 1)
+            ->where('status_project_tracking', 3)
+            ->count();
+
+          
+        $miniProjectStages = [
+                'training' => [
+                    'in_training' => Project::where('project_classification', 1)
+                        ->where('project_tracking', 1)
+                        ->where('status_project_tracking', 1)
+                        ->count(),
+                    'completed_training' => Project::where('project_classification', 1)
+                        ->where('project_tracking', 1)
+                        ->where('status_project_tracking', 2)
+                        ->count(),
+                    'not_trained' => Project::where('project_classification', 1)
+                        ->where('project_tracking', 1)
+                        ->where('status_project_tracking', 3)
+                        ->count(),
+                ],
+                'bmc_creation' => [
+                    'in_progress' => Project::where('project_classification', 1)
+                        ->where('project_tracking', 2)
+                        ->where('status_project_tracking', 1)
+                        ->count(),
+                    'completed' => Project::where('project_classification', 1)
+                        ->where('project_tracking', 2)
+                        ->where('status_project_tracking', 2)
+                        ->count(),
+                    'not_completed' => Project::where('project_classification', 1)
+                        ->where('project_tracking', 2)
+                        ->where('status_project_tracking', 3)
+                        ->count(),
+                ],
+                'prototype_preparation' => [
+                    'in_progress' => Project::where('project_classification', 1)
+                        ->where('project_tracking', 3)
+                        ->where('status_project_tracking', 1)
+                        ->count(),
+                    'completed' => Project::where('project_classification', 1)
+                        ->where('project_tracking', 3)
+                        ->where('status_project_tracking', 2)
+                        ->count(),
+                    'not_completed' => Project::where('project_classification', 1)
+                        ->where('project_tracking', 3)
+                        ->where('status_project_tracking', 3)
+                        ->count(),
+                ],
+                'discussion' => [
+                    'not_discussed' => Project::where('project_classification', 1)
+                        ->where('project_tracking', 4)
+                        ->where('status_project_tracking', 1)
+                        ->count(),
+                    'discussed' => Project::where('project_classification', 1)
+                        ->where('project_tracking', 4)
+                        ->where('status_project_tracking', 2)
+                        ->count(),
+                ],
+                'innovative_project_label' => [
+                    'completed' => Project::where('project_classification', 1)
+                        ->where('project_tracking', 5)
+                        ->where('status_project_tracking', 2)
+                        ->count(),
+                    'not_completed' => Project::where('project_classification', 1)
+                        ->where('project_tracking', 5)
+                        ->where('status_project_tracking', 3)
+                        ->count(),
+                ],
+                'final_discussion' => [
+                    'not_received' => Project::where('project_classification', 1)
+                        ->where('project_tracking', 6)
+                        ->where('status_project_tracking', 1)
+                        ->count(),
+                    'received' => Project::where('project_classification', 1)
+                        ->where('project_tracking', 6)
+                        ->where('status_project_tracking', 2)
+                        ->count(),
+                    'withdrawn' => Project::where('project_classification', 1)
+                        ->where('project_tracking', 6)
+                        ->where('status_project_tracking', 3)
+                        ->count(),
+                ],
+        ];
+    
+        $startupProjectStages = [
+                'training' => [
+                    'in_training' => Project::where('project_classification', 2)
+                        ->where('project_tracking', 1)
+                        ->where('status_project_tracking', 1)
+                        ->count(),
+                    'completed_training' => Project::where('project_classification', 2)
+                        ->where('project_tracking', 1)
+                        ->where('status_project_tracking', 2)
+                        ->count(),
+                    'not_trained' => Project::where('project_classification', 2)
+                        ->where('project_tracking', 1)
+                        ->where('status_project_tracking', 3)
+                        ->count(),
+                ],
+                'bmc_creation' => [
+                    'in_progress' => Project::where('project_classification', 2)
+                        ->where('project_tracking', 2)
+                        ->where('status_project_tracking', 1)
+                        ->count(),
+                    'completed' => Project::where('project_classification', 2)
+                        ->where('project_tracking', 2)
+                        ->where('status_project_tracking', 2)
+                        ->count(),
+                    'not_completed' => Project::where('project_classification', 2)
+                        ->where('project_tracking', 2)
+                        ->where('status_project_tracking', 3)
+                        ->count(),
+                ],
+                'prototype_preparation' => [
+                    'in_progress' => Project::where('project_classification', 2)
+                        ->where('project_tracking', 3)
+                        ->where('status_project_tracking', 1)
+                        ->count(),
+                'completed' => Project::where('project_classification', 2)
+                        ->where('project_tracking', 3)
+                        ->where('status_project_tracking', 2)
+                        ->count(),
+                'not_completed' => Project::where('project_classification', 2)
+                        ->where('project_tracking', 3)
+                        ->where('status_project_tracking', 3)
+                        ->count(),
+                ],
+            'discussion' => [
+                'not_discussed' => Project::where('project_classification', 2)
+                    ->where('project_tracking', 4)
+                    ->where('status_project_tracking', 1)
+                    ->count(),
+                'discussed' => Project::where('project_classification', 2)
+                    ->where('project_tracking', 4)
+                    ->where('status_project_tracking', 2)
+                    ->count(),
+                ],
+            'startup_project_label' => [
+                'completed' => Project::where('project_classification', 2)
+                    ->where('project_tracking', 5)
+                    ->where('status_project_tracking', 2)
+                    ->count(),
+                'not_completed' => Project::where('project_classification', 2)
+                    ->where('project_tracking', 5)
+                    ->where('status_project_tracking', 3)
+                    ->count(),
+                ],
+            'final_discussion' => [
+                'not_received' => Project::where('project_classification', 2)
+                    ->where('project_tracking', 6)
+                    ->where('status_project_tracking', 1)
+                    ->count(),
+                'received' => Project::where('project_classification', 2)
+                    ->where('project_tracking', 6)
+                    ->where('status_project_tracking', 2)
+                    ->count(),
+                'withdrawn' => Project::where('project_classification', 2)
+                    ->where('project_tracking', 6)
+                    ->where('status_project_tracking', 3)
+                    ->count(),
+            ],
+        ];
+    
+        $patentStages = [
+            'initial_model_preparation' => [
+                'in_progress' => Project::where('project_classification', 3)
+                    ->where('project_tracking', 1)
+                    ->where('status_project_tracking', 1)
+                    ->count(),
+                'completed' => Project::where('project_classification', 3)
+                    ->where('project_tracking', 1)
+                    ->where('status_project_tracking', 2)
+                    ->count(),
+                'not_completed' => Project::where('project_classification', 3)
+                    ->where('project_tracking', 1)
+                    ->where('status_project_tracking', 3)
+                    ->count(),
+            ],
+            'descriptive_model_writing' => [
+                'no' => Project::where('project_classification', 3)
+                    ->where('project_tracking', 2)
+                    ->where('status_project_tracking', 1)
+                    ->count(),
+                'yes' => Project::where('project_classification', 3)
+                    ->where('project_tracking', 2)
+                    ->where('status_project_tracking', 2)
+                    ->count(),
+            ],
+            'patent_application' => [
+                'applied' => Project::where('project_classification', 3)
+                    ->where('project_tracking', 3)
+                    ->where('status_project_tracking', 0)
+                    ->count(),
+            ],
+            'patent_registration_certificate' => [
+                'not_received' => Project::where('project_classification', 3)
+                    ->where('project_tracking', 4)
+                    ->where('status_project_tracking', 1)
+                    ->count(),
+                'received' => Project::where('project_classification', 3)
+                    ->where('project_tracking', 4)
+                    ->where('status_project_tracking', 2)
+                    ->count(),
+            ],
+            'INAPI_comments' => [
+                'not_received' => Project::where('project_classification', 3)
+                    ->where('project_tracking', 5)
+                    ->where('status_project_tracking', 0)
+                    ->count(),
+            ],
+            'resubmit_amended_model' => [
+                'not_resubmitted' => Project::where('project_classification', 3)
+                    ->where('project_tracking', 6)
+                    ->where('status_project_tracking', 0)
+                    ->count(),
+            ],
+            'patent_grant' => [
+                'not_granted' => Project::where('project_classification', 3)
+                    ->where('project_tracking', 7)
+                    ->where('status_project_tracking', 1)
+                    ->count(),
+                'granted' => Project::where('project_classification', 3)
+                    ->where('project_tracking', 7)
+                    ->where('status_project_tracking', 2)
+                    ->count(),
+            ],
+        ];
+
+        return view('content.dashboard.dashboards-analytics',
             compact(
                 'acceptedProject',
                 'uniqueYears',
@@ -205,8 +444,12 @@ class DashboardController extends Controller
                 'chartProjectClassificationData',  
                 'startupLabelStudentsCount',       
                 'patentLabelStudentsCount',
-                 
-                
+                'miniProjectsInTraining',
+                'miniProjectsUnderTraining',
+                'miniProjectsCompleted',
+                'miniProjectStages',
+                'startupProjectStages',
+                'patentStages', 
             )
         );
     }

@@ -429,8 +429,109 @@
             </div>
         </div>
         <!--/ Chart for Projects by Year -->
-      
-    </div>
+        <!-- Mini Project Stages Statistics -->
+        <div class="col-md-6 col-lg-6 col-xl-6 order-4 mb-4">
+            <div class="card h-100">
+                <div class="card-header d-flex align-items-center justify-content-between pb-0">
+                    <div class="card-title mb-0">
+                        <h5 class="m-0 me-2">{{ trans('dashboard.Mini Project Stages Statistics') }}</h5>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <ul class="p-2 m-0">
+                        @foreach ($miniProjectStages as $stage => $data)
+                        <li class="d-flex mb-4 pb-1">
+                            <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                                <div class="me-2">
+                                    <h6 class="mb-0">
+                                        <i class="fas fa-project-diagram"></i> 
+                                        {{ trans("dashboard.$stage") }}
+                                    </h6>
+                                    @foreach ($data as $status => $count)
+                                    <small class="text-muted">
+                                        <i class="fas fa-tasks"></i> 
+                                        {{ trans("dashboard.$status") }}: {{ $count }}
+                                    </small><br>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!--/ Mini Project Stages Statistics -->
+        <!-- Startup Project Stages Statistics -->
+        <div class="col-md-6 col-lg-6 col-xl-6 order-4 mb-4">
+            <div class="card h-100">
+                <div class="card-header d-flex align-items-center justify-content-between pb-0">
+                    <div class="card-title mb-0">
+                        <h5 class="m-0 me-2">{{ trans('dashboard.Startup Project Stages Statistics') }}</h5>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <ul class="p-2 m-0">
+                        @foreach ($startupProjectStages as $stage => $data)
+                            <li class="d-flex mb-4 pb-1">
+                                <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                                    <div class="me-2">
+                                        <h6 class="mb-0">
+                                            <i class="fas fa-rocket"></i> 
+                                            {{ trans("dashboard.$stage") }}
+                                        </h6>
+                                        @foreach ($data as $status => $count)
+                                        <small class="text-muted">
+                                            <i class="fas fa-tasks"></i> 
+                                            {{ trans("dashboard.$status") }}: {{ $count }}
+                                        </small><br>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!--/ Startup Project Stages Statistics -->
+
+        <!-- Patent Stages Statistics -->
+        <div class="col-md-6 col-lg-6 col-xl-6 order-4 mb-4">
+            <div class="card h-100">
+                <div class="card-header d-flex align-items-center justify-content-between pb-0">
+                    <div class="card-title mb-0">
+                        <h5 class="m-0 me-2">{{ trans('dashboard.Patent Stages Statistics') }}</h5>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <ul class="p-2 m-0">
+                        @foreach ($patentStages as $stage => $data)
+                        <li class="d-flex mb-4 pb-1">
+                            <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                                <div class="me-2">
+                                    <h6 class="mb-0">
+                                        <i class="fas fa-lightbulb"></i> 
+                                        {{ trans("dashboard.$stage") }}
+                                    </h6>
+                                    @foreach ($data as $status => $count)
+                                    <small class="text-muted">
+                                        <i class="fas fa-tasks"></i> 
+                                        {{ trans("dashboard.$status") }}: {{ $count }}
+                                    </small><br>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!--/ Patent Stages Statistics -->
+    </div>   
+     
+    
 @endsection
 
 @section('js')
