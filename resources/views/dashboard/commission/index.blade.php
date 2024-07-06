@@ -51,11 +51,16 @@
                                                 <i class="bx bx-edit-alt me-2"></i>
                                                 {{ trans('commission.edit') }}
                                             </a>
+                                            <a class="dropdown-item" href="{{url('dashboard/commission/'.$commission->id.'/stat')}}" >
+                                                <i class="bx bx-edit-alt me-2"></i>
+                                                {{trans('commission.stat')}}
+                                            </a>
                                             <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
                                                 data-bs-target="#deleteCommissionModal{{ $commission->id }}">
                                                 <i class="bx bx-trash me-2"></i>
                                                 {{ trans('commission.delete') }}
                                             </a>
+
                                         </div>
                                     </div>
                                 </td>

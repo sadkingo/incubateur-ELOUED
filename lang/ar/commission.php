@@ -42,8 +42,9 @@ return [
     'email' => 'البريد الإلكتروني',
     'password' => 'كلمة السر',
     'confirme_password' => 'تأكيد كلمة السر',
-
-
+    'stat'  => 'احصاء اللجان',
+    'project_accepted' => 'عدد المشاريع المقبولة',
+    'projet_rejected' => 'عدد المشاريع المرفوضة',
     'placeholder' => [
         'name' => 'البحث بالإسم',
 

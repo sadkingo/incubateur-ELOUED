@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard\Commission;
 
 use App\Http\Controllers\Controller;
 use App\Models\Commission;
+use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -56,33 +57,25 @@ class CommissionController extends Controller{
         return view('dashboard.commission.edit', compact('commission'));
     }
 
-    // دالة update لتحديث بيانات العمولة
-    public function update(Request $request, $id)
-    {
-        // التحقق من صحة البيانات
+    public function update(Request $request, $id){
         $request->validate([
             'name_ar' => 'required|string|max:255',
             'name_fr' => 'required|string|max:255',
         ]);
 
-        // البحث عن السجل في قاعدة البيانات
         $commission = Commission::find($id);
         if (!$commission) {
             return redirect()->back()->with('error', 'Commission not found.');
         }
 
-        // تحديث بيانات العمولة
         $commission->name_ar = $request->input('name_ar');
         $commission->name_fr = $request->input('name_fr');
         $commission->save();
 
-        // إعادة التوجيه مع رسالة نجاح
         return redirect()->route('dashboard.commission.index')->with('success', trans('message.success.update'));
     }
 
-    // دالة destroy لحذف بيانات العمولة
-    public function destroy($id)
-    {
+    public function destroy($id){
         $commission = Commission::find($id);
         if (!$commission) {
             return redirect()->route('dashboard.commission.index')->with('error', 'Commission not found.');
@@ -91,5 +84,19 @@ class CommissionController extends Controller{
         $commission->delete();
 
         return redirect()->route('dashboard.commission.index')->with('success', trans('message.success.delete'));
+    }
+
+    public function stat($id){
+
+        $commission       = Commission::find($id);
+        $projectsAccepted = Project::where('id_commission', $id)
+                                    ->where('status',2)
+                                    ->count();
+        $projectsRejected =  Project::where('id_commission', $id)
+                                    ->where('status',0)
+                                    ->count();
+
+        return view('dashboard.commission.stat',compact('commission','projectsAccepted','projectsRejected'));                            
+        
     }
 }
