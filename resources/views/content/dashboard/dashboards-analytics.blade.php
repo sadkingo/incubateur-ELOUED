@@ -15,6 +15,13 @@
 @endsection
 
 @section('content')
+    <style>
+        .card-title h6 {
+            word-break: break-word; /* أو */
+            overflow-wrap: break-word; /* إذا كان لا يعمل */
+        }
+
+    </style>   
     <div class="row">
         <div class="col-lg-8 mb-4 order-0">
             <div class="card">
@@ -213,16 +220,17 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex justify-content-between flex-sm-row flex-column gap-3">
-                                <div class="d-flex flex-sm-column flex-row align-items-start justify-content-between">
+                                <div class="d-flex flex-sm-column flex-row align-items-start justify-content-between w-100">
                                     <div class="card-title">
-                                        <h5 class="text-nowrap mb-2">
-                                            {{ trans('dashboard.Number of students whose projects were accepted') }}</h5>
-                                        <span
-                                            class="badge bg-label-warning rounded-pill">{{ trans('dashboard.accepted') }}</span>
+                                        <h6 class="mb-2">
+                                            {{ trans('dashboard.Number of students whose projects were accepted') }}
+                                        </h6>
+                                        <span class="badge bg-label-warning rounded-pill">
+                                            {{ trans('dashboard.accepted') }}
+                                        </span>
                                     </div>
                                     <div class="mt-sm-auto">
-                                        <small class="text-success text-nowrap fw-semibold"><i
-                                                class='bx bx-chevron-up'></i> 1%</small>
+                                        <small class="text-success text-nowrap fw-semibold"><i class='bx bx-chevron-up'></i> 1%</small>
                                         <h3 class="mb-0">{{ $acceptedProject }}</h3>
                                     </div>
                                 </div>
@@ -231,6 +239,8 @@
                         </div>
                     </div>
                 </div>
+                
+                
             </div>
         </div>
     </div>

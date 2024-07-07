@@ -1,3 +1,8 @@
+<style>
+    .icon-text-spacing {
+    margin-left: 10px; 
+}
+</style>
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
 
     
@@ -44,7 +49,7 @@
             </li>
             <li class="menu-item {{ request()->routeIs('dashboard.commission.index') ? 'active' : '' }}">
                 <a href="{{ route('dashboard.commission.index') }}" class="menu-link">
-                    <i class="text-success menu-icon fa fa-users" aria-hidden="true"></i>
+                    <i class="text-warning menu-icon fa fa-user-tie" aria-hidden="true"></i>
                     <div>{{ trans('menu.commissions') }}</div>
                 </a>
             </li>
@@ -56,8 +61,8 @@
             </li>
             <li class="menu-item">
                 <a href="{{ route('dashboard.projet.index')}}" class="menu-link">
-                    <i class='bx bx-buildings bx-flip-horizontal' ></i>               
-                    <div >{{ trans('menu.projects') }}</div>
+                    <i class='bx bx-buildings bx-flip-horizontal' ></i>
+                    <div class="icon-text-spacing">{{ trans('menu.projects') }}</div>
                 </a>
             </li>
         @elseif(auth('student')->check())
@@ -75,7 +80,7 @@
             </li>
             <li class="menu-item {{ request()->routeIs('students.certificates') ? 'active' : '' }}">
                 <a href="{{ url('student/certificates/' . auth('student')->id()) }}" class="menu-link">
-                    <i class='bx bx-buildings bx-flip-horizontal' ></i>               
+                    <i class='bx bxs-certification bx-flip-horizontal'></i>              
                     <div>{{ trans('menu.certificates') }}</div>
                 </a>
             </li>

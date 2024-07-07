@@ -18,7 +18,7 @@
             <form method="post" action="{{ route('dashboard.commission.store') }}">
                 @csrf
                 <div class="row ">
-                    <div class="col-sm-12 col-md-3 mb-2 ">
+                    <div class="col-md-6 col-md-3 mb-2 ">
                         <label for="name_ar" class="form-label text-end">{{ trans('app.label.name_ar') }}</label>
                         <input type="text" class="form-control @error('name_ar') is-invalid @enderror"
                             name="name_ar" value="{{ old('name_ar') }}"
@@ -29,7 +29,7 @@
                             </small>
                         @enderror
                     </div>
-                    <div class="col-sm-12 col-md-3 mb-2">
+                    <div class="col-md-6 col-md-3 mb-2">
                         <label for="name_fr" class="form-label">{{ trans('app.label.name_fr') }}</label>
                         <input type="text" class="form-control @error('name_fr') is-invalid @enderror"
                             name="name_fr" dir="ltr" value="{{ old('name_fr') }}"
