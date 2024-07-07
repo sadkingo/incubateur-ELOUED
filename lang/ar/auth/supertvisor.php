@@ -5,3 +5,5 @@
         'second_supervisor'      => 'مشرف ثاني',
         'assistant_supervisor'   => 'مشرف مساعد',
     ];
+
+?>    
