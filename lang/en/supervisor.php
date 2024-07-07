@@ -1,0 +1,68 @@
+<?php
+
+    return [
+        'title' => 'supervisor professor',
+        'dashboard' => 'control panel',
+        'supervisors' => 'supervisors',
+        'supervisor' => 'supervisor',
+        'groups' => 'members',
+        'title-dashboard' => 'Home Page',
+        'profile' => 'account information',
+
+        'firstname' => 'name',
+        'lastname' => 'lastname',
+        'name' => 'name',
+        'birthday' => 'date of birth',
+        'gender' => 'sex',
+        'female' => 'female',
+        'male' => 'male',
+        'state_place_of_birth' => 'state and place of birth',
+
+        'registration_number' => 'registration number',
+        'group' => 'cohort',
+        'residence'=> 'residence',
+        'batch'=> 'batch',
+        'start_date'=> 'Learning start date',
+        'end_date'=> 'Learning end date',
+
+        'phone' => 'phone number',
+        'email' => 'email',
+
+
+        'create'=> 'add admin',
+        'create_project'=> 'Add project',
+        'Add_students' => 'Add students',
+        'Add_project' => 'Add project',
+        'Add_supervisor' => 'Add supervisor',
+        'no_supervisors_available' => 'No supervisors available',
+        'select_supervisor' => 'select supervisor',
+        'import' => 'Upload student file',
+        'edit' => 'Edit admin data',
+        'accept' => 'save data',
+        'delete' => 'delete admin',
+        'assign' => 'assign',
+        'delete_confirmation' => 'Are you sure you want to delete this admin?',
+        'speciality' => 'speciality',
+        'faculty' => 'faculty',
+        'departement' => 'department',
+        'grade' => 'rank',
+        'role' => 'supervisory responsibility',
+        'label' =>[
+            'name' => 'name',
+            'batch' => 'batch',
+            'group' => 'cohort',
+            'file' => 'select excel file',
+            'registration_number' => 'registration number',
+            'residence'=> 'residence',
+            'batch'=> 'batch',
+            'start_date'=> 'Learning start date',
+            'end_date'=> 'Learning end date',
+        ],
+        'placeholder' =>[
+            'name' => 'Search by name',
+            'group' => 'Search by group',
+            'registration_number' => 'Search by registration number',
+            'batch'=> 'batch search',
+            'name_project' => 'Enter your project name'
+        ],
+    ];
