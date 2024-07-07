@@ -209,8 +209,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- </div>
-        <div class="row"> -->
                 <div class="col-12 mb-4">
                     <div class="card">
                         <div class="card-body">
@@ -351,6 +349,7 @@
             </div>
         </div>
         <!--/ Project Statistics -->
+        
         <!-- Project Classification Stats -->
         <div class="col-md-6 col-lg-6 col-xl-6 order-2 mb-4">
             <div class="card h-100">
@@ -367,6 +366,7 @@
             </div>
         </div>
         <!--/ Project Classification Stats -->
+        
         <!-- Startup and Patent Label Students Stats -->
         <div class="col-md-6 col-lg-6 col-xl-6 order-3 mb-4">
             <div class="card h-100">
@@ -413,6 +413,7 @@
             </div>
         </div>
         <!--/ Startup and Patent Label Students Stats -->
+        
         <!-- Chart for Projects by Year -->
         <div class="col-md-6 col-lg-6 col-xl-6 order-1 mb-4">
             <div class="card h-100">
@@ -429,6 +430,90 @@
             </div>
         </div>
         <!--/ Chart for Projects by Year -->
+
+        <!-- Statistics of projects awarded to a mini project by faculty -->
+        <div class="col-md-6 col-lg-6 col-xl-6 order-1 mb-4">
+            <div class="card h-100">
+                <div class="card-header d-flex align-items-center justify-content-between pb-0">
+                    <div class="card-title mb-0">
+                        <h5 class="m-0 me-2">{{ trans('dashboard.mini project by faculty') }}</h5>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex flex-column p-2">
+                        @if(count($miniProjectStatsByFaculty) > 0)
+                            <ul class="list-group">
+                                @foreach($miniProjectStatsByFaculty as $facultyName => $count)
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <i class="bx bx-building"></i> {{ $facultyName }}
+                                        <span class="badge bg-primary rounded-pill">{{ $count }}</span>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        @else
+                            <p class="text-danger"><i class="bx bx-error-circle"></i> {{ trans('dashboard.mini project empty') }}</p>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--/ Statistics of projects awarded to a mini project by faculty -->
+
+        <!-- Statistics of projects awarded to a startup project by faculty -->
+        <div class="col-md-6 col-lg-6 col-xl-6 order-1 mb-4">
+            <div class="card h-100">
+                <div class="card-header d-flex align-items-center justify-content-between pb-0">
+                    <div class="card-title mb-0">
+                        <h5 class="m-0 me-2">{{ trans('dashboard.startup project by faculty') }}</h5>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex flex-column p-2">
+                        @if(count($startupProjectStatsByFaculty) > 0)
+                            <ul class="list-group">
+                                @foreach($startupProjectStatsByFaculty as $facultyName => $count)
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <i class="bx bx-building-house"></i> {{ $facultyName }}
+                                        <span class="badge bg-success rounded-pill">{{ $count }}</span>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        @else
+                            <p class="text-danger"><i class="bx bx-error-circle"></i> {{ trans('dashboard.startup project empty') }}</p>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--/ Statistics of projects awarded to a startup project by faculty -->
+
+        <!-- Statistics of projects awarded to a patent project by faculty -->
+        <div class="col-md-6 col-lg-6 col-xl-6 order-1 mb-4">
+            <div class="card h-100">
+                <div class="card-header d-flex align-items-center justify-content-between pb-0">
+                    <div class="card-title mb-0">
+                        <h5 class="m-0 me-2">{{ trans('dashboard.patent by faculty') }}</h5>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex flex-column p-2">
+                        @if(count($patentProjectStatsByFaculty) > 0)
+                            <ul class="list-group">
+                                @foreach($patentProjectStatsByFaculty as $facultyName => $count)
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <i class="bx bx-medal"></i> {{ $facultyName }}
+                                        <span class="badge bg-warning rounded-pill">{{ $count }}</span>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        @else
+                            <p class="text-danger"><i class="bx bx-error-circle"></i> {{ trans('dashboard.patent project empty') }}</p>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--/ Statistics of projects awarded to a patent project by faculty -->
         <!-- Mini Project Stages Statistics -->
         <div class="col-md-6 col-lg-6 col-xl-6 order-4 mb-4">
             <div class="card h-100">
@@ -530,8 +615,6 @@
         </div>
         <!--/ Patent Stages Statistics -->
     </div>   
-     
-    
 @endsection
 
 @section('js')
@@ -810,7 +893,6 @@
             }
         });
         document.addEventListener('DOMContentLoaded', function() {
-            // رسم مخطط المشاريع حسب التصنيف
             new Chart(document.getElementById('projectClassificationChart').getContext('2d'), {
                 type: 'bar',
                 data: @json($chartProjectClassificationData),
@@ -823,11 +905,9 @@
                         tooltip: {
                             callbacks: {
                                 label: function(context) {
-                                    // إعداد التلميح للعرض
                                     let label = context.label || '';
                                     let value = context.raw || 0;
 
-                                    // إعداد التفاصيل في التلميح
                                     return `${label}: ${value} ${trans('dashboard.Projects')}`;
                                 }
                             }

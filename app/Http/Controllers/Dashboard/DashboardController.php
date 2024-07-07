@@ -192,7 +192,47 @@ class DashboardController extends Controller
             ->where('status_project_tracking', 3)
             ->count();
 
-          
+        $miniProjectStatsByFaculty = Student::join('projects', 'students.id', '=', 'projects.id_student')
+            ->join('faculties', 'students.id_faculty', '=', 'faculties.id') 
+            ->where('projects.project_classification', 1)
+            ->where('projects.bmc_status', 2)
+            ->whereNotNull('projects.bmc')
+            ->whereNotNull('projects.administrative_file')
+            ->where('projects.project_tracking', 5)
+            ->where('projects.status_project_tracking', 2)
+            ->where('projects.status', 2)
+            ->select('students.id_faculty', 'faculties.name_ar', DB::raw('COUNT(*) as count'))
+            ->groupBy('students.id_faculty', 'faculties.name_ar')
+            ->pluck('count', 'faculties.name_ar');
+   
+        $startupProjectStatsByFaculty = Student::join('projects', 'students.id', '=', 'projects.id_student')
+            ->join('faculties', 'students.id_faculty', '=', 'faculties.id') 
+            ->where('projects.project_classification', 2)
+            ->where('projects.bmc_status', 2)
+            ->whereNotNull('projects.bmc')
+            ->whereNotNull('projects.administrative_file')
+            ->where('projects.project_tracking', 5)
+            ->where('projects.status_project_tracking', 2)
+            ->where('projects.status', 2)
+            ->select('students.id_faculty', 'faculties.name_ar', DB::raw('COUNT(*) as count'))
+            ->groupBy('students.id_faculty', 'faculties.name_ar')
+            ->pluck('count', 'faculties.name_ar');
+    
+        $patentProjectStatsByFaculty = Student::join('projects', 'students.id', '=', 'projects.id_student')
+            ->join('faculties', 'students.id_faculty', '=', 'faculties.id') 
+            ->where('projects.project_classification', 3)
+            ->where('projects.bmc_status', 0)
+            ->whereNull('projects.bmc')
+            ->whereNull('projects.administrative_file')
+            ->where('projects.project_tracking', 7)
+            ->where('projects.status_project_tracking', 2)
+            ->where('projects.status', 2)
+            ->select('students.id_faculty', 'faculties.name_ar', DB::raw('COUNT(*) as count'))
+            ->groupBy('students.id_faculty', 'faculties.name_ar')
+            ->pluck('count', 'faculties.name_ar');
+
+
+            
         $miniProjectStages = [
                 'training' => [
                     'in_training' => Project::where('project_classification', 1)
@@ -449,7 +489,10 @@ class DashboardController extends Controller
                 'miniProjectsCompleted',
                 'miniProjectStages',
                 'startupProjectStages',
-                'patentStages', 
+                'patentStages',
+                'miniProjectStatsByFaculty',
+                'startupProjectStatsByFaculty',
+                'patentProjectStatsByFaculty', 
             )
         );
     }
