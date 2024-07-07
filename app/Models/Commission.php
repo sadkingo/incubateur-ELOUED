@@ -25,5 +25,26 @@ class Commission extends Model
         return $this->hasMany(Project::class, 'id_commission');
     }
 
+
+    public function studentsFromProjects()
+    {
+        return $this->hasManyThrough(Student::class, Project::class, 'id_commission', 'id', 'id', 'id_student');
+    }
+
+    public function studentsFromGroups()
+    {
+        $studentIds = $this->projects->pluck('id_student')->toArray();
+        return Student::whereIn('id', function($query) use ($studentIds) {
+            $query->select('id_student')
+                  ->from('student_groups')
+                  ->whereIn('id_student', $studentIds);
+        })->get();
+    }
+
+
+    public function students()
+    {
+        return $this->studentsFromProjects->merge($this->studentsFromGroups())->unique('id');
+    }
     
 }

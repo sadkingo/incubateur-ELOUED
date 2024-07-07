@@ -48,5 +48,7 @@ class Project extends Model
     public function supervisingTeacherProjects() {
         return $this->hasMany(SupervisingTeacherProject::class, 'id_project', 'id');
     }
+
+    
  
 }

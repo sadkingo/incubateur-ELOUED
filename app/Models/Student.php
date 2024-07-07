@@ -58,17 +58,14 @@ class Student extends Authenticatable
         'end_date',
     ];
 
-    public function setPasswordAttribute($value): void
-    {
+    public function setPasswordAttribute($value): void{
         $this->attributes['password'] = Hash::make($value);
     }
 
-    public function getNameAttribute()
-    {
+    public function getNameAttribute(){
         return ucwords("{$this->firstname_ar} {$this->lastname_ar}");
     }
-    public function getTotalCoefAttribute()
-    {
+    public function getTotalCoefAttribute(){
         $totalCoef = 0;
         foreach ($this->tests as $test) {
             $totalCoef = $totalCoef + $test->subject->coef;
@@ -76,28 +73,27 @@ class Student extends Authenticatable
         return $totalCoef;
     }
 
-    public function getNoteAttribute()
-    {
+    public function getNoteAttribute(){
         $totalNote = 0;
         foreach ($this->tests as $test) {
             $totalNote = $totalNote + $test->subject->coef * $test->rate;
         }
         return $totalNote;
     }
-    // public function getmMyenFinalAttribute(){
-    //     return $this->moyen;
-    // }
-    // total_coef
-    public function getMoyenAttribute()
-    {
+    /*
+     public function getmMyenFinalAttribute(){
+         return $this->moyen;
+     }
+     total_coef
+    */
+    public function getMoyenAttribute(){
         $moyen  = 0;
         foreach ($this->tests as $test) {
             $moyen = $moyen + $test->result;
         }
         return  $this->total_coef > 0 ? $moyen / $this->total_coef : null;
     }
-    // public function getMoyenFinalAttribute()
-    // {
+    // public function getMoyenFinalAttribute(){
     //     return  $this->moyen;
     // }
 
@@ -105,8 +101,7 @@ class Student extends Authenticatable
     //     return  $this->getMoyenAttribute->orderByDesc()->take(3);
     // }
 
-    public function getFirstMoyenAttribute()
-    {
+    public function getFirstMoyenAttribute(){
         // return $this->moyen->sortByDesc()->orderBy('start_date', 'end_date')->first();
         // return $this->moyen->sortByDesc();
         // return $this->groupBy('start_date', 'end_date');
@@ -119,40 +114,41 @@ class Student extends Authenticatable
 
         // if()
     }
-    public function tests()
-    {
+    public function tests(){
         return $this->hasMany(Test::class);
     }
-    public function createdBy()
-    {
+    public function createdBy(){
         return $this->belongsTo(Admin::class,'created_by');
     }
     
-    public function certificate()
-    {
+    public function certificate(){
         return $this->hasMany(Certificate::class);
     }
-    public function attendences(): HasMany
-    {
+    public function attendences(): HasMany{
         return $this->hasMany(Attendence::class);
     }
-    public function evaluations()
-    {
+    public function evaluations(){
         return $this->hasOne(Evaluation::class);
     }
 
-    public function notes()
-    {
+    public function notes(){
         return $this->hasOne(Note::class);
     }
 
-    public function projects()
-    {
+    public function projects(){
         return $this->hasMany(Project::class);
     }
     
-    public function department()
-    {
+    public function department(){
         return $this->belongsTo(Departement::class);
+    } 
+
+    public function project(){
+        return $this->hasOne(Project::class, 'id_student');
     }
+
+    public function studentGroup(){
+        return $this->hasOne(StudentGroup::class, 'id_student');
+    }
+
 }

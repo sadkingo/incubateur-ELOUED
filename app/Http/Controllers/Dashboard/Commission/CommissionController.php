@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard\Commission;
 use App\Http\Controllers\Controller;
 use App\Models\Commission;
 use App\Models\Project;
+use App\Models\StudentGroup;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -98,5 +99,12 @@ class CommissionController extends Controller{
 
         return view('dashboard.commission.stat',compact('commission','projectsAccepted','projectsRejected'));                            
         
+    }
+
+    public function getStudentsInCommission($commissionId){
+        
+        $commission = Commission::findOrFail($commissionId);
+        $students = $commission->students();
+        return view('dashboard.commission.students', compact('students','commission'));
     }
 }

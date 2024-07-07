@@ -28,4 +28,8 @@ class StudentGroup extends Authenticatable
         'department',
         'photo',        
     ];
+
+    public function student(){
+        return $this->belongsTo(Student::class, 'id_student');
+    }
 }

@@ -107,6 +107,9 @@ Route::prefix('dashboard')->name('dashboard.')->middleware('auth:admin,teacher')
     
     Route::put('commission/{commission}', [CommissionController::class, 'update'])->name('dashboard.commission.update');
     Route::delete('commission/{commission}', [CommissionController::class, 'destroy'])->name('dashboard.commission.destroy');
+    Route::get('commission/{id}/students', [CommissionController::class, 'getStudentsInCommission'])->name('dashboard.commission.students');
+    
+    
     Route::resource('attendence', AttendenceController::class);
     Route::resource('projet', ProjetController::class);
     Route::get('projects/edit-all-dates', [ProjetController::class, 'editAllDatesForm'])->name('projects.edit_all_dates');

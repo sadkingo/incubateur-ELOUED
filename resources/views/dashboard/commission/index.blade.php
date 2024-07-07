@@ -51,16 +51,19 @@
                                                 <i class="bx bx-edit-alt me-2"></i>
                                                 {{ trans('commission.edit') }}
                                             </a>
-                                            <a class="dropdown-item" href="{{url('dashboard/commission/'.$commission->id.'/stat')}}" >
-                                                <i class="bx bx-edit-alt me-2"></i>
-                                                {{trans('commission.stat')}}
+                                            <a class="dropdown-item" href="{{ url('dashboard/commission/'.$commission->id.'/stat') }}">
+                                                <i class="bx bx-stats me-2"></i>
+                                                {{ trans('commission.stat') }}
                                             </a>
+                                            <button target="_blank" id="printTeacher" data-url="{{ url('dashboard/commission/'.$commission->id.'/students') }}"
+                                                    class="btn btn-primary text-white " style="margin-right: 20px;">
+                                                    <span class="bx bxs-printer "></span>&nbsp; {{ trans('app.print') }}
+                                            </button>
                                             <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
                                                 data-bs-target="#deleteCommissionModal{{ $commission->id }}">
                                                 <i class="bx bx-trash me-2"></i>
                                                 {{ trans('commission.delete') }}
                                             </a>
-
                                         </div>
                                     </div>
                                 </td>
