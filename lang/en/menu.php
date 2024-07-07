@@ -10,4 +10,8 @@ return [
     'evaluations'  => 'Evaluations',
     'subjects'   => 'Subjects',
     'attendence' => 'attendence',
+    'projects'=> 'projects',
+    'commissions' => 'committees',
+    'certificates'  => 'Certificates',
+    'settings'=> 'Settings',
 ];
