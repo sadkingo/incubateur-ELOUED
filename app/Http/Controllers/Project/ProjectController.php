@@ -289,7 +289,7 @@ class ProjectController extends Controller
         $bmc->storeAs('public/public/projects/bmc/', $bmcName);
 
         $project->bmc = $bmcName;
-        $project->bmc_status = 3; 
+        $project->bmc_status = 1; 
         $project->save();
 
         toastr()->success(trans('message.success.update_bmc'));
@@ -315,9 +315,6 @@ class ProjectController extends Controller
             ]);
             if ($request->hasFile('administrative')) {
                 $administrative = $request->file('administrative');
-                // if ($bmc->getSize() > 10000000) {
-                //     return back()->withErrors(['bmc' => 'The BMC file must be less than 10MB.'])->withInput();
-                // }
                 $administrativeName = time() . '_administrative.' . $administrative->getClientOriginalExtension();
                 $administrative->storeAs('public/public/projects/administrative/', $administrativeName);
                 $project->administrative_file = $administrativeName;
@@ -327,6 +324,33 @@ class ProjectController extends Controller
             } 
         }
 
+    }
+
+    public function editStatusBmc($id){
+
+        $project = Project::find($id);
+
+        return view('dashboard.project.edit_status_bmc',compact('project'));
+    }
+
+    public function storeStatusBmc(Request $request, $id){
+        $project = Project::find($id);
+
+        if($project){
+            $validator = Validator::make($request->all(), [
+                'bmc_status' => 'required', 
+                    
+            ], [
+                'bmc_status.required' => 'The status bmc file is required.',
+                
+            ]);
+
+            $project->bmc_status = $request->input('bmc_status');
+            $project->save();
+            toastr()->success(trans('message.success.update_bmc'));
+            return redirect('dashboard/projet');
+
+        }
     }
    
 }

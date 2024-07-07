@@ -112,7 +112,14 @@
                         </div>
                         <br>
                     @else
-                        edit
+                        <div class="wow fadeIn">
+                            <div class="text-start mb-1-6 wow fadeIn">
+                                <h2 class="mb-0 text-primary">{{trans('project.label.bmc_project')}}</h2>
+                            </div>
+                            <span class="text-warning">{{ trans('project.status_project.studying_bmc') }}</span>
+                            <a href="{{ url('dashboard/project/bmc-studing/'.$project->id)}}">{{trans('project.edit_status_bmc')}} </a>
+                        </div>
+                        <br> 
                     @endif        
                 @endif    
                 <div class="wow fadeIn">

@@ -38,11 +38,11 @@
 </style>
     <h4 class="fw-bold py-3 mb-4">
         <span class="text-muted fw-light">{{ trans('project.dashboard') }} / {{ trans('project.project') }}/ </span>
-        {{ trans('project.create_project') }}
+        {{ trans('auth/project.administrative') }}
     </h4>
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title">{{ trans('project.create_project') }}</h5>
+            <h5 class="card-title">{{ trans('auth/project.add_administrative') }}</h5>
             <form method="post" action="{{ url('project/administrative/'.$project->id.'/store') }}" enctype="multipart/form-data" id="project-form">
                 @csrf
                 <div id="dynamic-fields">

@@ -10,6 +10,8 @@ return [
     'project_images' => 'صور المشروع',
     'project_video' => 'فيديو المشروع',
     'bmc' => 'ملف bmc',
+    'bmc_status' => 'تعديل على حالة bmc',
+    'select_bmc_status' => 'اختر حالة',
     'characters_remaining' => 'الحروف المتبقية',
     'project_type' => "نوع المشروع",
     'select_project_type' => 'اختر تصنيف المشروع',
@@ -24,6 +26,8 @@ return [
     'start_up' => 'مؤسسة ناشئة',
     'small_scale_enterprise' => 'مؤسسة مصغرة',
     'project_classification' => 'تصنيف المشروع',
+    'administrative' => 'الملف الاداري',
+    'add_administrative' => 'أضف الملف الاداري',
     'placeholder' => [
         'name_project' => 'أدخل اسم المشروع',
         'description_project' => 'أدخل وصف المشروع',

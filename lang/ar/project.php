@@ -31,6 +31,9 @@
         'add'  => 'ادخل ملفك الاداري',
         'ok' => 'تم رفع الملف',
     ],
+    'edit_status_bmc' => 'تعديل على حالة bmc بعد الدراسة',
+    'edit_bmc_status' => 'تعديل على حالة bmc التابع للمشروع ',
+    'bmc_tracking'    => 'تتبع حالة bmc',
     'status_project' =>[
         'status' => 'حالة المشروع',
         'bcm_status' => 'حالة bmc',
@@ -42,6 +45,8 @@
         'bmc_reformat'     => ' أعد صياغة ملف bmc وأعد ادخاله',
         'enter_bmc_file'   => 'أدخل ملف bmc',
         'studying_bmc'     => 'يتم دراسة ملف bmc',
+        'incorrect'        => 'قيد الدراسة',
+        'missing'          => 'يرجى ادخال الملف الاداري'
     ],
     'characters_remaining' => 'الحروف المتبقية',
     'edit_project' => 'تحديث المشروع',

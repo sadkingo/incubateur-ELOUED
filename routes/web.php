@@ -91,56 +91,104 @@ Route::get('logout', LogoutController::class)->middleware('auth:admin,student,te
 
 Route::prefix('dashboard')->name('dashboard.')->middleware('auth:admin,teacher')->group(function () {
     Route::resource('/', DashboardController::class);
+    
     Route::post('/analyse/added', [DashboardController::class, 'analyseGetStudentByYear']);
+    
     Route::post('/analyse/gender', [DashboardController::class, 'analyseGetStudentByGender']);
+    
     Route::post('/analyse/point', [DashboardController::class, 'analyseGetStudentByPoint']);
+    
+
+
     Route::resource('admins', AdminController::class);
+    
+
+
     Route::resource('students', StudentController::class);
+    
     Route::post('import-student-excel', [ExcelImportController::class, 'import'])->name('student.import.excel');
+    
     Route::get('students/{student}/profile', [StudentController::class, 'showProfile'])->name('dashboard.students.profile');
+    
     Route::get('students/{id}/edit-stage', [StudentController::class, 'editStage'])->name('dashboard.students.editStage');
+    
     Route::post('students/{id}/updateStage', [StudentController::class, 'updateStage'])->name('dashboard.students.updateStage');
+    
+
+
     Route::resource('teachers', TeacherController::class);
+    
+
+
     Route::resource('commission', CommissionController::class);
+    
     Route::get('commission/{commission}/edit', [CommissionController::class, 'edit'])->name('dashboard.commission.edit');
+    
     Route::get('commission/{commission}/stat', [CommissionController::class, 'stat'])->name('dashboard.commission.stat');
     
     Route::put('commission/{commission}', [CommissionController::class, 'update'])->name('dashboard.commission.update');
+    
     Route::delete('commission/{commission}', [CommissionController::class, 'destroy'])->name('dashboard.commission.destroy');
+    
     Route::get('commission/{id}/students', [CommissionController::class, 'getStudentsInCommission'])->name('dashboard.commission.students');
     
     
+
+
     Route::resource('attendence', AttendenceController::class);
+    
+
+
     Route::resource('projet', ProjetController::class);
+    
     Route::get('projects/edit-all-dates', [ProjetController::class, 'editAllDatesForm'])->name('projects.edit_all_dates');
+    
     Route::post('projects/update-all-dates', [ProjetController::class, 'updateAllDates'])->name('projects.update_all_dates');
+    
     Route::get('reports', [ProjetController::class, 'studentReports'])->name('student.reports');
+    
     Route::get('print/project-report', [ProjetController::class, 'printStudentReport'])->name('dashboard.print.studentReport');
+    
     Route::get('project/{project}', [ProjetController::class, 'show'])->name('dashboard.project.show');
+    
     Route::get('projects/{project}/add-commission', [ProjetController::class, 'addCommissionForm'])->name('projects.add_commission');
+    
     Route::post('projects/{project}/add-commission', [ProjetController::class, 'storeCommission'])->name('projects.store_commission');
+    
     Route::post('update_project_status', [ProjetController::class, 'updateProjectStatus'])->name('update_project_status'); 
+    
     Route::get('project/{id}/add-type', [ProjetController::class, 'addProjectType'])->name('dashboard.projects.add_type');
+    
     Route::post('project/{id}/add-type', [ProjetController::class, 'storeProjectType'])->name('dashboard.projects.store_type');
 
     Route::get('project/{id}/edit-type', [ProjetController::class, 'editProjectType'])->name('dashboard.projects.edit_type');
+    
     Route::put('project/{id}/edit-type', [ProjetController::class, 'updateProjectType'])->name('dashboard.projects.update_type');
     
     Route::get('project/{id}/add-classification', [ProjetController::class, 'addProjectClassification'])->name('dashboard.projects.add_classification');
+    
     Route::post('project/{id}/add-classification', [ProjetController::class, 'storeProjectClassification'])->name('dashboard.projects.store_classification');
 
     Route::get('project/{id}/edit-classification', [ProjetController::class, 'editProjectClassification'])->name('dashboard.projects.edit_classification');
+    
     Route::put('project/{id}/edit-classification', [ProjetController::class, 'updateProjectClassification'])->name('dashboard.projects.update_classification');
 
     Route::get('project/{id}/add-project-tracking', [ProjetController::class, 'addProjectTracking'])->name('dashboard.projects.add_tracking');
+    
     Route::post('project/{id}/add-project-tracking', [ProjetController::class, 'storeProjectTracking'])->name('dashboard.projects.store_tracking');
     
     Route::get('project/{id}/edit-project-tracking', [ProjetController::class, 'editProjectTracking'])->name('dashboard.projects.edit_tracking');
+    
     Route::put('project/{id}/edit-project-tracking', [ProjetController::class, 'updateProjectTracking'])->name('dashboard.projects.update_tracking');
     
     Route::get('project/{id}/edit-status-project-tracking', [ProjetController::class, 'editStatusProjectTracking'])->name('dashboard.projects.edit_status_tracking');
+    
     Route::put('project/{id}/edit-status-project-tracking', [ProjetController::class, 'updateStatusProjectTracking'])->name('dashboard.projects.update_status_tracking');
     
+    Route::get('project/bmc-studing/{id}', [ProjectController::class,'editStatusBmc'])->name('dashboard.projects.edit_status_bmc');
+    Route::put('project/bmc-studing/{id}', [ProjectController::class,'storeStatusBmc'])->name('dashboard.projects.store_status_bmc');
+
+
     
 
     Route::resource('subjects', SubjectController::class);
