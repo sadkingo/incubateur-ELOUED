@@ -106,8 +106,15 @@
     <li class="nav-item navbar-dropdown dropdown-user dropdown">
         <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
             <div class="avatar avatar-online">
-                <img class="w-px-40 h-auto rounded-circle" src="{{ asset('assets/logo/logo.jpg') }}" alt="brand-logo" srcset="">
-
+                @if (auth('admin')->check()) 
+                    <img class="w-px-40 h-auto rounded-circle" src="{{ asset('assets/logo/logo.jpg') }}" alt="brand-logo" srcset="">
+                @elseif(auth('student')->check())
+                    @if(auth('student')->user()->gender == 1)
+                        <img class="w-px-40 h-auto rounded-circle" src="{{ asset('assets/img/avatars/man.jpeg') }}" alt="brand-logo" srcset="">
+                    @else
+                        <img class="w-px-40 h-auto rounded-circle" src="{{ asset('assets/img/avatars/women.jpeg') }}" alt="brand-logo" srcset="">
+                    @endif
+                @endif 
                 {{-- <img src="{{ asset('assets/img/avatars/1.png') }}" alt class="w-px-40 h-auto rounded-circle"> --}}
             </div>
         </a>
@@ -119,9 +126,15 @@
                             <div class="avatar avatar-online">
                                 {{-- <img src="{{ asset('assets/img/avatars/1.png') }}" alt
                                     class="w-px-40 h-auto rounded-circle"> --}}
-
+                                @if(auth('admin')->check())    
                                     <img class="w-px-40 h-auto rounded-circle" src="{{ asset('assets/logo/logo.jpg') }}" alt="brand-logo" srcset="">
-
+                                @elseif(auth('student')->check())
+                                    @if(auth('student')->user()->gender == 1)
+                                        <img class="w-px-40 h-auto rounded-circle" src="{{ asset('assets/img/avatars/man.jpeg') }}" alt="brand-logo" srcset="">
+                                    @else
+                                        <img class="w-px-40 h-auto rounded-circle" src="{{ asset('assets/img/avatars/women.jpeg') }}" alt="brand-logo" srcset="">
+                                    @endif
+                                @endif
                             </div>
                         </div>
                         @if (auth('admin')->check())
