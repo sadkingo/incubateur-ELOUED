@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Repositories\Student\StudentRepository;
 use App\Http\Requests\Student\StoreStudentRequest;
 use App\Http\Requests\Student\UpdateStudentRequest;
+use App\Models\Faculty;
 use App\Models\Project;
 use App\Models\Student;
 use App\Models\StudentGroup;
@@ -142,7 +143,8 @@ class StudentController extends Controller
             $query->where('id_student', $student->id);
         })->get();
         $stageInfo = $this->getProjectStageInfo($student->project_stage);
-        return view('dashboard.student.profile', compact('student','project','studentGroups','supervisors', 'stageInfo'));
+        $faculty = Faculty::where('id', $student->id_faculty)->get()->first();
+        return view('dashboard.student.profile', compact('student','project','studentGroups','supervisors', 'stageInfo', 'faculty'));
     }
     public function editStage($id)
     {

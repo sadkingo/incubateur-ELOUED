@@ -93,8 +93,15 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex flex-column align-items-center text-center">
-                                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin"
-                                    class="rounded-circle" width="150">
+                                @if($student->gender == 1)
+                                {{-- <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin"
+                                    class="rounded-circle" width="150"> --}}
+                                    <img src="{{asset('assets/img/avatars/man.jpeg')}}" alt="Admin"
+                                        class="rounded-circle" width="150">
+                                @else
+                                    <img src="{{asset('assets/img/avatars/women.jpeg')}}" alt="Admin"
+                                        class="rounded-circle" width="150">
+                                @endif    
                                 <div class="mt-3">
                                     @php
                                         $locale = app()->getLocale();
@@ -132,7 +139,16 @@
                             <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                                 <h6 class="mb-0"><i
                                         class="fas fa-university mr-2"></i>&nbsp;{{ trans('auth/student.faculty') }}</h6>
-                                <span class="text-secondary">{{ $student->faculty }}</span>
+                                <span class="text-secondary">
+                                    @php
+                                        $locale = app()->getLocale();
+                                        $name =
+                                            $locale === 'ar'
+                                                ? $faculty->name_ar 
+                                                : $faculty->name_fr ;
+                                    @endphp
+                                    {{ $name }}
+                                </span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                                 <h6 class="mb-0"><i
