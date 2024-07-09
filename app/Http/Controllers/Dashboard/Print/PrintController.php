@@ -9,6 +9,7 @@ use App\Models\Project;
 use App\Models\SupervisingTeacher;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Faculty;
 use App\Models\StudentGroup;
 use Illuminate\Support\Facades\Response;
 
@@ -144,9 +145,9 @@ class PrintController extends Controller
         $supervisors = SupervisingTeacher::whereHas('supervisingTeacherProjects', function($query) use ($student) {
             $query->where('id_student', $student->id);
         })->get();
-        
+        $faculty = Faculty::where('id',$student->id_faculty)->get()->first();
 
-        return view('dashboard.printer.supervisor_raport', compact('student', 'supervisors', 'studentGroups','project'));
+        return view('dashboard.printer.supervisor_raport', compact('student','faculty', 'supervisors', 'studentGroups','project'));
     }
 
     public function label($project_id){

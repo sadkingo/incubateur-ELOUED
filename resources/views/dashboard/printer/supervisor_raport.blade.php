@@ -167,7 +167,7 @@
                         <td>{{ $student->registration_number }}</td>
                         <td>{{ $student->academicLevel }}</td>
                         <td>{{ $student->specialty }}</td>
-                        <td>{{ $student->faculty }}</td>
+                        <td>{{ $faculty->name_ar }}</td>
                     </tr>
                     @if($studentGroups != null)
                         @foreach($studentGroups as $groupe)
@@ -210,7 +210,8 @@
         </div>
 
         <div class="additional-section">
-            <p>{{trans('suporvisor_raport.project')}} {{ $project->name }}</p>
+            
+            <p>{{trans('suporvisor_raport.project')}}<br> <strong >{{ $project->name }} </ظstrong> </p>
         </div>
 
         <div class="additional-section">
