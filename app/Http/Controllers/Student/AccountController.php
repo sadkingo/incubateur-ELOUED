@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\Student\StudentRepository;
 use App\Http\Requests\Student\UpdateStudentRequest;
+use App\Models\Departement;
+use App\Models\Faculty;
 use App\Models\StudentGroup;
 
 class AccountController extends Controller
@@ -40,7 +42,9 @@ class AccountController extends Controller
      */
     public function create()
     {
-        return view('student-dashboard.create');
+        $faculties = Faculty::all();
+        $departments = Departement::all();
+        return view('student-dashboard.create' ,compact('faculties', 'departments'));
     }
 
     /**
@@ -51,7 +55,7 @@ class AccountController extends Controller
      */
     public function store(Request $request){
         $student = $this->students->find(auth('student')->id());
-    
+    //dd($request);
         $request->validate([
             'inputs.*.firstname_ar' => ['required', 'regex:/^[\p{Arabic}\s]+$/u'],
             'inputs.*.lastname_ar'  => ['required', 'regex:/^[\p{Arabic}\s]+$/u'],
@@ -63,8 +67,8 @@ class AccountController extends Controller
             'inputs.*.registration_number' => 'required|numeric',
             'inputs.*.academicLevel' => 'required',
             'inputs.*.specialty' => 'required',
-            'inputs.*.faculty' => 'required',
-            'inputs.*.department' => 'required',
+            'inputs.*.id_faculty' => 'required',
+            'inputs.*.id_department' => 'required',
             ],[
                 'inputs.*.firstname_ar.required' => 'First name arabic is required',
                 'inputs.*.firstname_ar.regex' => 'First name arabic must be in Arabic letters only',
@@ -78,8 +82,8 @@ class AccountController extends Controller
                 'inputs.*.registration_number' => 'Registration number is required',
                 'inputs.*.academicLevel' => 'Academic level is required',
                 'inputs.*.specialty' => 'Specialty is required',
-                'inputs.*.faculty' => 'Faculty is required',
-                'inputs.*.department' => 'Department is required',
+                'inputs.*.id_faculty' => 'Faculty is required',
+                'inputs.*.id_department' => 'Department is required',
         ]);
 
         foreach($request->inputs as $key => $value){
@@ -94,8 +98,8 @@ class AccountController extends Controller
             $studentGroupe->registration_number  = $value['registration_number'];
             $studentGroupe->academicLevel  = $value['academicLevel'];
             $studentGroupe->specialty  = $value['specialty'];
-            $studentGroupe->faculty  = $value['faculty'];
-            $studentGroupe->department  = $value['department'];
+            $studentGroupe->id_faculty  = $value['id_faculty'];
+            $studentGroupe->id_department  = $value['id_department'];
             $studentGroupe->id_student = $student->id;
             $studentGroupe->save();
         }

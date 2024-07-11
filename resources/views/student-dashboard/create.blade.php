@@ -112,12 +112,18 @@
                             @enderror
                         </div>
                         <div class="col-sm-12 col-md-3 mb-2">
-                            <label for="academicLevel"
-                                class="form-label">{{ trans('auth/student.academicLevel') }}</label>
-                            <input type="text"
-                                class="form-control academicLevel @error('academicLevel') is-invalid @enderror" name="inputs[0][academicLevel]"
-                                value="{{ old('inputs.0.academicLevel') }}"
-                                placeholder="{{ trans('auth/student.placeholder.academicLevel') }}">
+                            <label for="academicLevel" class="form-label">
+                                {{ trans('auth/student.academicLevel') }}
+                            </label>
+                            <select  
+                                id="academicLevel" 
+                                class="form-control @error('academicLevel') is-invalid @enderror" 
+                                name="inputs[0][academicLevel]" value="{{ old('inputs.0.academicLevel') }}">
+                                <option value="0">{{trans('auth/student.specialties.select')}}</option>
+                                <option value="bachelor">{{ trans('auth/student.specialties.bachelor') }}</option>
+                                <option value="master">{{ trans('auth/student.specialties.master') }}</option>
+                                <option value="phd">{{ trans('auth/student.specialties.phd') }}</option>
+                            </select> 
                             @error('inputs.0.academicLevel')
                                 <small class="text-danger d-block">
                                     {{ $message }}
@@ -138,26 +144,28 @@
                             @enderror
                         </div>
                         <div class="col-sm-12 col-md-3 mb-2">
-                            <label for="faculty"
-                                class="form-label">{{ trans('auth/student.faculty') }}</label>
-                            <input type="text"
-                                class="form-control faculty @error('faculty') is-invalid @enderror" name="inputs[0][faculty]"
-                                value="{{ old('inputs.0.faculty') }}"
-                                placeholder="{{ trans('auth/student.placeholder.faculty') }}">
-                            @error('inputs.0.faculty')
+                            <label for="id_faculty" class="form-label">{{ trans('auth/student.faculty') }}</label>
+                            <select class="form-select" id="id_faculty" name="inputs[0][id_faculty]" value="{{ old('inputs.0.id_faculty') }}">
+                                <option value="">{{trans('auth/student.select.faculty')}}</option>
+                                @foreach ($faculties as $faculty)
+                                    <option value="{{$faculty->id}}">{{$faculty->name_ar}}</option>
+                                @endforeach
+                            </select>
+                            @error('inputs.0.id_faculty')
                                 <small class="text-danger d-block">
                                     {{ $message }}
                                 </small>
-                            @enderror
+                            @enderror        
                         </div>
                         <div class="col-sm-12 col-md-3 mb-2">
-                            <label for="department"
-                                class="form-label">{{ trans('auth/student.department') }}</label>
-                            <input type="text"
-                                class="form-control department @error('department') is-invalid @enderror" name="inputs[0][department]"
-                                value="{{ old('inputs.0.department') }}"
-                                placeholder="{{ trans('auth/student.placeholder.department') }}">
-                            @error('inputs.0.department')
+                            <label for="id_department" class="form-label">{{ trans('auth/student.department') }}</label>
+                            <select class="form-select" id="id_department" name="inputs[0][id_department]" value="{{ old('inputs.0.id_department') }}">
+                                <option value="">{{trans('auth/student.select.department')}}</option>
+                                @foreach ($departments as $department)
+                                    <option value="{{$department->id}}" >{{$department->name_ar}}</option>
+                                @endforeach
+                            </select>
+                            @error('inputs.0.id_department')
                                 <small class="text-danger d-block">
                                     {{ $message }}
                                 </small>
@@ -261,12 +269,15 @@
                         </div>
                         
                         <div class="col-sm-12 col-md-3 mb-2">
-                            <label for="academicLevel"
-                                class="form-label">{{ trans('auth/student.academicLevel') }}</label>
-                            <input type="text"
-                                class="form-control academicLevel @error('academicLevel') is-invalid @enderror" name="inputs[${index}][academicLevel]"
-                                value="{{ old('inputs.0.academicLevel') }}"
-                                placeholder="{{ trans('auth/student.placeholder.academicLevel') }}">
+                            <label for="academicLevel" class="form-label">
+                                {{ trans('auth/student.academicLevel') }}
+                            </label>
+                            <select name="inputs[${index}][academicLevel]" id="academicLevel" class="form-control @error('academicLevel' ) is-invalid @enderror" value="{{ old('inputs.0.academicLevel') }}">
+                                <option value="0">{{trans('auth/student.specialties.select')}}</option>
+                                <option value="bachelor">{{ trans('auth/student.specialties.bachelor') }}</option>
+                                <option value="master">{{ trans('auth/student.specialties.master') }}</option>
+                                <option value="phd">{{ trans('auth/student.specialties.phd') }}</option>
+                            </select> 
                             @error('inputs.0.academicLevel')
                                 <small class="text-danger d-block">
                                     {{ $message }}
@@ -289,26 +300,28 @@
                         </div>
                         
                         <div class="col-sm-12 col-md-3 mb-2">
-                            <label for="faculty"
-                                class="form-label">{{ trans('auth/student.faculty') }}</label>
-                            <input type="text"
-                                class="form-control faculty @error('faculty') is-invalid @enderror" name="inputs[${index}][faculty]"
-                                value="{{ old('inputs.0.faculty') }}"
-                                placeholder="{{ trans('auth/student.placeholder.faculty') }}">
-                            @error('inputs.0.faculty')
+                            <label for="id_faculty" class="form-label">{{ trans('auth/student.faculty') }}</label>
+                            <select class="form-select" id="id_faculty" name="inputs[${index}][id_faculty]" value="{{ old('inputs.0.id_faculty') }}">
+                                <option value="">{{trans('auth/student.select.faculty')}}</option>
+                                @foreach ($faculties as $faculty)
+                                    <option value="{{$faculty->id}}">{{$faculty->name_ar}}</option>
+                                @endforeach
+                            </select>
+                            @error('inputs.0.id_faculty')
                                 <small class="text-danger d-block">
                                     {{ $message }}
                                 </small>
                             @enderror
                         </div>
                         <div class="col-sm-12 col-md-3 mb-2">
-                            <label for="department"
-                                class="form-label">{{ trans('auth/student.department') }}</label>
-                            <input type="text"
-                                class="form-control department @error('faculty') is-invalid @enderror" name="inputs[${index}][department]"
-                                value="{{ old('inputs.0.department') }}"
-                                placeholder="{{ trans('auth/student.placeholder.department') }}">
-                            @error('inputs.0.department')
+                            <label for="id_department" class="form-label">{{ trans('auth/student.department') }}</label>
+                            <select class="form-select" id="id_department" name="inputs[${index}][id_department]" value="{{ old('inputs.0.id_department') }}">
+                                <option value="">{{trans('auth/student.select.department')}}</option>
+                                @foreach ($departments as $department)
+                                    <option value="{{$department->id}}" >{{$department->name_ar}}</option>
+                                @endforeach
+                            </select>
+                            @error('inputs.0.id_department')
                                 <small class="text-danger d-block">
                                     {{ $message }}
                                 </small>

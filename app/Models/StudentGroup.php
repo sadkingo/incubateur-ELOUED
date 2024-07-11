@@ -24,8 +24,9 @@ class StudentGroup extends Authenticatable
         'registration_number',
         'academicLevel',
         'specialty',
-        'faculty',
-        'department',
+        'id_faculty',
+        'id_department',
+        'id_commission',
         'photo',        
     ];
 
