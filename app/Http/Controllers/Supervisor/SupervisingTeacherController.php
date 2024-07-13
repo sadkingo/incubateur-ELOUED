@@ -50,7 +50,7 @@ class SupervisingTeacherController extends Controller
             'department'  => 'required',
             'grade'        => 'required',
             'phone'        => 'required',
-            'email'        => 'required',
+            'email'        => 'required|email',
             'supervisor_role' => 'required',
         ], [
             'firstname_ar.required' => 'First name arabic is required',
@@ -62,20 +62,28 @@ class SupervisingTeacherController extends Controller
             'gender.required' => 'Gender is required',
             'speciality.required' => 'Speciality is required',
             'faculty.required' => 'Faculty is required',
-            'department.required' => 'department is required',
+            'department.required' => 'Department is required',
             'grade.required' => 'Grade is required',
             'phone.required' => 'Phone is required',
             'email.required' => 'Email is required',
+            'email.email' => 'Email must be a valid email address',
             'supervisor_role.required' => 'Supervisor role is required',
         ]);
     
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
-        $existingSupervisor = SupervisingTeacher::where('phone', $request->input('phone'))->first();
-        if ($existingSupervisor) {
+    
+        $existingPhone = SupervisingTeacher::where('phone', $request->input('phone'))->first();
+        if ($existingPhone) {
             return back()->withErrors(['phone' => 'رقم الهاتف موجود بالفعل.'])->withInput();
         }
+    
+        $existingEmail = SupervisingTeacher::where('email', $request->input('email'))->first();
+        if ($existingEmail) {
+            return back()->withErrors(['email' => 'البريد الإلكتروني موجود بالفعل.'])->withInput();
+        }
+    
         $supervisor = new SupervisingTeacher;
         $supervisor->phone = $request->input('phone');
         $supervisor->email = $request->input('email');
@@ -91,6 +99,7 @@ class SupervisingTeacherController extends Controller
         $supervisor->role = $request->input('supervisor_role');
         $supervisor->id_student = $student->id;
         $supervisor->save();
+    
         $project = Project::where('id_student', $student->id)->first();
         if ($project) {
             $supervisorProject = new SupervisingTeacherProject;
@@ -107,6 +116,7 @@ class SupervisingTeacherController extends Controller
         toastr()->success(trans('message.success.create'));
         return redirect()->route('student.index');
     }
+    
     
     
 public function assign(Request $request, $id)

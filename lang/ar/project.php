@@ -22,7 +22,8 @@
     'no_members' => "لا يوجد اعضاء",
     'reformat_BMC' => 'إعادة تنسيق ملف BMC للمشروع:',
     'classification' => [
-        'no_classifi' => 'لم يتم تصنيف مشروعك بعد ',
+        'no_classifi'  => 'لم يتم تصنيف مشروعك بعد ',
+        'not_eligible' => 'تم تصنيف مشروعك لكن لم يتم الموافقة عليه بعد',
     ],
     'project_tracking' => 'تتبع المشروع',
     'administrative_file' => 'الملف الاداري',
@@ -34,6 +35,8 @@
     'edit_status_bmc' => 'تعديل على حالة bmc بعد الدراسة',
     'edit_bmc_status' => 'تعديل على حالة bmc التابع للمشروع ',
     'bmc_tracking'    => 'تتبع حالة bmc',
+    'status_administrative' => 'حالة الملف الاداري ',
+    'administrative_tracking' => 'تتبع الملف الاداري',
     'status_project' =>[
         'status' => 'حالة المشروع',
         'bcm_status' => 'حالة bmc',
@@ -48,6 +51,7 @@
         'incorrect'        => 'قيد الدراسة',
         'missing'          => 'يرجى ادخال الملف الاداري'
     ],
+    
     'characters_remaining' => 'الحروف المتبقية',
     'edit_project' => 'تحديث المشروع',
     'delete'  => 'حذف المشروع',

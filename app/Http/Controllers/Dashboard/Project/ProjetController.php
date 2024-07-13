@@ -1,11 +1,13 @@
 <?php
 namespace App\Http\Controllers\Dashboard\Project;
 use App\Http\Controllers\Controller;
+use App\Models\AdministrativeFiles;
 use Illuminate\Http\Request;
 use App\Models\Project;
 use App\Models\Student;
 use App\Models\ProjectImage;
 use App\Models\Commission;
+use App\Models\StudentGroup;
 use Illuminate\Support\Facades\Storage;
 
 class ProjetController extends Controller
@@ -260,6 +262,25 @@ class ProjetController extends Controller
 
         toastr()->success(trans('message.success.update'));
         return redirect('dashboard/project/'.$project->id.'/add-project-tracking');
+    }
+
+
+    public function administartiveShow($id){
+        $student = Student::find($id);
+
+        $administrativeFiles = AdministrativeFiles::where('student_id', $student->id)->get();
+
+        $studentGroups = StudentGroup::where('id_student', $student->id)->get();
+
+        return view('dashboard.project.administrative_tracking', compact('student', 'administrativeFiles', 'studentGroups'));
+    }
+
+    public function updateStatus(Request $request) {
+        $file = AdministrativeFiles::find($request->id);
+    $file->status = $request->status;
+    $file->save();
+
+    return response()->json(['success' => 'Status updated successfully.']);
     }
 }
 

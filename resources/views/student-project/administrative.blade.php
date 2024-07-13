@@ -36,38 +36,103 @@
         display: flex;
     }
 </style>
-    <h4 class="fw-bold py-3 mb-4">
-        <span class="text-muted fw-light">{{ trans('project.dashboard') }} / {{ trans('project.project') }}/ </span>
-        {{ trans('auth/project.administrative') }}
-    </h4>
-    <div class="card">
-        <div class="card-body">
-            <h5 class="card-title">{{ trans('auth/project.add_administrative') }}</h5>
-            <form method="post" action="{{ url('project/administrative/'.$project->id.'/store') }}" enctype="multipart/form-data" id="project-form">
-                @csrf
-                <div id="dynamic-fields">
+<h4 class="fw-bold py-3 mb-4">
+    <span class="text-muted fw-light">{{ trans('project.dashboard') }} / {{ trans('project.project') }}/ </span>
+    {{ trans('auth/project.administrative') }}
+</h4>
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">{{ trans('auth/project.add_administrative') }}</h5>
+        <form method="post" action="{{ url('project/administrative/'.$student->id.'/store') }}" enctype="multipart/form-data" id="project-form">
+            @csrf
+            <div id="dynamic-fields">
+                <div class="row">
+                    <div class="col-12 mb-2">
+                        <h6></h6>
+                    </div>
+                    <div class="col-sm-12 col-md-6 mb-2">
+                        <label for="registration_certificate_0" class="form-label">{{ trans('auth/project.registration_certificate') }}: {{ $student->firstname_ar }} {{ $student->lastname_ar }}</label>
+                        <input type="file" class="form-control @error('registration_certificate') is-invalid @enderror"
+                               name="registration_certificate[]" value="{{ old('registration_certificate') }}"
+                               placeholder="{{ trans('auth/project.placeholder.registration_certificate') }}">
+                        @error('registration_certificate')
+                        <small class="text-danger d-block mt-1">
+                            {{ $message }}
+                        </small>
+                        @enderror
+                    </div>
+                    <div class="col-sm-12 col-md-6 mb-2">
+                        <label for="identification_card_0" class="form-label">{{ trans('auth/project.identification_card') }}: {{ $student->firstname_ar }} {{ $student->lastname_ar }}</label>
+                        <input type="file" class="form-control @error('identification_card') is-invalid @enderror"
+                               name="identification_card[]" value="{{ old('identification_card') }}"
+                               placeholder="{{ trans('auth/project.placeholder.identification_card') }}">
+                        @error('identification_card')
+                        <small class="text-danger d-block mt-1">
+                            {{ $message }}
+                        </small>
+                        @enderror
+                    </div>
+                    <div class="col-sm-12 col-md-6 mb-2">
+                        <label for="photo_0" class="form-label">{{ trans('auth/project.photo') }}: {{ $student->firstname_ar }} {{ $student->lastname_ar }}</label>
+                        <input type="file" class="form-control @error('photo') is-invalid @enderror"
+                               name="photo[]" value="{{ old('photo') }}"
+                               placeholder="{{ trans('auth/project.placeholder.photo') }}">
+                        @error('photo')
+                        <small class="text-danger d-block mt-1">
+                            {{ $message }}
+                        </small>
+                        @enderror
+                    </div>
+                </div>
+                @foreach ($studentGroups as $index => $group)
                     <div class="row">
+                        <div class="col-12 mb-2">
+                            <h6></h6>
+                        </div>
                         <div class="col-sm-12 col-md-6 mb-2">
-                            <label for="administrative" class="form-label">{{ trans('auth/project.administrative') }}</label>
-                            <input type="file" class="form-control @error('administrative') is-invalid @enderror"
-                                   name="administrative" value="{{ old('administrative') }}"
-                                   placeholder="{{ trans('auth/project.placeholder.administrative') }}">
-                            @error('administrative')
+                            <label for="registration_certificate_{{ $index + 1 }}" class="form-label">{{ trans('auth/project.registration_certificate') }}: {{ $group->firstname_ar }} {{ $group->lastname_ar }}</label>
+                            <input type="file" class="form-control @error('registration_certificate') is-invalid @enderror"
+                                   name="registration_certificate[]" value="{{ old('registration_certificate') }}"
+                                   placeholder="{{ trans('auth/project.placeholder.registration_certificate') }}">
+                            @error('registration_certificate')
                             <small class="text-danger d-block mt-1">
                                 {{ $message }}
                             </small>
                             @enderror
                         </div>
-                        <div class="col-sm-12 mt-3 d-flex">
-                            <div class="col d-flex justify-content-end">
-                                <button type="submit" class="btn btn-primary" id="submit-button">
-                                    {{ trans('auth/project.accept') }}
-                                </button>
-                            </div>
+                        <div class="col-sm-12 col-md-6 mb-2">
+                            <label for="identification_card_{{ $index + 1 }}" class="form-label">{{ trans('auth/project.identification_card') }}: {{ $group->firstname_ar }} {{ $group->lastname_ar }}</label>
+                            <input type="file" class="form-control @error('identification_card') is-invalid @enderror"
+                                   name="identification_card[]" value="{{ old('identification_card') }}"
+                                   placeholder="{{ trans('auth/project.placeholder.identification_card') }}">
+                            @error('identification_card')
+                            <small class="text-danger d-block mt-1">
+                                {{ $message }}
+                            </small>
+                            @enderror
+                        </div>
+                        <div class="col-sm-12 col-md-6 mb-2">
+                            <label for="photo_{{ $index + 1 }}" class="form-label">{{ trans('auth/project.photo') }}: {{ $group->firstname_ar }} {{ $group->lastname_ar }}</label>
+                            <input type="file" class="form-control @error('photo') is-invalid @enderror"
+                                   name="photo[]" value="{{ old('photo') }}"
+                                   placeholder="{{ trans('auth/project.placeholder.photo') }}">
+                            @error('photo')
+                            <small class="text-danger d-block mt-1">
+                                {{ $message }}
+                            </small>
+                            @enderror
                         </div>
                     </div>
+                @endforeach
+                <div class="col-sm-12 mt-3 d-flex">
+                    <div class="col d-flex justify-content-end">
+                        <button type="submit" class="btn btn-primary" id="submit-button">
+                            {{ trans('auth/project.accept') }}
+                        </button>
+                    </div>
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
-@endsection                        
+</div>
+@endsection

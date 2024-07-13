@@ -55,7 +55,6 @@ class AccountController extends Controller
      */
     public function store(Request $request){
         $student = $this->students->find(auth('student')->id());
-    //dd($request);
         $request->validate([
             'inputs.*.firstname_ar' => ['required', 'regex:/^[\p{Arabic}\s]+$/u'],
             'inputs.*.lastname_ar'  => ['required', 'regex:/^[\p{Arabic}\s]+$/u'],

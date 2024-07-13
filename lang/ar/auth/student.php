@@ -9,7 +9,7 @@ return [
 
     'firstname_ar' => 'الإسم بالعربية',
     'lastname_ar' => 'اللقب بالعربية',
-
+    'name' => 'الاسم واللقب' ,
     'birthday' => 'تاريخ الميلاد',
     'gender' => 'الجنس',
     'select_gender' => 'حدد الجنس',

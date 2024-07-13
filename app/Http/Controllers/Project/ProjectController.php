@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\Project;
 
 use App\Http\Controllers\Controller;
+use App\Models\AdministrativeFiles;
+use App\Models\AdminstrativeFile;
 use App\Models\Project;
 use App\Models\ProjectImage;
+use App\Models\Student;
+use App\Models\StudentGroup;
 use App\Models\SupervisingTeacher;
 use App\Models\SupervisingTeacherProject;
 use Illuminate\Http\Request;
@@ -23,18 +27,31 @@ class ProjectController extends Controller
      * @param StudentRepository $students
     */
 
-    public function __construct(StudentRepository $students)
-    {
+    public function __construct(StudentRepository $students){
         $this->students = $students;
     }
 
-    public function index(){
+    public function index() {
         $student = $this->students->find(auth('student')->id());
-       
         $projects = Project::where('id_student', $student->id)->get(); 
-      //  dd($projects);
-        return view('student-project.index',compact('projects'));
+        $administrative = AdministrativeFiles::where('student_id', $student->id)->get();
+    
+        if ($administrative->isEmpty()) {
+            $statusAdministrative = null;
+            $multipleRecords = false;
+        } else {
+            if ($administrative->count() == 1) {
+                $statusAdministrative = $administrative->first();
+                $multipleRecords = false;
+            } else {
+                $statusAdministrative = $administrative;
+                $multipleRecords = true;
+            }
+        }
+    
+        return view('student-project.index', compact('projects', 'student', 'statusAdministrative', 'multipleRecords'));
     }
+    
 
     public function create()
     {
@@ -259,7 +276,7 @@ class ProjectController extends Controller
             $bmcName = time() . '_bmc.' . $bmc->getClientOriginalExtension();
             $bmc->storeAs('public/public/projects/bmc/', $bmcName);
             $project->bmc = $bmcName;
-            $project->bmc_status = 3;
+            $project->bmc_status = 1;
             $project->save();
             toastr()->success(trans('message.success.create'));
             return redirect()->route('student.index');            
@@ -297,35 +314,91 @@ class ProjectController extends Controller
     }
 
     public function administrative($id){
-        $project = Project::find($id);
+        $student = Student::find($id);
+        $project = Project::where('id_student', $student->id)->first();
+        $studentGroups = StudentGroup::where('id_student', $id)->get();
+        $numMembers = $studentGroups->count();
+    
         if($project){
-            return view('student-project.administrative',compact('project'));
+            return view('student-project.administrative', compact('project','student', 'studentGroups', 'numMembers'));
         }
     }
 
     public function storeAdministrative(Request $request, $id){
-        $project = Project::find($id);
-        if($project){
+        $student = Student::find($id);
+        if ($student) {
+        
+            $studentGroups = StudentGroup::where('id_student', $student->id)->get();
+    
             $validator = Validator::make($request->all(), [
-                'administrative' => 'required|mimes:pdf', 
-                    
+                'registration_certificate.*' => 'required|file|mimes:pdf,jpg,png',
+                'identification_card.*' => 'required|file|mimes:pdf,jpg,png',
+                'photo.*' => 'required|file|mimes:jpg,png',
             ], [
-                'administrative.required' => 'The Administrative file is required.',
-                
+                'registration_certificate.*.required' => 'The registration certificate is required.',
+                'identification_card.*.required' => 'The identification card is required.',
+                'photo.*.required' => 'The photo is required.',
             ]);
-            if ($request->hasFile('administrative')) {
-                $administrative = $request->file('administrative');
-                $administrativeName = time() . '_administrative.' . $administrative->getClientOriginalExtension();
-                $administrative->storeAs('public/public/projects/administrative/', $administrativeName);
-                $project->administrative_file = $administrativeName;
-                $project->save();
-                toastr()->success(trans('message.success.create'));
-                return redirect()->route('student.index');            
-            } 
+    
+            if ($validator->fails()) {
+                return back()->withErrors($validator)->withInput();
+            }
+    
+            $adminstrative = new AdministrativeFiles;
+            $adminstrative->student_id = $student->id;
+            $adminstrative->student_group_id = 0; 
+    
+            if ($request->hasFile('registration_certificate.0')) {
+                $adminstrativeRgstCertificate = $request->file('registration_certificate.0');
+                $adminstrativeRgstCertificateName = time() . '_registration_certificate_0.' . $adminstrativeRgstCertificate->getClientOriginalExtension();
+                $adminstrativeRgstCertificate->storeAs('public/public/projects/administrative/registrations_certificates', $adminstrativeRgstCertificateName);
+                $adminstrative->registration_certificate = $adminstrativeRgstCertificateName;
+            }
+            if ($request->hasFile('identification_card.0')) {
+                $adminstrativeIdCart = $request->file('identification_card.0');
+                $adminstrativeIdCartName = time() . '_identification_card_0.' . $adminstrativeIdCart->getClientOriginalExtension();
+                $adminstrativeIdCart->storeAs('public/public/projects/administrative/identifications_cards', $adminstrativeIdCartName);
+                $adminstrative->identification_card = $adminstrativeIdCartName;
+            }
+            if ($request->hasFile('photo.0')) {
+                $adminstrativePhoto = $request->file('photo.0');
+                $adminstrativePhotoName = time() . '_photo_0.' . $adminstrativePhoto->getClientOriginalExtension();
+                $adminstrativePhoto->storeAs('public/public/projects/administrative/photos', $adminstrativePhotoName);
+                $adminstrative->photo = $adminstrativePhotoName;
+            }
+            $adminstrative->save();
+    
+            foreach ($studentGroups as $index => $studentGroup) {
+                $adminstrative = new AdministrativeFiles;
+                if ($request->hasFile('registration_certificate.' . ($index + 1))) {
+                    $adminstrativeRgstCertificate = $request->file('registration_certificate.' . ($index + 1));
+                    $adminstrativeRgstCertificateName = time() . '_registration_certificate_' . ($index + 1) . '.' . $adminstrativeRgstCertificate->getClientOriginalExtension();
+                    $adminstrativeRgstCertificate->storeAs('public/public/projects/administrative/registrations_certificates', $adminstrativeRgstCertificateName);
+                    $adminstrative->registration_certificate = $adminstrativeRgstCertificateName;
+                }
+                if ($request->hasFile('identification_card.' . ($index + 1))) {
+                    $adminstrativeIdCart = $request->file('identification_card.' . ($index + 1));
+                    $adminstrativeIdCartName = time() . '_identification_card_' . ($index + 1) . '.' . $adminstrativeIdCart->getClientOriginalExtension();
+                    $adminstrativeIdCart->storeAs('public/public/projects/administrative/identifications_cards', $adminstrativeIdCartName);
+                    $adminstrative->identification_card = $adminstrativeIdCartName;
+                }
+                if ($request->hasFile('photo.' . ($index + 1))) {
+                    $adminstrativePhoto = $request->file('photo.' . ($index + 1));
+                    $adminstrativePhotoName = time() . '_photo_' . ($index + 1) . '.' . $adminstrativePhoto->getClientOriginalExtension();
+                    $adminstrativePhoto->storeAs('public/public/projects/administrative/photos', $adminstrativePhotoName);
+                    $adminstrative->photo = $adminstrativePhotoName;
+                }
+                $adminstrative->student_id = $student->id;
+                $adminstrative->student_group_id = $studentGroup->id; 
+                $adminstrative->save();
+            }
+            toastr()->success(trans('message.success.create'));
+            return redirect()->route('student.index');
         }
-
     }
-
+    
+   
+   
     public function editStatusBmc($id){
 
         $project = Project::find($id);

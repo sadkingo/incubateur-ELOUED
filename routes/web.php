@@ -187,7 +187,7 @@ Route::prefix('dashboard')->name('dashboard.')->middleware('auth:admin,teacher')
     
     Route::get('project/bmc-studing/{id}', [ProjectController::class,'editStatusBmc'])->name('dashboard.projects.edit_status_bmc');
     Route::put('project/bmc-studing/{id}', [ProjectController::class,'storeStatusBmc'])->name('dashboard.projects.store_status_bmc');
-
+    Route::get('administrative/{id}', [ProjetController::class, 'administartiveShow'])->name('dashboard.projects.administrative_tracking');
 
     
 
@@ -208,6 +208,7 @@ Route::prefix('dashboard')->name('dashboard.')->middleware('auth:admin,teacher')
     Route::resource('settings', SettingController::class)->middleware('auth:admin');
 });
 
+Route::post('/update-status', [ProjetController::class, 'updateStatus'])->name('update-status');
 
 
 Route::name('student.')->middleware('auth:student')->group(function () {
