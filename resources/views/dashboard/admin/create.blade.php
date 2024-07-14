@@ -70,6 +70,19 @@
                             </small>
                         @enderror
                     </div>
+                    <div class="col-sm-12 col-md-6 mb-2">
+                        <label for="role" class="form-label">{{ trans('app.label.role_admin') }}</label>
+                        <select class="form-select @error('role') is-invalid @enderror" name="role" value="{{ old('role') }}">
+                            <option value="" selected>-- {{ trans('app.admin.select_role_admin') }} --</option>
+                            <option value="superadmin">{{ trans('app.admin.superadmin') }}</option>
+                            <option value="admin">{{ trans('app.admin.admin') }}</option>
+                        </select>
+                        @error('role')
+                            <small class="text-danger d-block">
+                                {{ $message }}
+                            </small>
+                        @enderror
+                    </div>
 
                     <div class="col-sm-12 mt-3 d-flex">
                         <div class="col d-flex justify-content-end">

@@ -48,6 +48,7 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
+       // dd($request->all());
         $this->admins->create($request->all());
         toastr()->success(trans('message.success.create'));
         return redirect()->route('dashboard.admins.index');

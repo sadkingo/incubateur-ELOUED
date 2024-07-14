@@ -15,9 +15,13 @@
         <h5 class="card-header pt-0 mt-1">
             <div class="row  justify-content-between">
                 <div class="form-group col-md-3 mr-5 mt-4">
-                    <a href="{{ route('dashboard.admins.create') }}" class="btn btn-primary text-white">
-                        <span class="tf-icons bx bx-plus"></span>&nbsp; {{ trans('admin.create') }}
-                    </a>
+                    @if(auth('admin')->check())
+                        @if(auth('admin')->user()->role == 'superadmin')
+                            <a href="{{ route('dashboard.admins.create') }}" class="btn btn-primary text-white">
+                                <span class="tf-icons bx bx-plus"></span>&nbsp; {{ trans('admin.create') }}
+                            </a>
+                        @endif    
+                    @endif
                 </div>
                 <div class="form-group col-md-3" dir="{{ config('app.locale') == 'ar' ? 'rtl' : 'ltr' }}">
                     <form action="" method="GET" id="searchSectionForm">
