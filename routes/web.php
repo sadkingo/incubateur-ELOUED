@@ -29,6 +29,7 @@ use App\Http\Controllers\Dashboard\Evaluation\EvaluationController;
 use App\Http\Controllers\Dashboard\Certificate\CertificateController;
 use App\Http\Controllers\Dashboard\ExcelImport\ExcelImportController;
 use App\Http\Controllers\Dashboard\Project\ProjetController;
+use App\Http\Controllers\Dashboard\Statistics\StatisticsController;
 use App\Http\Controllers\Project\ProjectController;
 use App\Http\Controllers\Supervisor\SupervisingTeacherController;
 use App\Http\Controllers\Supervisor\SupervisorController;
@@ -189,8 +190,9 @@ Route::prefix('dashboard')->name('dashboard.')->middleware('auth:admin,teacher')
     Route::put('project/bmc-studing/{id}', [ProjectController::class,'storeStatusBmc'])->name('dashboard.projects.store_status_bmc');
     Route::get('administrative/{id}', [ProjetController::class, 'administartiveShow'])->name('dashboard.projects.administrative_tracking');
 
+    Route::get('statistics', [StatisticsController::class, 'index'])->name('dashboard.statistics.index');
     
-
+    Route::get('students/print/{id}', [CertificateController::class, 'printStudent'])->name('dashboard.certificate.print');
     Route::resource('subjects', SubjectController::class);
     Route::resource('evaluations', EvaluationController::class);
     Route::get('evaluations/create/{id}', [EvaluationController::class, 'create'])->name('evaluations.create');
@@ -203,6 +205,16 @@ Route::prefix('dashboard')->name('dashboard.')->middleware('auth:admin,teacher')
         Route::get('trainee_notebook/{student_id}', [PrintController::class, 'trainee_notebook'])->name('trainee_notebook');
         Route::get('supervisors/{student_id}', [PrintController::class, 'printSupervisors'])->name('supervisors');
         Route::get('certificate/{id}/label',[PrintController::class, 'label'])->name('label');
+        Route::get('statistics/membres' , [StatisticsController::class, 'printMembre'])->name('dashboard.statistics.prinrt_statistic_membre');
+        Route::get('statistics/projects' , [StatisticsController::class, 'printProjectStatistic'])->name('dashboard.statistics.prinrt_statistice_project');
+        Route::get('statistics/mini-project', [StatisticsController::class, 'printMiniProject'])->name('dashboard.statistics.print_statistic_mini_project');
+        Route::get('statistics/startup-project', [StatisticsController::class, 'printStartupProject'])->name('dashboard.statistics.print_statistic_startup_project');
+        Route::get('statistics/paten-project', [StatisticsController::class, 'printPatentProject'])->name('dashboard.statistics.print_statistic_patent_project');
+        Route::get('statistics/project-classification', [StatisticsController::class, 'printStatisticProject'])->name('dashboard.statistics.print_statistic_project_classification');
+        Route::get('statistics/mini-project-stage', [StatisticsController::class, 'printMiniProjectStages'])->name('dashboard.statistics.print_statistic_mini_project_stage');
+        Route::get('statistics/startup-project-stage', [StatisticsController::class, 'printStartupProjectStages'])->name('dashboard.statistics.print_statistic_startup_project_stage');
+        Route::get('statistics/patent-project-stage', [StatisticsController::class, 'printPatentProjectStages'])->name('dashboard.statistics.print_statistic_patent_project_stage');
+    
     });
     Route::resource('certificates', CertificateController::class);
     Route::resource('settings', SettingController::class)->middleware('auth:admin');

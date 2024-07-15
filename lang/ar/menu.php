@@ -14,4 +14,5 @@ return [
     'settings'=> 'الاعدادات',
     'projects'=> 'المشاريع',
     'commissions' => 'اللجان',
+    'statistics' => 'الاحصاء'
 ];

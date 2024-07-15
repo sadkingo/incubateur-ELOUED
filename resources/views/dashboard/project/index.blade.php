@@ -143,7 +143,7 @@
                                                             @else
                                                                 <a class="dropdown-item" href="{{ url('dashboard/project/'.$project->id.'/edit-classification')}}">{{ trans('project.edit_project_classification') }}</a>    
                                                             @endif
-                                                            <a class="dropdown-item" href="{{ url('dashboard/project/'.$project->id.'/add-project-tracking') }}">{{ trans('project.project_tracking') }}</a>
+                                                            <a class="dropdown-item" href="{{ url('dashboard/project/'.$project->id.'/edit-project-tracking') }}">{{ trans('project.project_tracking') }}</a>
                                                             <a class="dropdown-item" href="{{ url('dashboard/project/bmc-studing/'.$project->id) }}" >{{trans('project.bmc_tracking')}}</a>
                                                             <a class="dropdown-item" href="{{ url('dashboard/administrative/'.$project->id_student) }}" >{{trans('project.administrative_tracking')}}</a>
                                                             

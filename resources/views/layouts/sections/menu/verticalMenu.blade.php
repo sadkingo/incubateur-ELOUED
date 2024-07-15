@@ -2,10 +2,11 @@
     .icon-text-spacing {
     margin-left: 10px; 
 }
+.menu-link i {
+    margin-right: 2px; 
+}
 </style>
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
-
-    
     <div class="app-brand demo">
         <a href="{{ route('dashboard.index') }}" class="app-brand-link">
             <span class="app-brand-logo demo">
@@ -61,8 +62,20 @@
             </li>
             <li class="menu-item">
                 <a href="{{ route('dashboard.projet.index')}}" class="menu-link">
-                    <i class='bx bx-buildings bx-flip-horizontal' ></i>
+                    <i class='bx bx-buildings bx-flip-horizontal' ></i>&nbsp; &nbsp;
                     <div class="icon-text-spacing">{{ trans('menu.projects') }}</div>
+                </a>
+            </li>
+            <li class="menu-item ">
+                <a href="{{ route('dashboard.certificates.index') }}" class="menu-link">
+                    <i class='bx bxs-certification bx-flip-horizontal'></i>&nbsp; &nbsp;              
+                    <div>{{ trans('menu.certificates') }}</div>
+                </a>
+            </li>
+            <li class="menu-item ">
+                <a href="{{ url('/dashboard/statistics')}}" class="menu-link ">
+                    <i class="fa-solid fa-chart-bar"></i>&nbsp; &nbsp;              
+                    <div>{{ trans('menu.statistics') }}</div>
                 </a>
             </li>
         @elseif(auth('student')->check())
