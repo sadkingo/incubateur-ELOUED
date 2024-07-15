@@ -85,5 +85,6 @@
         'placeholder' =>[
             'name' => 'Search for project name',
         ],
+        'select' => 'select',
     ];
 ?>

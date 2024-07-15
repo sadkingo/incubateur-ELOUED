@@ -25,6 +25,12 @@
                         <h4 class="fw-bold py-3 mb-4">
                             <span class="text-muted fw-light">{{ trans('commission.dashboard') }} /</span> {{ trans('project.projects') }}
                         </h4>
+                        <div>
+                            <button class="btn btn-success" onclick="updateSelectedStatus(2)">{{ trans('project.status_project.accepted') }}</button>
+                            <button class="btn btn-danger" onclick="updateSelectedStatus(0)">{{ trans('project.status_project.rejected') }}</button>
+                            <button class="btn btn-secondary" onclick="updateSelectedStatus(1)">{{ trans('project.status_project.under_studying') }}</button>
+                            <button class="btn btn-warning" onclick="updateSelectedStatus(3)">{{ trans('project.status_project.complete_project') }}</button>
+                        </div>
                     </div>
                 </h5>
                 <hr class="my-0">
@@ -44,6 +50,8 @@
                                 <table class="table table-striped">
                                     <thead>
                                         <tr>
+                                            <th scope="col">{{ trans('project.select') }}</th>
+                                            <th scope="col">#</th>
                                             <th scope="col">{{trans('project.label.name')}}</th>
                                             <th scope="col">{{ trans('project.status_project.status')}}</th>
                                             <th scope="col">{{trans('student.firstname')}} & {{trans('student.lastname')}}</th>
@@ -54,8 +62,10 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($projects as $project)
+                                        @foreach ($projects as $index => $project)
                                             <tr>
+                                                <td><input type="checkbox" class="project-checkbox" value="{{ $project->id }}"></td>
+                                                <td>{{ $index + 1 }}</td>
                                                 <th scope="row"><a href="{{ url('dashboard/project/'.$project->id) }}">{{ $project->name }}</a></th>
                                                 <td>
                                                     <ul class="status-list">
@@ -83,9 +93,9 @@
                                                                 <span class="btn btn-sm {{ $project->status == 3 ? 'btn-warning' : 'btn-custom-gray' }}">{{ trans('project.status_project.complete_project') }}</span>
                                                             </label>
                                                         </li>
+                                                        
                                                     </ul>
                                                 </td>
-                                                
                                                 <td>{{ $project->student->name }}</td>
                                                 <td>
                                                     @php
@@ -142,13 +152,13 @@
                                                             @else
                                                                 <a class="dropdown-item" href="{{ url('dashboard/project/'.$project->id.'/edit-type') }}">{{ trans('project.edit_project_type') }}</a>
                                                             @endif
-                                                            @if($project->project_classification == null)
-                                                                <a class="dropdown-item" href="{{ url('dashboard/project/'.$project->id.'/add-classification')}}">{{ trans('project.add_project_classification') }}</a>
+                                                            @if($project->bmc_pdf)
+                                                                <a class="dropdown-item" href="{{ asset('storage/'.$project->bmc_pdf) }}" target="_blank">{{trans('project.view_bmc')}}</a>
                                                             @else
-                                                                <a class="dropdown-item" href="{{ url('dashboard/project/'.$project->id.'/edit-classification')}}">{{ trans('project.edit_project_classification') }}</a>    
+                                                                <a class="dropdown-item" href="{{ url('dashboard/project/bmc/'.$project->id) }}">{{trans('project.add_bmc')}}</a>
                                                             @endif
-                                                            <a class="dropdown-item" href="{{ url('dashboard/project/'.$project->id.'/edit-project-tracking') }}">{{ trans('project.project_tracking') }}</a>
-                                                            <a class="dropdown-item" href="{{ url('dashboard/project/bmc-studing/'.$project->id) }}" >{{trans('project.bmc_tracking')}}</a>
+                                                            <a class="dropdown-item"
+ href="{{ url('dashboard/project/bmc-studing/'.$project->id) }}" >{{trans('project.bmc_tracking')}}</a>
                                                             <a class="dropdown-item" href="{{ url('dashboard/administrative/'.$project->id_student) }}" >{{trans('project.administrative_tracking')}}</a>
                                                             
                                                         </div>
@@ -180,6 +190,7 @@
                 printWindow.print();
             };
         }
+
         function updateStatus(projectId, status) {
             $.ajax({
                 type: 'POST',
@@ -191,28 +202,43 @@
                 },
                 success: function(response) {
                     console.log(response);
-                    switch (response.status) {
-                        case 0:
-                            $('#project_status').css('background-color', 'red');
-                            break;
-                        case 1:
-                            $('#project_status').css('background-color', 'yellow');
-                            break;
-                        case 2:
-                            $('#project_status').css('background-color', 'green');
-                            break;
-                        case 3:
-                            $('#project_status').css('background-color', 'blue');
-                            break;
-                        default:
-                            break;
-                    }
+                    toastr.success('{{ trans('project.status_updated') }}');
                 },
                 error: function(xhr, status, error) {
                     console.error(error);
+                    toastr.error('{{ trans('project.status_update_failed') }}');
                 }
             });
         }
+
+        function updateSelectedStatus(status) {
+            var selectedProjects = [];
+            $('.project-checkbox:checked').each(function() {
+                selectedProjects.push($(this).val());
+            });
+
+            if (selectedProjects.length > 0) {
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ url("dashboard/update_selected_projects_status") }}',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        project_ids: selectedProjects,
+                        status: status
+                    },
+                    success: function(response) {
+                        console.log(response);
+                        toastr.success('{{ trans('project.status_updated') }}');
+                        location.reload();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                        toastr.error('{{ trans('project.status_update_failed') }}');
+                    }
+                });
+            } else {
+                toastr.warning('{{ trans('project.no_projects_selected') }}');
+            }
+        }
     </script>
-    
 @endsection
