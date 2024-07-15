@@ -61,7 +61,7 @@
                                                         @else
                                                             {{trans('auth/project.project_tracking.labelle_innovative_project')}}
                                                         @endif
-                                                    @else
+                                                    @elseif($project->project_classification == 3)
                                                         @if($project->project_tracking == 0)
                                                             <span >{{trans('auth/project.status_project_tracking.emty')}} </span>
                                                         @elseif($project->project_tracking == 1)
@@ -78,6 +78,30 @@
                                                             {{trans('auth/project.project_tracking.resend_the_amended_form_after_lifting_the_reservations')}}
                                                         @else
                                                             {{trans('auth/project.project_tracking.obtained_a_patent')}}    
+                                                        @endif
+                                                    @else
+                                                        @if($project->project_tracking == 0)
+                                                            <span >{{trans('auth/project.status_project_tracking.emty')}} </span>
+                                                        @elseif($project->project_tracking == 1)
+                                                            {{trans('auth/project.project_tracking.configuration_stage')}}
+                                                        @elseif($project->project_tracking == 2)
+                                                            {{trans('auth/project.project_tracking.create_bmc')}}    
+                                                        @elseif($project->project_tracking == 3)
+                                                            {{trans('auth/project.project_tracking.the_stage_of_preparing_the_prototype')}}    
+                                                        @elseif($project->project_tracking == 4)
+                                                            {{trans('auth/project.project_tracking.write_a_descriptive_model')}}
+                                                        @elseif($project->project_tracking == 5)
+                                                            {{trans('auth/project.project_tracking.stage_of_registering_a_patent_application')}}
+                                                        @elseif($project->project_tracking == 6)
+                                                            {{trans('auth/project.project_tracking.obtain_a_certificate_of_registration_for_the_patent_filing_application')}}
+                                                        @elseif($project->project_tracking == 7)
+                                                            {{trans('auth/project.project_tracking.receiving_reservations_and_amendments_requested_from_INAPI')}}    
+                                                        @elseif($project->project_tracking == 8)
+                                                            {{trans('auth/project.project_tracking.resend_the_amended_form_after_lifting_the_reservations')}}
+                                                        @elseif($project->project_tracking == 9)
+                                                            {{trans('auth/project.project_tracking.discussion_stage')}}
+                                                        @else
+                                                            {{trans('auth/project.project_tracking.obtained_a_patent_startup')}}
                                                         @endif
                                                     @endif
                                                 </td>
@@ -121,7 +145,7 @@
                                                                 <span class="text-light bg-dark">{{trans('auth/project.status_project_tracking.exclusion_or_waiver_of_the_student')}} </span>
                                                             @endif
                                                         @endif
-                                                    @else
+                                                    @elseif($project->project_classification == 3)
                                                         @if($project->project_tracking == 0)
                                                             <span >{{trans('auth/project.status_project_tracking.emty')}} </span>
                                                         @elseif($project->project_tracking == 1)
@@ -157,8 +181,55 @@
                                                                 <span class="text-success">{{trans('auth/project.status_project_tracking.yes')}} </span>  
                                                             @endif
                                                         @endif
-                                                    @endif        
-                                                    
+                                                    @else
+                                                        @if($project->project_tracking == 1)
+                                                            @if($project->status_project_tracking == 0)
+                                                                <span >{{trans('auth/project.status_project_tracking.emty')}} </span>
+                                                            @elseif($project->status_project_tracking == 1)
+                                                                <span class="text-warning">{{trans('auth/project.status_project_tracking.practice')}} </span>
+                                                            @elseif($project->status_project_tracking == 2)
+                                                                <span class="text-success">{{trans('auth/project.status_project_tracking.complete')}} </span>
+                                                            @else
+                                                                <span class="text-danger">{{trans('auth/project.status_project_tracking.not_yet')}} </span>
+                                                            @endif
+                                                        @elseif($project->project_tracking == 2 || $project->project_tracking == 3)
+                                                            @if($project->status_project_tracking == 0)
+                                                                <span >{{trans('auth/project.status_project_tracking.emty')}} </span>
+                                                            @elseif($project->status_project_tracking == 1)
+                                                                <span class="text-warning">{{trans('auth/project.status_project_tracking.development_mode')}} </span>
+                                                            @elseif($project->status_project_tracking == 2)
+                                                                <span class="text-success">{{trans('auth/project.status_project_tracking.accomplished')}} </span>
+                                                            @else
+                                                                <span class="text-danger">{{trans('auth/project.status_project_tracking.not_completed')}} </span>
+                                                            @endif
+                                                        @elseif($project->project_tracking == 4 )
+                                                            @if($project->status_project_tracking == 1)
+                                                                <span class="text-danger">{{trans('auth/project.status_project_tracking.no')}} </span>
+                                                            @else
+                                                                <span class="text-success">{{trans('auth/project.status_project_tracking.yes')}} </span>
+                                                            @endif
+                                                        @elseif($project->project_tracking == 6)
+                                                            @if($project->status_project_tracking == 1)
+                                                                <span class="text-danger">{{trans('auth/project.status_project_tracking.did_not_happen')}} </span>
+                                                            @else
+                                                                <span class="text-success">{{trans('auth/project.status_project_tracking.get')}} </span>
+                                                            @endif  
+                                                        @elseif($project->project_tracking == 9)
+                                                            @if($project->status_project_tracking == 2)
+                                                                <span class="text-success">{{trans('auth/project.status_project_tracking.discuss')}} </span>
+                                                            @else
+                                                                <span class="text-danger">{{trans('auth/project.status_project_tracking.not_discussed')}} </span>
+                                                            @endif
+                                                        @else
+                                                            @if($project->status_project_tracking == 0)
+                                                                <span >{{trans('auth/project.status_project_tracking.emty')}} </span>
+                                                            @elseif($project->status_project_tracking == 1)
+                                                                <span class="text-danger">{{trans('auth/project.status_project_tracking.no')}} </span>
+                                                            @else
+                                                                <span class="text-success">{{trans('auth/project.status_project_tracking.yes')}} </span>  
+                                                            @endif               
+                                                        @endif    
+                                                    @endif
                                                 </td>
                                                 <td>
                                                     <div class="dropdown">

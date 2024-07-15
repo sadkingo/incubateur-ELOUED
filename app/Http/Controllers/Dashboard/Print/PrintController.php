@@ -211,6 +211,19 @@ class PrintController extends Controller
         return view('student-dashboard.certificate_students', compact('student', 'project', 'currentStage'));
     }
     
+
+    public function printCommission($id){
+        $project = Project::with(['student', 'commission'])->find($id);
+
+        if (!$project) {
+            abort(404);
+        }
+    
+        $allStudents = StudentGroup::where('id_student', $project->student->id)->get();
+    
+
+        return view('dashboard.printer.commission', compact('project', 'allStudents'));
+    }
     
 
 }

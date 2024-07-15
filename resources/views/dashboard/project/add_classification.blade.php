@@ -26,6 +26,7 @@
                                 <option value="1">{{ trans('auth/project.small_scale_enterprise') }}</option>
                                 <option value="2">{{ trans('auth/project.start_up') }}</option>
                                 <option value="3">{{ trans('auth/project.patent') }}</option>
+                                <option value="4">{{ trans('auth/project.patent_start_up') }}</option>
                             </select>
                             @error('project_classification')
                             <small class="text-danger d-block">

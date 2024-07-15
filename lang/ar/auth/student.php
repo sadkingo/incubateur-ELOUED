@@ -17,7 +17,7 @@ return [
     'gender_male' => 'ذكر',
     'state_of_birth' => 'ولاية الميلاد',
     'place_of_birth' => 'مكان الميلاد',
-
+    'photo'  =>  'صورة شخصية',
     'registration_number' => 'رقم التسجيل',
     'group' => 'الفوج',
 

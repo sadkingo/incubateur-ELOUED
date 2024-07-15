@@ -26,6 +26,7 @@
                                 <option value="1" @if($project->project_classification == 1) selected @endif>{{ trans('auth/project.small_scale_enterprise') }}</option>
                                 <option value="2" @if($project->project_classification == 2) selected @endif>{{ trans('auth/project.start_up') }}</option>
                                 <option value="3" @if($project->project_classification == 3) selected @endif>{{ trans('auth/project.patent') }}</option>
+                                <option value="4" @if($project->project_classification == 4) selected @endif>{{ trans('auth/project.patent_start_up') }}</option>
                             </select>
                             @error('project_classification')
                             <small class="text-danger d-block">

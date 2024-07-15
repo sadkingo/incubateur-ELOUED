@@ -81,7 +81,7 @@
                                                 </td>
                                                 <td>
                                                     @if ($project->project_classification != null)
-                                                        @if (in_array($project->project_classification, [1, 2]) && $project->status == 2)
+                                                        @if (in_array($project->project_classification, [1, 2, 4]) && $project->status == 2)
                                                             
                                                             @if ($statusAdministrative)
                                                                 @if (!$multipleRecords)
@@ -140,7 +140,7 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    @if (in_array($project->project_classification, [1, 2]) && $project->status == 2)
+                                                    @if (in_array($project->project_classification, [1, 2, 4]) && $project->status == 2)
                                                         @if ($statusAdministrative)
                                                             @if (!$multipleRecords)
                                                                 @if ($statusAdministrative->status == 0)

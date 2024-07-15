@@ -152,13 +152,31 @@
                                                             @else
                                                                 <a class="dropdown-item" href="{{ url('dashboard/project/'.$project->id.'/edit-type') }}">{{ trans('project.edit_project_type') }}</a>
                                                             @endif
+                                                            @if($project->project_classification == null)
+                                                                <a class="dropdown-item" href="{{ url('dashboard/project/'.$project->id.'/add-classification')}}">{{ trans('project.add_project_classification') }}</a>
+                                                            @else
+                                                                <a class="dropdown-item" href="{{ url('dashboard/project/'.$project->id.'/edit-classification')}}">{{ trans('project.edit_project_classification') }}</a>    
+                                                            @endif
+                                                            <a class="dropdown-item" href="{{ url('dashboard/project/'.$project->id.'/add-project-tracking') }}">{{ trans('project.project_tracking') }}</a>
+                                                            <a class="dropdown-item" href="{{ url('dashboard/project/bmc-studing/'.$project->id) }}" >{{trans('project.bmc_tracking')}}</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="dropdown">
+                                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                                            <i class="bx bx-dots-vertical-rounded"></i>
+                                                        </button>
+                                                        <div class="dropdown-menu">
+                                                            @if ($project->type_project === null)
+                                                                <a class="dropdown-item" href="{{ url('dashboard/project/'.$project->id.'/add-type') }}">{{ trans('project.add_project_type') }}</a>
+                                                            @else
+                                                                <a class="dropdown-item" href="{{ url('dashboard/project/'.$project->id.'/edit-type') }}">{{ trans('project.edit_project_type') }}</a>
+                                                            @endif
                                                             @if($project->bmc_pdf)
                                                                 <a class="dropdown-item" href="{{ asset('storage/'.$project->bmc_pdf) }}" target="_blank">{{trans('project.view_bmc')}}</a>
                                                             @else
                                                                 <a class="dropdown-item" href="{{ url('dashboard/project/bmc/'.$project->id) }}">{{trans('project.add_bmc')}}</a>
                                                             @endif
-                                                            <a class="dropdown-item"
- href="{{ url('dashboard/project/bmc-studing/'.$project->id) }}" >{{trans('project.bmc_tracking')}}</a>
+                                                            <a class="dropdown-item" href="{{ url('dashboard/project/bmc-studing/'.$project->id) }}" >{{trans('project.bmc_tracking')}}</a>
                                                             <a class="dropdown-item" href="{{ url('dashboard/administrative/'.$project->id_student) }}" >{{trans('project.administrative_tracking')}}</a>
                                                             
                                                         </div>

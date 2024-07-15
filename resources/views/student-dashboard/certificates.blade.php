@@ -37,21 +37,35 @@
                                 </thead>
                                 <tbody>
                                     @php
-                                        $trackingLabels = [
-                                            1 => $project->project_classification == 1 || $project->project_classification == 2
-                                                ? trans('auth/project.project_tracking.configuration_stage')
-                                                : trans('auth/project.project_tracking.the_stage_of_preparing_the_prototype'),
-                                            2 => $project->project_classification == 1 || $project->project_classification == 2
-                                                ? trans('auth/project.project_tracking.create_bmc')
-                                                : trans('auth/project.project_tracking.write_a_descriptive_model'),
-                                            3 => $project->project_classification == 1 || $project->project_classification == 2
-                                                ? trans('auth/project.project_tracking.the_stage_of_preparing_the_prototype')
-                                                : trans('auth/project.project_tracking.stage_of_registering_a_patent_application'),
-                                            4 => $project->project_classification == 1 || $project->project_classification == 2
-                                                ? trans('auth/project.project_tracking.discussion_stage')
-                                                : trans('auth/project.project_tracking.obtain_a_certificate_of_registration_for_the_patent_filing_application'),
+                                        $trackingLabels1and2 = [
+                                            1 => trans('auth/project.project_tracking.configuration_stage'),
+                                            2 => trans('auth/project.project_tracking.create_bmc'),
+                                            3 => trans('auth/project.project_tracking.the_stage_of_preparing_the_prototype'),
+                                            4 => trans('auth/project.project_tracking.discussion_stage'),
+                                            5 => trans('auth/project.project_tracking.labelle_innovative_project'),
+                                        ];
+
+                                        $trackingLabels3 = [
+                                            1 => trans('auth/project.project_tracking.the_stage_of_preparing_the_prototype'),
+                                            2 => trans('auth/project.project_tracking.write_a_descriptive_model'),
+                                            3 => trans('auth/project.project_tracking.stage_of_registering_a_patent_application'),
+                                            4 => trans('auth/project.project_tracking.obtain_a_certificate_of_registration_for_the_patent_filing_application'),
                                             5 => trans('auth/project.project_tracking.receiving_reservations_and_amendments_requested_from_INAPI'),
                                             6 => trans('auth/project.project_tracking.resend_the_amended_form_after_lifting_the_reservations'),
+                                            7 => trans('auth/project.project_tracking.obtained_a_patent'),
+                                        ];
+
+                                        $trackingLabels4 = [
+                                            1 => trans('auth/project.project_tracking.configuration_stage'),
+                                            2 => trans('auth/project.project_tracking.create_bmc'),
+                                            3 => trans('auth/project.project_tracking.the_stage_of_preparing_the_prototype'),
+                                            4 => trans('auth/project.project_tracking.write_a_descriptive_model'),
+                                            5 => trans('auth/project.project_tracking.stage_of_registering_a_patent_application'),
+                                            6 => trans('auth/project.project_tracking.obtain_a_certificate_of_registration_for_the_patent_filing_application'),
+                                            7 => trans('auth/project.project_tracking.receiving_reservations_and_amendments_requested_from_INAPI'),
+                                            8 => trans('auth/project.project_tracking.resend_the_amended_form_after_lifting_the_reservations'),
+                                            9 => trans('auth/project.project_tracking.discussion_stage'),
+                                            10 => trans('auth/project.project_tracking.obtained_a_patent_startup'),
                                         ];
 
                                         $statusLabels = [
@@ -68,6 +82,16 @@
 
                                         $getStatusLabel = fn($status) => $statusLabels[$status] ?? '';
                                         $getStatusClass = fn($status) => $statusColors[$status] ?? 'text-light bg-dark';
+
+                                        if ($project->project_classification == 1 || $project->project_classification == 2) {
+                                            $trackingLabels = $trackingLabels1and2;
+                                        } elseif ($project->project_classification == 3) {
+                                            $trackingLabels = $trackingLabels3;
+                                        } elseif ($project->project_classification == 4) {
+                                            $trackingLabels = $trackingLabels4;
+                                        } else {
+                                            $trackingLabels = [];
+                                        }
                                     @endphp
 
                                     <tr>
@@ -78,19 +102,7 @@
                                             </span>
                                         </td>
                                         <td>
-                                            @if(
-                                                ($project->project_classification == 1 || $project->project_classification == 2) &&
-                                                ($project->project_tracking <= 3) &&
-                                                $project->status_project_tracking == 2
-                                            )
-                                                <button id="printCertificate" data-url="{{ url('print/certificate/'.$project->id) }}" data-student-id="{{ $project->id }}" class="btn btn-primary text-white">
-                                                    <span class="bx bxs-printer"></span>&nbsp; {{ trans('app.print') }}
-                                                </button>
-                                            @elseif(
-                                                ($project->project_classification != 1 && $project->project_classification != 2) &&
-                                                ($project->project_tracking <= 3) &&
-                                                $project->status_project_tracking == 2
-                                            )
+                                            @if($project->status_project_tracking == 2 && $project->project_tracking <= 3)
                                                 <button id="printCertificate" data-url="{{ url('print/certificate/'.$project->id) }}" data-student-id="{{ $project->id }}" class="btn btn-primary text-white">
                                                     <span class="bx bxs-printer"></span>&nbsp; {{ trans('app.print') }}
                                                 </button>

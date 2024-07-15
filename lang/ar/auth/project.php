@@ -22,6 +22,7 @@
         'type_null'  => 'لم يتم تصنيف نوع المشروع بعد',
         'classification_null'  => 'لم يتم تصنيف  المشروع بعد',
         'select_project_classification' => 'اختر تصنيف',
+        'patent_start_up' => 'براءة اختارع مؤسسة ناشئة',
         'patent' => 'براءة اختراع',
         'start_up' => 'مؤسسة ناشئة',
         'small_scale_enterprise' => 'مؤسسة مصغرة',
@@ -50,6 +51,8 @@
             'receiving_reservations_and_amendments_requested_from_INAPI' => 'استقبال التحفظات والتعديلات المطلوبة من INAPI',
             'resend_the_amended_form_after_lifting_the_reservations' => 'اعادة ارسال النموذج المعدل بعد رفع التحفظات',
             'obtained_a_patent' => 'حصول على براءة اختراع',
+            'obtained_a_patent_startup' => 'حصول على براءة اختراع مؤسسة ناشئة',
+
 
         ],
         'status_project_tracking' => [

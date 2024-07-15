@@ -146,9 +146,18 @@ class Student extends Authenticatable
     public function project(){
         return $this->hasOne(Project::class, 'id_student');
     }
-
+    public function projectss()
+    {
+        return $this->hasMany(Project::class, 'id_student');
+    }
     public function studentGroup(){
         return $this->hasOne(StudentGroup::class, 'id_student');
+    }
+    public function studentGroups(){
+        return $this->hasMany(StudentGroup::class, 'id_student');
+    }
+    public function certificates(){
+        return $this->hasMany(Certificate::class, 'student_id');
     }
 
 }
