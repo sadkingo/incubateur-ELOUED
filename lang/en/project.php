@@ -63,6 +63,8 @@
         'add_project_tracking' => "Add project tracking",
         'status_project_tracking' => "Project Tracking Status",
         'edit_project_classification' => 'Edit project classification',
+        'project_classification' => 'Project classification',
+        'team_members' => 'Team members',
         'patent' => 'patent',
         'mini_project' => 'mini project',
         'start_up' => 'start-up',

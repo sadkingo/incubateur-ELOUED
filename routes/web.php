@@ -199,10 +199,11 @@ Route::prefix('dashboard')->name('dashboard.')->middleware('auth:admin,teacher')
     Route::prefix('print')->name('print.')->group(function () {
         Route::get('students', [PrintController::class, 'students'])->name('students');
         Route::get('teachers', [PrintController::class, 'teachers'])->name('teachers');
-        Route::get('attendence', [PrintController::class, 'attendence'])->name('attendence');
-        Route::get('review', [PrintController::class, 'review'])->name('review');
-        Route::get('certificate', [PrintController::class, 'certificate'])->name('certificate');
-        Route::get('trainee_notebook/{student_id}', [PrintController::class, 'trainee_notebook'])->name('trainee_notebook');
+        Route::get('commission/{id}', [PrintController::class, 'printCommission'])->name('commission');
+        // Route::get('attendence', [PrintController::class, 'attendence'])->name('attendence');
+        // Route::get('review', [PrintController::class, 'review'])->name('review');
+        // Route::get('certificate', [PrintController::class, 'certificate'])->name('certificate');
+        // Route::get('trainee_notebook/{student_id}', [PrintController::class, 'trainee_notebook'])->name('trainee_notebook');
         Route::get('supervisors/{student_id}', [PrintController::class, 'printSupervisors'])->name('supervisors');
         Route::get('certificate/{id}/label',[PrintController::class, 'label'])->name('label');
         Route::get('statistics/membres' , [StatisticsController::class, 'printMembre'])->name('dashboard.statistics.prinrt_statistic_membre');

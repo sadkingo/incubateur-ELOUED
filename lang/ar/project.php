@@ -85,7 +85,8 @@
         "cassification_project" => "تصنيف المشروع",
         
     ],
-
+    'project_classification' => ' تصنيف المشروع',
+    'team_members' => 'الطلبة الأعضاء',
     'placeholder' =>[
         'name' => 'إبحث عن اسم المشروع',
     ],

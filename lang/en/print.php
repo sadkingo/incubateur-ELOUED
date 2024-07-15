@@ -155,7 +155,12 @@
             'complte' => 'Projects requested to be completed',
             'type' => 'type',
             'nombre' => 'number',
-        ]
+        ],
+        'date_meeting' => 'The interview will take place on: ........./........./.........',
+        'time_meeting' => 'At the time: ........./.........',
+
+        'university' => 'El Oued University -  Martyt Hama Lakhdar University in El Oued',
+        'incubater'  => 'Business incubator at the University of El Oued',
     ];
 
 ?>
