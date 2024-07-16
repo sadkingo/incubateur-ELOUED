@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\Dashboard\Project;
 use App\Http\Controllers\Controller;
 use App\Models\AdministrativeFiles;
+use App\Models\Certificate;
 use Illuminate\Http\Request;
 use App\Models\Project;
 use App\Models\Student;
@@ -157,12 +158,13 @@ class ProjetController extends Controller
         $validatedData = $request->validate([
             'project_classification' => 'required',
         ]);
-
+        dd($validatedData['project_classification'] );
         $project = Project::findOrFail($id);
 
         $project->project_classification = $validatedData['project_classification'];
         if( $validatedData['project_classification'] == '1' ||
-            $validatedData['project_classification'] == '2'
+            $validatedData['project_classification'] == '2' ||
+            $validatedData['project_classification'] == '4'
           ){
             $project->bmc_status = 0;
         }
@@ -188,7 +190,8 @@ class ProjetController extends Controller
         $project->project_classification = $validatedData['project_classification'];
         if(
             $validatedData['project_classification'] == '1' || 
-            $validatedData['project_classification'] == '2' 
+            $validatedData['project_classification'] == '2' || 
+            $validatedData['project_classification'] == '4' 
           ){
             $project->bmc_status = 0;
         }
@@ -259,7 +262,160 @@ class ProjetController extends Controller
         $project = Project::findOrFail($id);
         $project->status_project_tracking  = $validatedData['status_project_tracking'];
         $project->save();
-
+        $student = Student::where('id',$project->id_student)->first();
+        $studentGroups = StudentGroup::where('id_student',$student->id)->get();
+      
+        if($validatedData['status_project_tracking'] == 2){
+            if($project->project_classification == 1 || $project->project_classification == 2){
+                if($project->project_tracking == 1){
+                    if(count($studentGroups)){
+                       foreach($studentGroups as $group){
+                            $certifecate =  new Certificate;
+                            $certifecate->file_name = 'Étape de formation';   
+                            $certifecate->id_student_group = $group->id;
+                            $certifecate->student_id = $student->id;
+                            $certifecate->save();
+                        } 
+                    }else{
+                        $certifecate =  new Certificate;
+                            $certifecate->file_name = 'Étape de formation';   
+                            $certifecate->id_student_group = 0;
+                            $certifecate->student_id = $student->id;
+                            $certifecate->save();
+                    }
+                }elseif($project->project_tracking == 2){
+                    if(count($studentGroups)){
+                        foreach($studentGroups as $group){
+                             $certifecate =  new Certificate;
+                             $certifecate->file_name = 'Créer un BMC';   
+                             $certifecate->id_student_group = $group->id;
+                             $certifecate->student_id = $student->id;
+                             $certifecate->save();
+                         } 
+                     }else{
+                         $certifecate =  new Certificate;
+                             $certifecate->file_name = 'Créer un BMC';   
+                             $certifecate->id_student_group = 0;
+                             $certifecate->student_id = $student->id;
+                             $certifecate->save();
+                     }
+                }elseif($project->project_tracking == 3){
+                    if(count($studentGroups)){
+                        foreach($studentGroups as $group){
+                             $certifecate =  new Certificate;
+                             $certifecate->file_name = 'Étape de préparation du prototype';   
+                             $certifecate->id_student_group = $group->id;
+                             $certifecate->student_id = $student->id;
+                             $certifecate->save();
+                         } 
+                     }else{
+                         $certifecate =  new Certificate;
+                             $certifecate->file_name = 'Étape de préparation du prototype';   
+                             $certifecate->id_student_group = 0;
+                             $certifecate->student_id = $student->id;
+                             $certifecate->save();
+                     }
+                }elseif($project->project_tracking == 4){
+                    if(count($studentGroups)){
+                        foreach($studentGroups as $group){
+                             $certifecate =  new Certificate;
+                             $certifecate->file_name = 'Étape de discussion';   
+                             $certifecate->id_student_group = $group->id;
+                             $certifecate->student_id = $student->id;
+                             $certifecate->save();
+                         } 
+                    }else{
+                         $certifecate =  new Certificate;
+                             $certifecate->file_name = 'Étape de discussion';   
+                             $certifecate->id_student_group = 0;
+                             $certifecate->student_id = $student->id;
+                             $certifecate->save();
+                    }
+                }else{
+                    if(count($studentGroups)){
+                        foreach($studentGroups as $group){
+                             $certifecate =  new Certificate;
+                             $certifecate->file_name = 'Label est un projet innovant';   
+                             $certifecate->id_student_group = $group->id;
+                             $certifecate->student_id = $student->id;
+                             $certifecate->save();
+                         } 
+                    }else{
+                         $certifecate =  new Certificate;
+                             $certifecate->file_name = 'Label est un projet innovant';   
+                             $certifecate->id_student_group = 0;
+                             $certifecate->student_id = $student->id;
+                             $certifecate->save();
+                    }
+                }
+            }else{
+                if($project->project_tracking == 1){
+                    if(count($studentGroups)){
+                       foreach($studentGroups as $group){
+                            $certifecate =  new Certificate;
+                            $certifecate->file_name = 'Étape de préparation du prototype';   
+                            $certifecate->id_student_group = $group->id;
+                            $certifecate->student_id = $student->id;
+                            $certifecate->save();
+                        } 
+                    }else{
+                        $certifecate =  new Certificate;
+                            $certifecate->file_name = 'Étape de préparation du prototype';   
+                            $certifecate->id_student_group = 0;
+                            $certifecate->student_id = $student->id;
+                            $certifecate->save();
+                    }
+                }elseif($project->project_tracking == 2){
+                    if(count($studentGroups)){
+                        foreach($studentGroups as $group){
+                             $certifecate =  new Certificate;
+                             $certifecate->file_name = 'Ecrire un modèle descriptif';   
+                             $certifecate->id_student_group = $group->id;
+                             $certifecate->student_id = $student->id;
+                             $certifecate->save();
+                         } 
+                     }else{
+                         $certifecate =  new Certificate;
+                             $certifecate->file_name = 'Ecrire un modèle descriptif';   
+                             $certifecate->id_student_group = 0;
+                             $certifecate->student_id = $student->id;
+                             $certifecate->save();
+                     }
+                }elseif($project->project_tracking == 4){
+                    if(count($studentGroups)){
+                        foreach($studentGroups as $group){
+                             $certifecate =  new Certificate;
+                             $certifecate->file_name = 'Obtention d\'un certificat d\'enregistrement d\'une demande de brevet';   
+                             $certifecate->id_student_group = $group->id;
+                             $certifecate->student_id = $student->id;
+                             $certifecate->save();
+                         } 
+                     }else{
+                         $certifecate =  new Certificate;
+                             $certifecate->file_name = 'Obtention d\'un certificat d\'enregistrement d\'une demande de brevet';   
+                             $certifecate->id_student_group = 0;
+                             $certifecate->student_id = $student->id;
+                             $certifecate->save();
+                     }
+                }elseif($project->project_tracking == 7){
+                    if(count($studentGroups)){
+                        foreach($studentGroups as $group){
+                             $certifecate =  new Certificate;
+                             $certifecate->file_name = 'Obtention d\'un brevet';   
+                             $certifecate->id_student_group = $group->id;
+                             $certifecate->student_id = $student->id;
+                             $certifecate->save();
+                         } 
+                    }else{
+                        $certifecate =  new Certificate;
+                        $certifecate->file_name = 'Obtention d\'un brevet';   
+                        $certifecate->id_student_group = 0;
+                        $certifecate->student_id = $student->id;
+                        $certifecate->save();
+                    }
+                }
+            }
+        }
         toastr()->success(trans('message.success.update'));
         return redirect('dashboard/project/'.$project->id.'/add-project-tracking');
     }
@@ -277,10 +433,18 @@ class ProjetController extends Controller
 
     public function updateStatus(Request $request) {
         $file = AdministrativeFiles::find($request->id);
-    $file->status = $request->status;
-    $file->save();
+        $file->status = $request->status;
+        $file->save();
+        return response()->json(['success' => 'Status updated successfully.']);
+    }
 
-    return response()->json(['success' => 'Status updated successfully.']);
+    public function updateSelectedStatus(Request $request){
+        $projectIds = $request->input('project_ids', []);
+        $status = $request->input('status', 0);
+
+        Project::whereIn('id', $projectIds)->update(['status' => $status]);
+
+        return response()->json(['status' => 'success']);
     }
 }
 

@@ -12,7 +12,8 @@ use App\Http\Requests\Auth\RegisterStudentRequest;
 use App\Models\Departement;
 use App\Models\Faculty;
 use App\Repositories\Attendence\AttendenceRepository;
-
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 class RegisterController extends Controller
 {
     use DaysTrait;
@@ -37,19 +38,19 @@ class RegisterController extends Controller
         return view('auth.student.register', compact('faculties', 'departments'));
     }
 
-    public function register(RegisterStudentRequest $request){
-        
-       // dd($request->all());
+    public function register(RegisterStudentRequest $request){        
        $data = $request->all();
-
-       
-        $student = $this->students->create($data);
-
+       if ($request->hasFile('photo')) {
+        $image = $request->file('photo');
+        $imageName = time() . '.' . $image->getClientOriginalExtension();
+        $imagePath = $image->storeAs('public/projects/profile/', $imageName); 
+        $data['photo'] = $imageName; 
+    }
+    
+       $student = $this->students->create($data);
         $startDate = Carbon::parse($student->start_date);
         $endDate = Carbon::parse($student->end_date);
-        // $allDays = $this->getDaysFromSundayToThursdays(, );
         $allDays = $this->getDaysFromSundayToThursdays($startDate, $endDate);
-
         foreach ($allDays['days'] as $key => $day) {
             $data = [
                 'day' => $day+1,

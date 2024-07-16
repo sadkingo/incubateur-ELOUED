@@ -27,7 +27,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <th scope="row">{{ $loop->iteration }}</th>
+                        <th scope="row">{{ $student->id }}</th>
                         <td>{{ $student->name }}</td>
                         <td>
                             @if ($student->certificates->isNotEmpty())
@@ -38,6 +38,9 @@
                         </td>
                         @if (auth('admin')->check())
                             <td>
+                                <button id="printCertificate" data-url="{{ url('print/certificate/student/'.$student->id) }}" data-student-id="{{ $project->id }}" class="btn btn-primary text-white">
+                                    <span class="bx bxs-printer"></span>&nbsp; {{ trans('app.print') }}
+                                </button>
                             </td>
                         @endif
                     </tr>
@@ -46,12 +49,18 @@
                             <tr>
                                 <th scope="row">{{ $loop->iteration }}</th>
                                 <td>{{$group->firstname_ar}} {{$group->lastname_ar}}</td>
-                                <td>@if ($student->certificates->isNotEmpty())
-                                    {{ $student->certificates->first()->file_name }}
-                                @else
-                                    {{ trans('certificate.hasnotcertificate') }}
-                                @endif</td>
-                                <td></td>
+                                <td>
+                                    @if ($student->certificates->isNotEmpty())
+                                        {{ $student->certificates->first()->file_name }}
+                                    @else
+                                        {{ trans('certificate.hasnotcertificate') }}
+                                    @endif
+                                </td>
+                                <td>
+                                    <a id="printGroupCertificate_{{ $group->id }}" href="javascript:void(0);" data-url="{{ url('print/certificate/students/'.$group->id) }}">
+                                        <span class="bx bxs-printer"></span>&nbsp; {{ trans('app.print') }}
+                                    </a>
+                                </td>
                             </tr>
                         @endforeach
                     @endif
@@ -60,9 +69,10 @@
         </div>
     </div>
     <div class="d-flex justify-content-center mt-3">
-        {!! $students->links() !!}
+       
     </div>
 @endsection
+
 @section('scripts')
     <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -75,14 +85,28 @@
                     "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
                 },
             });
-            function submitForm() {
-                $("#filterStudentForm").submit();
-            }
-            $("#printCertificate").click(function(e) {
-                let url = $(this).attr('data-url');
+            
+            // Function to handle printing
+            function openPrintWindow(url) {
                 var printWindow = window.open(url, '_blank', 'height=auto,width=auto');
                 printWindow.print();
+            }
+
+            // Print certificate for student
+            $("#printCertificate").click(function(e) {
+                let url = $(this).attr('data-url');
+                openPrintWindow(url);
             });
+
+            // Print certificate for group members
+            @if(count($studentGroups))
+                @foreach($studentGroups as $group)
+                    $("#printGroupCertificate_{{ $group->id }}").click(function(e) {
+                        let url = $(this).attr('data-url');
+                        openPrintWindow(url);
+                    });
+                @endforeach
+            @endif
         });
     </script>
 @endsection

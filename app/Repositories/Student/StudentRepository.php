@@ -4,7 +4,7 @@ namespace App\Repositories\Student;
 
 interface StudentRepository
 {
-    /**
+    /** 
      * Get all available students.
      * @return mixed
      */

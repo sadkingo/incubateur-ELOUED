@@ -201,10 +201,10 @@ Route::prefix('dashboard')->name('dashboard.')->middleware('auth:admin,teacher')
         Route::get('students', [PrintController::class, 'students'])->name('students');
         Route::get('teachers', [PrintController::class, 'teachers'])->name('teachers');
         Route::get('commission/{id}', [PrintController::class, 'printCommission'])->name('commission');
-        // Route::get('attendence', [PrintController::class, 'attendence'])->name('attendence');
-        // Route::get('review', [PrintController::class, 'review'])->name('review');
-        // Route::get('certificate', [PrintController::class, 'certificate'])->name('certificate');
-        // Route::get('trainee_notebook/{student_id}', [PrintController::class, 'trainee_notebook'])->name('trainee_notebook');
+        Route::get('attendence', [PrintController::class, 'attendence'])->name('attendence');
+        Route::get('review', [PrintController::class, 'review'])->name('review');
+        Route::get('certificate', [PrintController::class, 'certificate'])->name('certificate');
+        Route::get('trainee_notebook/{student_id}', [PrintController::class, 'trainee_notebook'])->name('trainee_notebook');
         Route::get('supervisors/{student_id}', [PrintController::class, 'printSupervisors'])->name('supervisors');
         Route::get('certificate/{id}/label',[PrintController::class, 'label'])->name('label');
         Route::get('statistics/membres' , [StatisticsController::class, 'printMembre'])->name('dashboard.statistics.prinrt_statistic_membre');
@@ -241,7 +241,8 @@ Route::name('student.')->middleware('auth:student')->group(function () {
 
 Route::get('project/administrative/{id}/add', [ProjectController::class, 'administrative'])->name('project.administrative');
 Route::post('project/administrative/{id}/store', [ProjectController::class, 'storeAdministrative'])->name('project.administrative');
-
+Route::get('print/certificate/student/{id}', [CertificateController::class, 'generateCertificate'])->name('certificate');
+Route::get('print/certificate/students/{id}', [CertificateController::class, 'generateStudentCertificate'])->name('student.certificate');
 Route::get('print/certificate/{project_id}', [PrintController::class, 'generateCertificate'])->name('print.certificate');
 Route::get('print/certificate/{project_id}/{student_id?}', [PrintController::class, 'generateStudentCertificate'])->name('print.certificate');
 

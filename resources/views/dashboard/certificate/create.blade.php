@@ -16,9 +16,9 @@
                             <select class="form-select" id="student_id" name="student_id"
                                 aria-label="Default select example">
                                 <option value="">{{ trans('certificate.select.student') }}</option>
-                                @foreach ($listStduents as $student)
+                                {{-- @foreach ($listStduents as $student)
                                     <option value="{{ $student->id }}">{{ $student->name }}</option>
-                                @endforeach
+                                @endforeach --}}
                             </select>
                         </div>
                         <div class="col-sm-12 col-md-5 mt-4">

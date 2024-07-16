@@ -13,4 +13,8 @@ class Certificate extends Model
         'student_id',
         'file_name',
     ];
+
+    public function student(){
+        return $this->belongsTo(Student::class, 'student_id');
+    }
 }
