@@ -139,6 +139,7 @@
             font-weight: bold;
         }
 
+
         @media (max-width: 768px) {
             .card-container {
                 flex: 1 1 calc(50% - 30px);
@@ -193,7 +194,7 @@
                 <img class="logo-img" src="{{ asset('assets/logo/logo.jpg') }}" alt="">
             </div>
             <div class="col title-section">
-                <h3 class="title">طباعة تصنيف المشاريع</h3>
+                <h3 class="title">طباعة احصاء مراحل براءة الاختراع</h3>
                 <h5 class="date">{{ trans('print.date_print') }} : {{ date('Y-m-d H:i') }}</h5>
             </div>
         </div>
@@ -201,53 +202,44 @@
     
     <div class="content-section">
         <div class="row">
-            <div class="col-md-6 col-lg-6 col-xl-6 order-3 mb-4">
+            <div class="col-md-6 col-lg-6 col-xl-6 order-4 mb-4">
                 <div class="card h-100">
                     <div class="card-header d-flex align-items-center justify-content-between pb-0">
                         <div class="card-title mb-0">
-                            <h5 class="m-0 me-2">{{ trans('dashboard.Student Label Statistics') }}</h5>
+                            <h5 class="m-0 me-2">{{ trans('dashboard.Patent Stages Statistics') }}</h5>
                         </div>
                     </div>
                     <div class="card-body">
                         <table class="table table-striped">
                             <thead>
                                 <tr>
-                                    <th scope="col" style="text-align: center;">الدرجة</th>
-                                    <th scope="col" style="text-align: center;">التعريف</th>
+                                    <th scope="col" style="text-align: center;">المرحلة</th>
+                                    <th scope="col" style="text-align: center;">الحالة</th>
                                     <th scope="col" style="text-align: center;">العدد</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td style="text-align: center;">{{ trans('dashboard.Mini Label Students') }}</td>
-                                    <td style="text-align: center;">{{ trans('dashboard.Students with Mini Project Label')}}</td>
-                                    <td style="text-align: center;">{{ $mimiLbaleStudentsCount }}</td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align: center;">
-                                        {{ trans('dashboard.Startup Label Students') }}
-                                    </td>
-                                    <td style="text-align: center;">{{ trans('dashboard.Students with Startup Project Label') }}</td>
-                                    <td style="text-align: center;">{{ $startupLabelStudentsCount }}</td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align: center;">
-                                        
-                                        {{ trans('dashboard.Patent Label Students') }}
-                                    </td>
-                                    <td style="text-align: center;">{{ trans('dashboard.Students with Patent Project Label') }}</td>
-                                    <td style="text-align: center;">{{ $patentLabelStudentsCount }}</td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align: center;">{{ trans('dashboard.Patent Startup Students') }}</td>
-                                    <td style="text-align: center;">{{ trans('dashboard.Students with Patent statrup Project Label') }}</td>
-                                    <td style="text-align: center;">{{ $patentStartupLabelStudentCount }}</td>
-                                </tr>
+                                @foreach ($patentStartupStages as $stage => $data)
+                                    @foreach ($data as $status => $count)
+                                        <tr>
+                                            <td style="text-align: center;">
+                                                <i class="fas fa-lightbulb"></i> 
+                                                {{ trans("statistic.$stage") }}
+                                            </td>
+                                            <td style="text-align: center;">
+                                                <i class="fas fa-tasks"></i> 
+                                                {{ trans("dashboard.$status") }}
+                                            </td>
+                                            <td style="text-align: center;">{{ $count }}</td>
+                                        </tr>
+                                    @endforeach
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
+            
         </div>
     </div>
     
@@ -258,7 +250,6 @@
     </script>
 
     <script>
-        // JavaScript to remove the print page link
         window.onload = function() {
             var links = document.getElementsByTagName("a");
             for (var i = 0; i < links.length; i++) {

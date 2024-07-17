@@ -5,12 +5,13 @@
 
 @extends('layouts/contentNavbarLayout')
 
-{{-- @section('title', trans('student.title-dashboard')) --}}
+@section('title', trans('student.title-dashboard'))
 
 @section('page-script')
     <script src="{{ asset('assets/js/pages-account-settings-account.js') }}"></script>
-
-
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
 
 @endsection
 
@@ -33,6 +34,23 @@
        color: #007bff; 
    }
 
+   .project-description.ar {
+    text-align: right;
+    direction: rtl;
+    font-family: 'Tajawal', sans-serif; /* اختر خط مناسب للغة العربية */
+    }
+
+    .project-description.en {
+        text-align: left;
+        direction: ltr;
+        font-family: 'Arial', sans-serif; /* اختر خط مناسب للغة الإنجليزية */
+    }
+
+    .project-description.fr {
+        text-align: left;
+        direction: ltr;
+        font-family: 'Arial', sans-serif; /* اختر خط مناسب للغة الفرنسية */
+    }
 
 </style>
 <div class="container">
@@ -55,6 +73,7 @@
                         {!! nl2br(e($project->description)) !!}
                     </div>
                 </div>
+                
                 <div class="mb-5 wow fadeIn">
                     <div class="text-start mb-1-6 wow fadeIn">
                         <h2 class="h1 mb-0 text-primary">
@@ -89,19 +108,20 @@
                 
                 <div class="mb-5 wow fadeIn">
                     <div class="text-start mb-1-6 wow fadeIn">
-                        <h2 class="mb-0 text-primary">{{ trans('project.label.project_images')}}</h2>
+                        <h2 class="mb-0 text-primary">{{ trans('project.label.project_images') }}</h2>
                     </div>
                     <br>
                     <div class="row">
                         @foreach($projectImages as $image)
-                           
                             <div class="col-lg-4 col-md-12 mb-4 mb-lg-0">
-                                <img src="{{ asset('storage/public/projects/images/'.$image->image) }}" class="w-100 shadow-1-strong rounded mb-4" alt="{{ $image->name }}">
+                                <a href="{{ asset('storage/public/projects/images/'.$image->image) }}" data-lightbox="project-images" data-title="{{ $image->name }}">
+                                    <img src="{{ asset('storage/public/projects/images/'.$image->image) }}" class="w-100 shadow-1-strong rounded mb-4" alt="{{ $image->name }}">
+                                </a>
                             </div>
                         @endforeach
                     </div>
-                    
                 </div>
+                
                 @if($project->bmc != null)
                     @if( $project->bmc_status == 2)
                         <div class="wow fadeIn">
@@ -129,18 +149,32 @@
                     <br>
                     <div class="col-lg-4 col-md-4 col-sm-6 mb-4 ">
                         <a href="{{ url($project->video) }}" class="text-black" target="_blank">{{ trans('project.label.download_video')}}</a>
-                        {{-- <video controls class="w-100 shadow-1-strong rounded mb-4">
-                            <source src="{{ asset('storage/public/projects/videos/'.$project->video) }}" type="video/mp4">
-                            <source src="{{ asset('storage/public/projects/videos/'.$project->video) }}" type="video/ogg">
-                                {{ trans('auth/project.video_not_supported') }}
-                        </video> --}}
-                        
                     </div>    
-                    {{-- <a href="{{ asset('storage/public/projects/videos/'.$project->video) }}" class="text-black" target="_blank">{{ trans('project.label.download_video')}}</a> --}}
                 </div>
             </div>
         </div>
     </div>
 </div>
-
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var descriptionElement = document.querySelector('.project-description');
+        var descriptionText = descriptionElement.innerText || descriptionElement.textContent;
+        
+        // Regular expressions to detect Arabic, English, and French
+        var arabicPattern = /[\u0600-\u06FF\u0750-\u077F]/;
+        var englishPattern = /[A-Za-z]/;
+        var frenchPattern = /[A-Za-zàâäéèêëîïôöùûüÿçœæ]/;
+        
+        if (arabicPattern.test(descriptionText)) {
+            descriptionElement.classList.add('ar');
+        } else if (englishPattern.test(descriptionText)) {
+            descriptionElement.classList.add('en');
+        } else if (frenchPattern.test(descriptionText)) {
+            descriptionElement.classList.add('fr');
+        } else {
+            // Default to English if no pattern matches
+            descriptionElement.classList.add('en');
+        }
+    });
+</script>
 @endsection

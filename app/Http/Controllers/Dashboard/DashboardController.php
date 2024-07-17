@@ -81,7 +81,13 @@ class DashboardController extends Controller
         $miniProjectCount = Project::where('project_classification', 1)->count();
         $startupProjectCount = Project::where('project_classification', 2)->count();
         $patentProjectCount = Project::where('project_classification', 3)->count();
-    
+        $patentStartupProjectCount = Project::where('project_classification', 4)->count();
+        
+        $mimiLbaleStudentsCount = Project::where('project_classification', 1)
+                  ->where('project_tracking', 5)
+                  ->where('status_project_tracking', 2)
+                  ->count();
+
         $startupLabelStudentsCount = Project::where('project_classification', 2)
                   ->where('project_tracking', 5)
                   ->where('status_project_tracking', 2)
@@ -91,6 +97,12 @@ class DashboardController extends Controller
                   ->where('project_tracking', 7)
                   ->where('status_project_tracking', 2)
                   ->count();
+
+        $patentStartupLabelStudentCount = Project::where('project_classification', 4)
+                  ->where('project_tracking', 10)
+                  ->where('status_project_tracking', 2)
+                  ->count();  
+                  
         $uniqueYears = array_unique(array_map(function ($date) {
             return $date->year;
         }, $years));
@@ -143,14 +155,15 @@ class DashboardController extends Controller
             'labels' => [
                 trans('dashboard.Mini Project'),
                 trans('dashboard.Startup Project'),
-                trans('dashboard.Patent Project')
+                trans('dashboard.Patent Project'),
+                trans('dashboard.Patent Startup Project'),
             ],
             'datasets' => [
                 [
                     'label' => trans('dashboard.Project Classification'),
-                    'data' => [$miniProjectCount, $startupProjectCount, $patentProjectCount],
-                    'backgroundColor' => ['#ff6384', '#36a2eb', '#cc65fe'],
-                    'borderColor' => ['#ff6384', '#36a2eb', '#cc65fe'],
+                    'data' => [$miniProjectCount, $startupProjectCount, $patentProjectCount,$patentStartupProjectCount],
+                    'backgroundColor' => ['#ff6384', '#36a2eb', '#cc65fe', '#FFFF00'],
+                    'borderColor' => ['#ff6384', '#36a2eb', '#cc65fe', '#FFFF00'],
                     'borderWidth' => 1
                 ]
             ],
@@ -197,7 +210,6 @@ class DashboardController extends Controller
             ->where('projects.project_classification', 1)
             ->where('projects.bmc_status', 2)
             ->whereNotNull('projects.bmc')
-            ->whereNotNull('projects.administrative_file')
             ->where('projects.project_tracking', 5)
             ->where('projects.status_project_tracking', 2)
             ->where('projects.status', 2)
@@ -210,7 +222,6 @@ class DashboardController extends Controller
             ->where('projects.project_classification', 2)
             ->where('projects.bmc_status', 2)
             ->whereNotNull('projects.bmc')
-            ->whereNotNull('projects.administrative_file')
             ->where('projects.project_tracking', 5)
             ->where('projects.status_project_tracking', 2)
             ->where('projects.status', 2)
@@ -223,7 +234,6 @@ class DashboardController extends Controller
             ->where('projects.project_classification', 3)
             ->where('projects.bmc_status', 0)
             ->whereNull('projects.bmc')
-            ->whereNull('projects.administrative_file')
             ->where('projects.project_tracking', 7)
             ->where('projects.status_project_tracking', 2)
             ->where('projects.status', 2)
@@ -231,7 +241,18 @@ class DashboardController extends Controller
             ->groupBy('students.id_faculty', 'faculties.name_ar')
             ->pluck('count', 'faculties.name_ar');
 
-
+        $patentStartupProjectStatsByFaculty = Student::join('projects', 'students.id', '=', 'projects.id_student')
+            ->join('faculties', 'students.id_faculty', '=', 'faculties.id')
+            ->where('projects.project_classification', 4)
+            ->where('projects.bmc_status', 2)
+            ->whereNotNull('projects.bmc')
+            ->where('projects.project_tracking', 10)
+            ->where('projects.status_project_tracking', 2)
+            ->where('projects.status', 2)
+            ->select('students.id_faculty', 'faculties.name_ar', DB::raw('COUNT(*) as count'))
+            ->groupBy('students.id_faculty', 'faculties.name_ar')
+            ->pluck('count', 'faculties.name_ar');
+    
             
         $miniProjectStages = [
                 'training' => [
@@ -313,6 +334,7 @@ class DashboardController extends Controller
         ];
     
         $startupProjectStages = [
+
                 'training' => [
                     'in_training' => Project::where('project_classification', 2)
                         ->where('project_tracking', 1)
@@ -456,6 +478,110 @@ class DashboardController extends Controller
             ],
         ];
 
+        $patentStartupStages = [
+            'training' => [
+                'in_training' => Project::where('project_classification', 4)
+                    ->where('project_tracking', 1)
+                    ->where('status_project_tracking', 1)
+                    ->count(),
+                'completed_training' => Project::where('project_classification', 4)
+                    ->where('project_tracking', 1)
+                    ->where('status_project_tracking', 2)
+                    ->count(),
+                'not_trained' => Project::where('project_classification', 1)
+                    ->where('project_tracking', 1)
+                    ->where('status_project_tracking', 3)
+                    ->count(),
+            ],
+            'bmc_creation' => [
+                'in_progress' => Project::where('project_classification', 4)
+                    ->where('project_tracking', 2)
+                    ->where('status_project_tracking', 1)
+                    ->count(),
+                'completed' => Project::where('project_classification', 4)
+                    ->where('project_tracking', 2)
+                    ->where('status_project_tracking', 2)
+                    ->count(),
+                'not_completed' => Project::where('project_classification', 4)
+                    ->where('project_tracking', 2)
+                    ->where('status_project_tracking', 3)
+                    ->count(),
+            ],
+            'prototype_preparation' => [
+                'in_progress' => Project::where('project_classification', 4)
+                    ->where('project_tracking', 3)
+                    ->where('status_project_tracking', 1)
+                    ->count(),
+                'completed' => Project::where('project_classification', 1)
+                    ->where('project_tracking', 3)
+                    ->where('status_project_tracking', 2)
+                    ->count(),
+                'not_completed' => Project::where('project_classification', 1)
+                    ->where('project_tracking', 3)
+                    ->where('status_project_tracking', 3)
+                    ->count(),
+            ],
+            'descriptive_model_writing' => [
+                'no' => Project::where('project_classification', 4)
+                    ->where('project_tracking', 4)
+                    ->where('status_project_tracking', 1)
+                    ->count(),
+                'yes' => Project::where('project_classification', 3)
+                    ->where('project_tracking', 4)
+                    ->where('status_project_tracking', 2)
+                    ->count(),
+            ],
+            'patent_application' => [
+                'applied' => Project::where('project_classification', 4)
+                    ->where('project_tracking', 5)
+                    ->where('status_project_tracking', 2)
+                    ->count(),
+            ],
+            'patent_registration_certificate' => [
+                'not_received' => Project::where('project_classification', 4)
+                    ->where('project_tracking', 6)
+                    ->where('status_project_tracking', 1)
+                    ->count(),
+                'received' => Project::where('project_classification', 4)
+                    ->where('project_tracking', 6)
+                    ->where('status_project_tracking', 2)
+                    ->count(),
+            ],
+            'INAPI_comments' => [
+                'not_received' => Project::where('project_classification', 4)
+                    ->where('project_tracking', 7)
+                    ->where('status_project_tracking', 1)
+                    ->count(),
+            ],
+            'resubmit_amended_model' => [
+                'not_resubmitted' => Project::where('project_classification', 4)
+                    ->where('project_tracking', 8)
+                    ->where('status_project_tracking', 1)
+                    ->count(),
+            ],
+            'discussion' => [
+                'not_discussed' => Project::where('project_classification', 4)
+                    ->where('project_tracking', 9)
+                    ->where('status_project_tracking', 1)
+                    ->count(),
+                'discussed' => Project::where('project_classification', 1)
+                    ->where('project_tracking', 9)
+                    ->where('status_project_tracking', 2)
+                    ->count(),
+            ],
+            'patent_grant' => [
+                'not_granted' => Project::where('project_classification', 3)
+                    ->where('project_tracking', 10)
+                    ->where('status_project_tracking', 1)
+                    ->count(),
+                'granted' => Project::where('project_classification', 3)
+                    ->where('project_tracking', 10)
+                    ->where('status_project_tracking', 2)
+                    ->count(),
+            ],
+        ];
+
+
         return view('content.dashboard.dashboards-analytics',
             compact(
                 'acceptedProject',
@@ -481,18 +607,22 @@ class DashboardController extends Controller
                 'compledProject',
                 'projectsBySelectedYear', 
                 'selectedYear',
-                'chartProjectClassificationData',  
+                'chartProjectClassificationData',
+                'mimiLbaleStudentsCount',  
                 'startupLabelStudentsCount',       
                 'patentLabelStudentsCount',
+                'patentStartupLabelStudentCount',
                 'miniProjectsInTraining',
                 'miniProjectsUnderTraining',
                 'miniProjectsCompleted',
                 'miniProjectStages',
                 'startupProjectStages',
                 'patentStages',
+                'patentStartupStages',
                 'miniProjectStatsByFaculty',
                 'startupProjectStatsByFaculty',
-                'patentProjectStatsByFaculty', 
+                'patentProjectStatsByFaculty',
+                'patentStartupProjectStatsByFaculty', 
             )
         );
     }

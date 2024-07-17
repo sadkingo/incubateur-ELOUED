@@ -7,15 +7,50 @@
 @endsection
 
 @section('content')
-    <style>
-        .btn-custom-gray {
-            background-color: #d3d3d3;
-        }
+<style>
+    .btn-custom-gray {
+        background-color: #d3d3d3;
+    }
 
-        .status-list li {
-            padding-bottom: 10px;
-        }
-    </style>
+    .status-list li {
+        padding-bottom: 10px;
+    }
+
+    .table-container {
+        overflow-x: auto;
+        width: 100%;
+    }
+
+    .table-striped {
+        width: 100%;
+        max-width: 100%;
+        margin-bottom: 1rem;
+        background-color: transparent;
+    }
+
+    .table-striped th,
+    .table-striped td {
+        padding: 0.75rem;
+        vertical-align: top;
+        border-top: 1px solid #dee2e6;
+    }
+
+    .table-striped thead th {
+        vertical-align: bottom;
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    .table-striped tbody + tbody {
+        border-top: 2px solid #dee2e6;
+    }
+
+    .table-striped {
+        width: 100%;
+        max-width: 100%;
+        margin-bottom: 1rem;
+        background-color: transparent;
+    }
+</style>
 
     <div class="row">
         <div class="col-md-12">
@@ -157,11 +192,16 @@
                                                             @else
                                                                 <a class="dropdown-item" href="{{ url('dashboard/project/'.$project->id.'/edit-classification')}}">{{ trans('project.edit_project_classification') }}</a>    
                                                             @endif
-                                                            <a class="dropdown-item" href="{{ url('dashboard/project/'.$project->id.'/add-project-tracking') }}">{{ trans('project.project_tracking') }}</a>
-                                                            <a class="dropdown-item" href="{{ url('dashboard/project/bmc-studing/'.$project->id) }}" >{{trans('project.bmc_tracking')}}</a>
+                                                            @if($project->project_classification != null && $project->type_project != null)
+                                                                <a class="dropdown-item" href="{{ url('dashboard/project/'.$project->id.'/add-project-tracking') }}">{{ trans('project.project_tracking') }}</a>
+                                                            @endif
+                                                            @if($project->project_classification == 1 || $project->project_classification == 2 || $project->project_classification == 4)
+                                                                <a class="dropdown-item" href="{{ url('dashboard/project/bmc-studing/'.$project->id) }}" >{{trans('project.bmc_tracking')}}</a>  
+                                                                <a class="dropdown-item" href="{{ url('dashboard/administrative/'.$project->id_student) }}" >{{trans('project.administrative_tracking')}}</a>
+                                                            @endif    
                                                         </div>
                                                     </div>
-                                                    <div class="dropdown">
+                                                    {{-- <div class="dropdown">
                                                         <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
                                                             <i class="bx bx-dots-vertical-rounded"></i>
                                                         </button>
@@ -177,10 +217,10 @@
                                                                 <a class="dropdown-item" href="{{ url('dashboard/project/bmc/'.$project->id) }}">{{trans('project.add_bmc')}}</a>
                                                             @endif
                                                             <a class="dropdown-item" href="{{ url('dashboard/project/bmc-studing/'.$project->id) }}" >{{trans('project.bmc_tracking')}}</a>
-                                                            <a class="dropdown-item" href="{{ url('dashboard/administrative/'.$project->id_student) }}" >{{trans('project.administrative_tracking')}}</a>
+                                                            
                                                             
                                                         </div>
-                                                    </div>
+                                                    </div> --}}
                                                 </td>
                                             </tr>
                                         @endforeach

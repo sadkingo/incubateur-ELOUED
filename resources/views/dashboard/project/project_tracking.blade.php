@@ -238,7 +238,7 @@
                                                         </button>
                                                         <div class="dropdown-menu">
                                                             @if($project->project_tracking == 0)
-                                                                <a class="dropdown-item" href="{{ url('dashboard/project/'.$project->id.'/add-project-tracking') }}">{{ trans('project.project_tracking') }}</a>
+                                                                <a class="dropdown-item" href="{{ url('dashboard/project/'.$project->id.'/edit-project-tracking') }}">{{ trans('project.project_tracking') }}</a>
                                                             @else
                                                                 <a class="dropdown-item" href="{{ url('dashboard/project/'.$project->id.'/edit-project-tracking') }}">{{ trans('project.edit_project_tracking') }}</a>
                                                             @endif
@@ -247,8 +247,8 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    @if($project->project_classification == 1 || $project->project_classification == 2)
-                                                        @if($project->status_project_tracking == 1)
+                                                    @if($project->project_classification == 1 || $project->project_classification == 2 || $project->project_classification == 4 )
+                                                        @if($project->status_project_tracking == 2)
                                                             <button id="printSupervisors" data-url="{{ url('dashboard/print/certificate/'.$project->id.'/label') }}" data-student-id="{{ $project->id }}"
                                                                 class="btn btn-primary text-white">
                                                                 <span class="bx bxs-printer"></span>&nbsp; {{ trans('app.print') }}

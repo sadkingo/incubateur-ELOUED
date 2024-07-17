@@ -216,6 +216,7 @@ Route::prefix('dashboard')->name('dashboard.')->middleware('auth:admin,teacher')
         Route::get('statistics/mini-project-stage', [StatisticsController::class, 'printMiniProjectStages'])->name('dashboard.statistics.print_statistic_mini_project_stage');
         Route::get('statistics/startup-project-stage', [StatisticsController::class, 'printStartupProjectStages'])->name('dashboard.statistics.print_statistic_startup_project_stage');
         Route::get('statistics/patent-project-stage', [StatisticsController::class, 'printPatentProjectStages'])->name('dashboard.statistics.print_statistic_patent_project_stage');
+        Route::get('statistics/patent-startup-project-stage', [StatisticsController::class, 'printPatentStartupProjectStages'])->name('dashboard.statistics.print_statistic_patent_startup_project_stage');
     
     });
     Route::resource('certificates', CertificateController::class);

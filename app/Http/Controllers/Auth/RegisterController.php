@@ -40,12 +40,12 @@ class RegisterController extends Controller
 
     public function register(RegisterStudentRequest $request){        
        $data = $request->all();
-       if ($request->hasFile('photo')) {
-        $image = $request->file('photo');
-        $imageName = time() . '.' . $image->getClientOriginalExtension();
-        $imagePath = $image->storeAs('public/projects/profile/', $imageName); 
-        $data['photo'] = $imageName; 
-    }
+    //    if ($request->hasFile('photo')) {
+    //     $image = $request->file('photo');
+    //     $imageName = time() . '.' . $image->getClientOriginalExtension();
+    //     $imagePath = $image->storeAs('public/projects/profile/', $imageName); 
+    //     $data['photo'] = $imageName; 
+    // }
     
        $student = $this->students->create($data);
         $startDate = Carbon::parse($student->start_date);

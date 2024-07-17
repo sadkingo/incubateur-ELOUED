@@ -82,63 +82,74 @@
                                                 <td>
                                                     @if ($project->project_classification != null)
                                                         @if (in_array($project->project_classification, [1, 2, 4]) && $project->status == 2)
-                                                            
+                                                          
                                                             @if ($statusAdministrative)
                                                                 @if (!$multipleRecords)
                                                                     @if ($statusAdministrative->status == 0)
                                                                         <span class="text-secondary">يتم دراسة ملفك الاداري</span>
                                                                     @elseif($statusAdministrative->status == 1)
-                                                                        @if ($project->bmc_status == 0)
-                                                                            <a href="{{ url('student/project/' . $project->id . '/addBmc') }}"
-                                                                                class="btn btn-primary text-white">{{ trans('project.status_project.enter_bmc_file') }}</a>
-                                                                        @elseif($project->bmc_status == 1) 
-                                                                            <span class="text-secondary">{{trans('project.status_project.under_studying')}}</span>       
-                                                                        @elseif($project->bmc_status == 2)
+                                                                        @if($project->project_tracking == 2 && $project->status_project_tracking == 1 )
+                                                                            @if ($project->bmc_status == 0)
+                                                                                <a href="{{ url('student/project/' . $project->id . '/addBmc') }}"
+                                                                                    class="btn btn-primary text-white">{{ trans('project.status_project.enter_bmc_file') }}</a>
+                                                                            @elseif($project->bmc_status == 1)
+                                                                                <span class="text-secondary">{{ trans('project.status_project.under_studying') }}</span>
+                                                                            @elseif($project->bmc_status == 2)
+                                                                                <span class="text-success">{{ trans('project.status_project.bmc_accepted') }}</span>
+                                                                            @elseif($project->bmc_status == 3)
+                                                                                <a href="{{ url('student/project/' . $project->id . '/reformatBmc') }}"
+                                                                                    class="btn btn-primary text-white">
+                                                                                    {{ trans('project.status_project.bmc_reformat') }}
+                                                                                </a>
+                                                                            @else
+                                                                                <span class="text-warning">{{ trans('project.administrative.add') }}</span>
+                                                                            @endif
+                                                                        @elseif($project->project_tracking == 2 && $project->status_project_tracking == 2)
                                                                             <span class="text-success">{{ trans('project.status_project.bmc_accepted') }}</span>
-                                                                        @elseif($project->bmc_status == 3)
-                                                                            <a href="{{ url('student/project/' . $project->id . '/reformatBmc') }}"
-                                                                                class="btn btn-primary text-white">
-                                                                                {{ trans('project.status_project.bmc_reformat') }}
-                                                                            </a>
                                                                         @else
-                                                                            <span
-                                                                                class="text-warning">{{ trans('project.administrative.add') }}</span>
-                                                                        @endif
+                                                                            <span class="text-warning">أكمل مرحلة التكوين أولا </span>
+                                                                        @endif    
                                                                     @else
-                                                                        <span
-                                                                            class="text-warning">{{ trans('project.status_project.missing') }}</span>
+                                                                        <span class="text-warning">{{ trans('project.status_project.missing') }}</span>
                                                                     @endif
                                                                 @else
-                                                                @if ($project->bmc_status == 0)
-                                                                <a href="{{ url('student/project/' . $project->id . '/addBmc') }}"
-                                                                    class="btn btn-primary text-white">{{ trans('project.status_project.enter_bmc_file') }}</a>
-                                                            @elseif($project->bmc_status == 1) 
-                                                                <span class="text-secondary">{{trans('project.status_project.under_studying')}}</span>       
-                                                            @elseif($project->bmc_status == 2)
-                                                                <span class="text-success">{{ trans('project.status_project.bmc_accepted') }}</span>
-                                                            @elseif($project->bmc_status == 3)
-                                                                <a href="{{ url('student/project/' . $project->id . '/reformatBmc') }}"
-                                                                    class="btn btn-primary text-white">
-                                                                    {{ trans('project.status_project.bmc_reformat') }}
-                                                                </a>
-                                                            @else
-                                                                <span
-                                                                    class="text-warning">{{ trans('project.administrative.add') }}</span>
-                                                            @endif
+                                                                    @if ($statusAdministrative->every(fn($item) => $item->status == 1))
+                                                                        @if($project->project_tracking == 2 && $project->status_project_tracking == 1 )        
+                                                                            @if ($project->bmc_status == 0)
+                                                                                <a href="{{ url('student/project/' . $project->id . '/addBmc') }}"
+                                                                                class="btn btn-primary text-white">{{ trans('project.status_project.enter_bmc_file') }}</a>
+                                                                            @elseif($project->bmc_status == 1)
+                                                                                <span class="text-secondary">{{ trans('project.status_project.under_studying') }}</span>
+                                                                            @elseif($project->bmc_status == 2)
+                                                                                <span class="text-success">{{ trans('project.status_project.bmc_accepted') }}</span>
+                                                                            @elseif($project->bmc_status == 3)
+                                                                                <a href="{{ url('student/project/' . $project->id . '/reformatBmc') }}"
+                                                                                class="btn btn-primary text-white">
+                                                                                    {{ trans('project.status_project.bmc_reformat') }}
+                                                                                </a>
+                                                                            @else
+                                                                                <span class="text-warning">{{ trans('project.administrative.add') }}</span>
+                                                                            @endif
+                                                                        @elseif($project->project_tracking == 2 && $project->status_project_tracking == 2)
+                                                                            <span class="text-success">{{ trans('project.status_project.bmc_accepted') }}</span>
+                                                                        @else
+                                                                            <span class="text-warning">أكمل  مرحلة التكوين أولا </span>
+                                                                        @endif    
+                                                                    @else
+                                                                        <span class="text-secondary">يتم دراسة ملفك الاداري</span>
+                                                                    @endif
                                                                 @endif
                                                             @else
-                                                                <span
-                                                                    class="text-warning">{{ trans('project.administrative.add') }}</span>
+                                                                <span class="text-warning">{{ trans('project.administrative.add') }}</span>
                                                             @endif
                                                         @else
-                                                            <span
-                                                                class="text-warning">{{ trans('project.classification.not_eligible') }}</span>
+                                                            <span class="text-warning">{{ trans('project.classification.not_eligible') }}</span>
                                                         @endif
                                                     @else
-                                                        <span
-                                                            class="text-warning">{{ trans('project.classification.no_classifi') }}</span>
+                                                        <span class="text-warning">{{ trans('project.classification.no_classifi') }}</span>
                                                     @endif
                                                 </td>
+                                                
                                                 <td>
                                                     @if (in_array($project->project_classification, [1, 2, 4]) && $project->status == 2)
                                                         @if ($statusAdministrative)

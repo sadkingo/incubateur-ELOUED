@@ -158,7 +158,7 @@ class ProjetController extends Controller
         $validatedData = $request->validate([
             'project_classification' => 'required',
         ]);
-        dd($validatedData['project_classification'] );
+        // dd($validatedData['project_classification'] );
         $project = Project::findOrFail($id);
 
         $project->project_classification = $validatedData['project_classification'];

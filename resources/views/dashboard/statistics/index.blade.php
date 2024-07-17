@@ -20,6 +20,12 @@
             word-break: break-word; 
             overflow-wrap: break-word; 
         }
+        .custom-icon {
+            color: purple; 
+        }
+        .custom-icn{
+            color: yellow;
+        }
         @media print {
             @page {
                 margin: 0;
@@ -290,7 +296,23 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <ul class="p-0 m-0">
+                    <ul class="p-2 m-2">
+                        <li class="d-flex mb-4 pb-1">
+                            <div class="avatar flex-shrink-0 me-3">
+                                <span class="avatar-initial rounded " style=" background-color: rgba(184, 3, 255, 0.56); ">
+                                    <i class='bx bx-buildings custom-icon'></i>
+                                </span>
+                            </div>
+                            <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                                <div class="me-2">
+                                    <h6 class="mb-0">{{ trans('dashboard.Mini Label Students') }}</h6>
+                                    <small class="text-muted">{{ trans('dashboard.Students with Mini Project Label') }}</small>
+                                </div>
+                                <div class="project-progress">
+                                    <small class="fw-semibold">{{ $mimiLbaleStudentsCount }}</small>
+                                </div>
+                            </div>
+                        </li>                       
                         <li class="d-flex mb-4 pb-1">
                             <div class="avatar flex-shrink-0 me-3">
                                 <span class="avatar-initial rounded bg-label-info"><i class='bx bx-rocket'></i></span>
@@ -319,6 +341,23 @@
                                 </div>
                                 <div class="project-progress">
                                     <small class="fw-semibold">{{ $patentLabelStudentsCount }}</small>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="d-flex mb-4 pb-1">
+                            <div class="avatar flex-shrink-0 me-3">
+                                <span class="avatar-initial rounded" style="background-color: rgba(166, 166, 54, 0.58)">
+                                    <i class="fas fa-lightbulb custom-icn"></i>
+                                </span>
+                            </div>
+                            <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                                <div class="me-2">
+                                    <h6 class="mb-0">{{ trans('dashboard.Patent Startup Students') }}</h6>
+                                    <small
+                                        class="text-muted">{{ trans('dashboard.Students with Patent statrup Project Label') }}</small>
+                                </div>
+                                <div class="project-progress">
+                                    <small class="fw-semibold">{{ $patentStartupLabelStudentCount }}</small>
                                 </div>
                             </div>
                         </li>
@@ -440,6 +479,35 @@
             </div>
         </div>
         <!--/ Statistics of projects awarded to a patent project by faculty -->
+       
+        <!-- Statistics of projects awarded to a patent startup project by faculty -->
+        <div class="col-md-6 col-lg-6 col-xl-6 order-1 mb-4">
+            <div class="card h-100">
+                <div class="card-header d-flex align-items-center justify-content-between pb-0">
+                    <div class="card-title mb-0">
+                        <h5 class="m-0 me-2">{{ trans('dashboard.patent startup by faculty') }}</h5>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex flex-column p-2">
+                        @if(count($patentStartupProjectStatsByFaculty) > 0)
+                            <ul class="list-group">
+                                @foreach($patentStartupProjectStatsByFaculty as $facultyName => $count)
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <i class="bx bx-medal"></i> {{ $facultyName }}
+                                        <span class="badge bg-warning rounded-pill">{{ $count }}</span>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        @else
+                            <p class="text-danger"><i class="bx bx-error-circle"></i> {{ trans('dashboard.patent startup project empty') }}</p>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--/ Statistics of projects awarded to a patent startup project by faculty -->
+
         <!-- Mini Project Stages Statistics -->
         <div class="col-md-6 col-lg-6 col-xl-6 order-4 mb-4">
             <div class="card h-100">
@@ -476,6 +544,7 @@
             </div>
         </div>
         <!--/ Mini Project Stages Statistics -->
+       
         <!-- Startup Project Stages Statistics -->
         <div class="col-md-6 col-lg-6 col-xl-6 order-4 mb-4">
             <div class="card h-100">
@@ -549,6 +618,43 @@
             </div>
         </div>
         <!--/ Patent Stages Statistics -->
+
+         <!-- Patent Startup  Stages Statistics -->
+         <div class="col-md-6 col-lg-6 col-xl-6 order-4 mb-4">
+            <div class="card h-100">
+                <div class="card-header d-flex align-items-center justify-content-between pb-0">
+                    <div class="card-title mb-0">
+                        <h5 class="m-0 me-2">{{ trans('dashboard.Patent Startup Stages Statistics') }}</h5>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <ul class="p-2 m-0">
+                        @foreach ($patentStartupStages as $stage => $data)
+                        <li class="d-flex mb-4 pb-1">
+                            <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                                <div class="me-2">
+                                    <h6 class="mb-0">
+                                        <i class="fas fa-lightbulb"></i><i class="fas fa-rocket"></i> 
+                                        {{ trans("dashboard.$stage") }}
+                                    </h6>
+                                    @foreach ($data as $status => $count)
+                                    <small class="text-muted">
+                                        <i class="fas fa-tasks"></i>
+                                        {{ trans("dashboard.$status") }}: {{ $count }}
+                                    </small><br>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </li>
+                        @endforeach
+                    </ul>
+                </div>
+                <div class="col-12 text-center mb-4">
+                    <button class="btn btn-primary text-white" onclick="openPrintPatentStartupProjectStage()">{{trans('app.print')}}</button>
+                </div>
+            </div>
+        </div>
+        <!--/ Patent Startup  Stages Statistics -->
     </div>   
 @endsection
 
@@ -605,8 +711,16 @@
                 printWindow.print();
             };
         }
+
         function openPrintPatentProjectStage(){
             var printWindow = window.open('{{ url('dashboard/print/statistics/patent-project-stage') }}', '_blank');
+            printWindow.onload = function() {
+                printWindow.print();
+            };
+        }
+
+        function openPrintPatentStartupProjectStage(){
+            var printWindow = window.open('{{ url('dashboard/print/statistics/patent-startup-project-stage') }}', '_blank');
             printWindow.onload = function() {
                 printWindow.print();
             };
