@@ -66,6 +66,7 @@
         'project_classification' => 'Project classification',
         'team_members' => 'Team members',
         'patent' => 'patent',
+        'patent start up' => 'patent start-up',
         'mini_project' => 'mini project',
         'start_up' => 'start-up',
         'edit_project_tracking' => 'edit project tracking',
@@ -87,4 +88,3 @@
         ],
         'select' => 'select',
     ];
-?>

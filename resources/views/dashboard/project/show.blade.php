@@ -98,6 +98,7 @@
                                 @elseif($project->project_classification  === 1) {{trans('project.mini_project')}}
                                 @elseif($project->project_classification  === 2) {{trans('project.start_up')}}
                                 @elseif($project->project_classificationt === 3) {{trans('project.patent')}}
+                                @elseif($project->project_classification === 4)  {{trans('project.patent start up')}}
                                 @endif
                         </span> 
                         </h2>

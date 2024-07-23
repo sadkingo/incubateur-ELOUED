@@ -68,6 +68,7 @@
         'status_project_tracking' => "حالة تتبع المشروع ",
         'edit_project_classification' => 'تعديل تصنيف المشروع',
         'patent' => 'براءة اختراع',
+        'patent start up' => 'براءة اختراع مؤسسة ناشئة',
         'mini_project' => 'مؤسسة مصغرة',
         'start_up' => 'مؤسسة ناشئة',
         'edit_project_tracking' => 'التعديل على تتبع المشروع',
