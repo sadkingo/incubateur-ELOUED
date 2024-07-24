@@ -49,6 +49,7 @@
             'incorrect' => 'under study',
             'missing' => 'Please enter the administrative file'
         ],
+        'administrative_tracking' => 'Administrative tracking',
         'characters_remaining' => 'remaining characters',
         'edit_project' => 'update project',
         'delete' => 'delete project',

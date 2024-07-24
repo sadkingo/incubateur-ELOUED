@@ -81,12 +81,11 @@
                                                 </td>
                                                 <td>
                                                     @if ($project->project_classification != null)
-                                                        @if (in_array($project->project_classification, [1, 2, 4]) && $project->status == 2)
-                                                          
+                                                        @if (in_array($project->project_classification, [1, 2, 4]) && $project->status == 2)          
                                                             @if ($statusAdministrative)
                                                                 @if (!$multipleRecords)
                                                                     @if ($statusAdministrative->status == 0)
-                                                                        <span class="text-secondary">يتم دراسة ملفك الاداري</span>
+                                                                        <span class="text-secondary">{{ trans('auth/project.Your administrative file is being studied') }}</span>
                                                                     @elseif($statusAdministrative->status == 1)
                                                                         @if($project->project_tracking == 2 && $project->status_project_tracking == 1 )
                                                                             @if ($project->bmc_status == 0)
@@ -109,8 +108,8 @@
                                                                         @else
                                                                             <span class="text-warning">أكمل مرحلة التكوين أولا </span>
                                                                         @endif    
-                                                                    @else
-                                                                        <span class="text-warning">{{ trans('project.status_project.missing') }}</span>
+                                                                    @elseif($statusAdministrative->status == 2)
+                                                                        <span class="text-danger">{{ trans('project.status_project.missing') }}</span>
                                                                     @endif
                                                                 @else
                                                                     @if ($statusAdministrative->every(fn($item) => $item->status == 1))
@@ -133,10 +132,10 @@
                                                                         @elseif($project->project_tracking == 2 && $project->status_project_tracking == 2)
                                                                             <span class="text-success">{{ trans('project.status_project.bmc_accepted') }}</span>
                                                                         @else
-                                                                            <span class="text-warning">أكمل  مرحلة التكوين أولا </span>
+                                                                            <span class="text-warning">{{ trans('auth/project.Complete the configuration phase first') }} </span>
                                                                         @endif    
                                                                     @else
-                                                                        <span class="text-secondary">يتم دراسة ملفك الاداري</span>
+                                                                        <span class="text-secondary">{{ trans('auth/project.Your administrative file is being studied') }}</span>
                                                                     @endif
                                                                 @endif
                                                             @else
@@ -149,23 +148,26 @@
                                                         <span class="text-warning">{{ trans('project.classification.no_classifi') }}</span>
                                                     @endif
                                                 </td>
-                                                
                                                 <td>
-                                                    @if (in_array($project->project_classification, [1, 2, 4]) && $project->status == 2)
-                                                        @if ($statusAdministrative)
+                                                    @if (in_array($project->project_classification, [1, 2, 4]) && $project->status == 2)    
+                                                    @if ($statusAdministrative)
+                    
                                                             @if (!$multipleRecords)
                                                                 @if ($statusAdministrative->status == 0)
-                                                                    <span class="text-secondary">يتم دراسة ملفك
-                                                                        الاداري</span>
+                                                                    <span class="text-secondary">{{ trans('auth/project.Your administrative file is being studied') }}</span>
                                                                 @elseif($statusAdministrative->status == 1)
                                                                     <span class="text-success">
                                                                         {{ trans('project.administrative.ok') }} </span>
+                                                                @elseif($statusAdministrative->status == 2)
+                                                                <a href="{{ url('project/administrative/' . $student->id . '/add') }}"
+                                                                    class="btn btn-primary text-white">{{ trans('project.administrative.edit') }}</a>
                                                                 @else
                                                                     <a href="{{ url('project/administrative/' . $student->id . '/add') }}"
                                                                         class="btn btn-primary text-white">{{ trans('project.administrative.add') }}</a>
                                                                 @endif
                                                             @else
-                                                                <span class="text-info">لديك ملفات إدارية متعددة</span>
+                                                        
+                                                                <span class="text-info">{{ trans('auth/project.You have multiple administrative files') }}</span>
                                                             @endif
                                                         @else
                                                             <a href="{{ url('project/administrative/' . $student->id . '/add') }}"

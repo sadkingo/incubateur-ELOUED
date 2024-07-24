@@ -212,7 +212,7 @@ class PrintController extends Controller
 
     public function printCommission($id){
         $project = Project::with(['student', 'commission'])->find($id);
-
+        //dd($project);
         if (!$project) {
             abort(404);
         }

@@ -131,7 +131,13 @@
                                                         
                                                     </ul>
                                                 </td>
-                                                <td>{{ $project->student->name }}</td>
+                                                <td>
+                                                    @if (App::getLocale() == 'ar')
+                                                        {{ $project->student->firstname_ar }} {{ $project->student->lastname_ar }}
+                                                    @else
+                                                        {{ $project->student->firstname_fr }} {{ $project->student->lastname_fr }}
+                                                    @endif
+                                                </td>                                                
                                                 <td>
                                                     @php
                                                         $allStudents = \App\Models\StudentGroup::where('id_student', $project->student->id)->get();
@@ -201,26 +207,6 @@
                                                             @endif    
                                                         </div>
                                                     </div>
-                                                    {{-- <div class="dropdown">
-                                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                                            <i class="bx bx-dots-vertical-rounded"></i>
-                                                        </button>
-                                                        <div class="dropdown-menu">
-                                                            @if ($project->type_project === null)
-                                                                <a class="dropdown-item" href="{{ url('dashboard/project/'.$project->id.'/add-type') }}">{{ trans('project.add_project_type') }}</a>
-                                                            @else
-                                                                <a class="dropdown-item" href="{{ url('dashboard/project/'.$project->id.'/edit-type') }}">{{ trans('project.edit_project_type') }}</a>
-                                                            @endif
-                                                            @if($project->bmc_pdf)
-                                                                <a class="dropdown-item" href="{{ asset('storage/'.$project->bmc_pdf) }}" target="_blank">{{trans('project.view_bmc')}}</a>
-                                                            @else
-                                                                <a class="dropdown-item" href="{{ url('dashboard/project/bmc/'.$project->id) }}">{{trans('project.add_bmc')}}</a>
-                                                            @endif
-                                                            <a class="dropdown-item" href="{{ url('dashboard/project/bmc-studing/'.$project->id) }}" >{{trans('project.bmc_tracking')}}</a>
-                                                            
-                                                            
-                                                        </div>
-                                                    </div> --}}
                                                 </td>
                                             </tr>
                                         @endforeach

@@ -42,9 +42,11 @@ class ProjectController extends Controller
         } else {
             if ($administrative->count() == 1) {
                 $statusAdministrative = $administrative->first();
+                
                 $multipleRecords = false;
             } else {
                 $statusAdministrative = $administrative;
+                
                 $multipleRecords = true;
             }
         }
@@ -327,9 +329,23 @@ class ProjectController extends Controller
     public function storeAdministrative(Request $request, $id){
         $student = Student::find($id);
         if ($student) {
-        
+            
             $studentGroups = StudentGroup::where('id_student', $student->id)->get();
-    
+            $admineFile = AdministrativeFiles::where('student_id', $student->id)->get();
+            if ($admineFile->isNotEmpty()) {
+                foreach ($admineFile as $file) {
+                    if (Storage::exists('public/public/projects/administrative/registrations_certificates/' . $file->registration_certificate)) {
+                        Storage::delete('public/public/projects/administrative/registrations_certificates/' . $file->registration_certificate);
+                    }
+                    if (Storage::exists('public/public/projects/administrative/identifications_cards/' . $file->identification_card)) {
+                        Storage::delete('public/public/projects/administrative/identifications_cards/' . $file->identification_card);
+                    }
+                    if (Storage::exists('public/public/projects/administrative/photos/' . $file->photo)) {
+                        Storage::delete('public/public/projects/administrative/photos/' . $file->photo);
+                    }
+                    $file->delete();
+                }
+            }
             $validator = Validator::make($request->all(), [
                 'registration_certificate.*' => 'required|file|mimes:pdf,jpg,png',
                 'identification_card.*' => 'required|file|mimes:pdf,jpg,png',
