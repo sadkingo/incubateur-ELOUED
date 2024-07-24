@@ -239,6 +239,7 @@ Route::name('student.')->middleware('auth:student')->group(function () {
     
     Route::get('student/certificates/{id}', [StudentController::class, 'certificates'])->name('certificates');
 });
+Route::get('/get-departments/{facultyId}', [ProjectController::class, 'getDepartments'])->name('getDepartments');
 
 Route::get('project/administrative/{id}/add', [ProjectController::class, 'administrative'])->name('project.administrative');
 Route::post('project/administrative/{id}/store', [ProjectController::class, 'storeAdministrative'])->name('project.administrative');

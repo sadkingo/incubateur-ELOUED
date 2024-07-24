@@ -381,6 +381,32 @@
                                             </small>
                                         @enderror
                                     </div>
+
+                                    <div class="col-sm-12 col-md-6 mb-2">
+                                        <label for="department" class="form-label">{{ trans('auth/student.department') }}</label>
+                                        <select class="form-select" id="department" name="department" value="{{ old('department') }}">
+                                            <option value="">{{trans('auth/student.select.department')}}</option>
+                                        </select>
+                                        @error('department')
+                                            <small class="text-danger d-block">
+                                                {{ $message }}
+                                            </small>
+                                        @enderror
+                                    </div>
+                                    {{-- <div class="col-sm-12 col-md-6 mb-2">
+                                        <label for="id_faculty" class="form-label">{{ trans('auth/student.faculty') }}</label>
+                                        <select class="form-select" id="id_faculty" name="id_faculty" value="{{ old('id_faculty') }}">
+                                            <option value="">{{trans('auth/student.select.faculty')}}</option>
+                                            @foreach ($faculties as $faculty)
+                                                <option value="{{$faculty->id}}">{{$faculty->name_ar}}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('id_faculty')
+                                            <small class="text-danger d-block">
+                                                {{ $message }}
+                                            </small>
+                                        @enderror
+                                    </div>
                                     <div class="col-sm-12 col-md-6 mb-2">
                                         <label for="department" class="form-label">{{ trans('auth/student.department') }}</label>
                                         <select class="form-select" id="department" name="department" value="{{ old('department') }}">
@@ -394,7 +420,7 @@
                                                 {{ $message }}
                                             </small>
                                         @enderror
-                                    </div>
+                                    </div> --}}
                                     <div class="f1-buttons col-12 mt-3 d-flex">
                                         <div class="col d-flex justify-content-start">
                                             <button type="button"
@@ -559,5 +585,26 @@
             </div>
         </div>
     </div>
-    </div>    
+</div>
+<script>
+    document.getElementById('id_faculty').addEventListener('change', function () {
+        var facultyId = this.value;
+        var departmentSelect = document.getElementById('department');
+
+        departmentSelect.innerHTML = '<option value="">{{ trans('auth/student.select.department') }}</option>';
+
+        if (facultyId) {
+            fetch(`/get-departments/${facultyId}`)
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(department => {
+                        var option = document.createElement('option');
+                        option.value = department.name_fr;
+                        option.textContent = department.name_ar;
+                        departmentSelect.appendChild(option);
+                    });
+                });
+        }
+    });
+</script>    
 @endsection

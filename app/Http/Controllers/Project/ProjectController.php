@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Project;
 
 use App\Http\Controllers\Controller;
 use App\Models\AdministrativeFiles;
-use App\Models\AdminstrativeFile;
+use App\Models\Departement;
 use App\Models\Project;
 use App\Models\ProjectImage;
 use App\Models\Student;
@@ -440,6 +440,11 @@ class ProjectController extends Controller
             return redirect('dashboard/projet');
 
         }
+    }
+
+    public function getDepartments($facultyId){
+        $departments = Departement::where('id_faculty', $facultyId)->get();
+        return response()->json($departments);
     }
    
 }
