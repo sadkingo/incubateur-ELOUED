@@ -4,7 +4,7 @@ return [
     'dashboard'  => 'لوحــة التحكـــــم',
     'pages'      => 'الصفحات',
     'admins'     => 'المسؤولين',
-    'students'   => 'الطلاب',
+    'students'   => 'الطلبة',
     'teachers' => 'الأساتذة',
     'users'        => 'المستخدمين',
     'attendence'  => 'الحضور',
