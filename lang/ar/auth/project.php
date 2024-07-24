@@ -79,4 +79,10 @@
         'registration_certificate' => 'شهادة التسجيل',
         'registration_certificate_download' => 'تحميل شهادة التسجيل',
         'photo' => 'صورة شمسية',
+        'status_pending' => 'قيد الدراسة',
+        'status_accepted' => 'القبول',
+        'status_rejected' => 'الرفض',
+        'under_studying_selected' => 'قيد الدرسة الكل',
+        'accept_selected' => 'قبول الكل',
+        'reject_selected' => 'رفض الكل',
     ];

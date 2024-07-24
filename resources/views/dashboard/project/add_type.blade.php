@@ -7,7 +7,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">إضافة نوع المشروع لـ {{ $project->name }}</div>
+                <div class="card-header">{{trans('project.Add project type for')}} {{ $project->name }}</div>
 
                 <div class="card-body">
                     @if(session('success'))
@@ -35,7 +35,7 @@
                             @enderror
                         </div>
 
-                        <button type="submit" class="btn btn-primary mt-2">حفظ</button>
+                        <button type="submit" class="btn btn-primary mt-2">{{trans('app.save')}}</button>
                     </form>
                 </div>
             </div>

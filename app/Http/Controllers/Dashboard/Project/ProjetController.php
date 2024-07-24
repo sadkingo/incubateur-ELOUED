@@ -435,8 +435,9 @@ class ProjetController extends Controller
         $file = AdministrativeFiles::find($request->id);
         $file->status = $request->status;
         $file->save();
-        return response()->json(['success' => 'Status updated successfully.']);
+        return response()->json(['success' => true, 'message' => 'Status updated successfully.']);
     }
+    
 
     public function updateSelectedStatus(Request $request){
         $projectIds = $request->input('project_ids', []);

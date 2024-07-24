@@ -33,6 +33,7 @@
         ],
         'edit_status_bmc' => 'Amendment to bmc status after study',
         'edit_bmc_status' => 'Edit the project\'s bmc status',
+        'status_administrative' => 'Status administrative',
         'bmc_tracking' => 'bmc status tracking',
         'status_project' =>[
             'status' => 'project status',
@@ -71,6 +72,8 @@
         'start_up' => 'start-up',
         'edit_project_tracking' => 'edit project tracking',
         'edit_status_project_tracking' => 'Edit the project tracking status',
+        'Add project type for' => 'Add project type for:',
+        'Edit project type for' => 'Edit project type for:',
         'label' =>[
             'name' => 'project name',
             'description' => 'project description',

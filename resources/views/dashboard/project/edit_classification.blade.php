@@ -35,7 +35,7 @@
                             @enderror
                         </div>
 
-                        <button type="submit" class="btn btn-primary mt-2">حفظ التعديلات</button>
+                        <button type="submit" class="btn btn-primary mt-2">{{trans('app.update')}}</button>
                     </form>
                 </div>
             </div>

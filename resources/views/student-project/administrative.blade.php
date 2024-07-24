@@ -45,13 +45,17 @@
         <h5 class="card-title">{{ trans('auth/project.add_administrative') }}</h5>
         <form method="post" action="{{ url('project/administrative/'.$student->id.'/store') }}" enctype="multipart/form-data" id="project-form">
             @csrf
+            @php
+                $locale = app()->getLocale();
+                $name = $locale === 'ar' ? $student->firstname_ar . ' ' . $student->lastname_ar : $student->firstname_fr . ' ' . $student->lastname_fr;
+            @endphp
             <div id="dynamic-fields">
                 <div class="row">
                     <div class="col-12 mb-2">
                         <h6></h6>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-2">
-                        <label for="registration_certificate_0" class="form-label">{{ trans('auth/project.registration_certificate') }}: {{ $student->firstname_ar }} {{ $student->lastname_ar }}</label>
+                        <label for="registration_certificate_0" class="form-label">{{ trans('auth/project.registration_certificate') }}: {{ $name }}</label>
                         <input type="file" class="form-control @error('registration_certificate') is-invalid @enderror"
                                name="registration_certificate[]" value="{{ old('registration_certificate') }}"
                                placeholder="{{ trans('auth/project.placeholder.registration_certificate') }}">
@@ -62,7 +66,11 @@
                         @enderror
                     </div>
                     <div class="col-sm-12 col-md-6 mb-2">
-                        <label for="identification_card_0" class="form-label">{{ trans('auth/project.identification_card') }}: {{ $student->firstname_ar }} {{ $student->lastname_ar }}</label>
+                        <label for="identification_card_0" class="form-label">
+                            {{ trans('auth/project.identification_card') }}:
+                           
+                            {{ $name }}
+                        </label>
                         <input type="file" class="form-control @error('identification_card') is-invalid @enderror"
                                name="identification_card[]" value="{{ old('identification_card') }}"
                                placeholder="{{ trans('auth/project.placeholder.identification_card') }}">
@@ -73,7 +81,7 @@
                         @enderror
                     </div>
                     <div class="col-sm-12 col-md-6 mb-2">
-                        <label for="photo_0" class="form-label">{{ trans('auth/project.photo') }}: {{ $student->firstname_ar }} {{ $student->lastname_ar }}</label>
+                        <label for="photo_0" class="form-label">{{ trans('auth/project.photo') }}: {{ $name }}</label>
                         <input type="file" class="form-control @error('photo') is-invalid @enderror"
                                name="photo[]" value="{{ old('photo') }}"
                                placeholder="{{ trans('auth/project.placeholder.photo') }}">
@@ -85,12 +93,16 @@
                     </div>
                 </div>
                 @foreach ($studentGroups as $index => $group)
+                    @php
+                        $locale = app()->getLocale();
+                        $nameStudent = $locale === 'ar' ? $group->firstname_ar . ' ' . $group->lastname_ar : $group->firstname_fr . ' ' . $group->lastname_fr;
+                    @endphp
                     <div class="row">
                         <div class="col-12 mb-2">
                             <h6></h6>
                         </div>
                         <div class="col-sm-12 col-md-6 mb-2">
-                            <label for="registration_certificate_{{ $index + 1 }}" class="form-label">{{ trans('auth/project.registration_certificate') }}: {{ $group->firstname_ar }} {{ $group->lastname_ar }}</label>
+                            <label for="registration_certificate_{{ $index + 1 }}" class="form-label">{{ trans('auth/project.registration_certificate') }}: {{ $nameStudent }}</label>
                             <input type="file" class="form-control @error('registration_certificate') is-invalid @enderror"
                                    name="registration_certificate[]" value="{{ old('registration_certificate') }}"
                                    placeholder="{{ trans('auth/project.placeholder.registration_certificate') }}">
@@ -101,7 +113,7 @@
                             @enderror
                         </div>
                         <div class="col-sm-12 col-md-6 mb-2">
-                            <label for="identification_card_{{ $index + 1 }}" class="form-label">{{ trans('auth/project.identification_card') }}: {{ $group->firstname_ar }} {{ $group->lastname_ar }}</label>
+                            <label for="identification_card_{{ $index + 1 }}" class="form-label">{{ trans('auth/project.identification_card') }}: {{ $nameStudent }}</label>
                             <input type="file" class="form-control @error('identification_card') is-invalid @enderror"
                                    name="identification_card[]" value="{{ old('identification_card') }}"
                                    placeholder="{{ trans('auth/project.placeholder.identification_card') }}">
@@ -112,7 +124,7 @@
                             @enderror
                         </div>
                         <div class="col-sm-12 col-md-6 mb-2">
-                            <label for="photo_{{ $index + 1 }}" class="form-label">{{ trans('auth/project.photo') }}: {{ $group->firstname_ar }} {{ $group->lastname_ar }}</label>
+                            <label for="photo_{{ $index + 1 }}" class="form-label">{{ trans('auth/project.photo') }}: {{ $nameStudent }}</label>
                             <input type="file" class="form-control @error('photo') is-invalid @enderror"
                                    name="photo[]" value="{{ old('photo') }}"
                                    placeholder="{{ trans('auth/project.placeholder.photo') }}">

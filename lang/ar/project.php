@@ -73,6 +73,8 @@
         'start_up' => 'مؤسسة ناشئة',
         'edit_project_tracking' => 'التعديل على تتبع المشروع',
         'edit_status_project_tracking' => 'تعدل على حالة تتبع المشروع',
+        'Add project type for' => 'إضافة نوع المشروع لـ :',
+        'Edit project type for' => 'تعديل نوع المشروع لـ :',
         'label' =>[
             'name' => 'اسم المشروع',
             'description' => 'وصف المشروع',
