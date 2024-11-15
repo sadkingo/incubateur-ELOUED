@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('projects', function (Blueprint $table) {
-            $table->date('start_date')->nullable()->after('id_commission');
+            $table->date('start_date')->nullable()->after('commission_id');
             $table->date('end_date')->nullable()->after('start_date');
         });
     }

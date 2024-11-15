@@ -9,10 +9,10 @@
         'Light' => 'Normal mode',
         'English' => 'English',
         'Arabic' => 'Arabic',
-
+        'created' => 'created',
         'all' => 'all',
         'Norank' => 'No rank',
-
+        
         'create' => 'add',
         'import' => 'upload',
         'edit' => 'edit',

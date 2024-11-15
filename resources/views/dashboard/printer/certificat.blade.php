@@ -209,7 +209,8 @@
         </div>
         <div class="content">
             <p>Nous Attestons que:</p>
-            <h2> {{$student->firstname_fr}} {{$student->lastname_fr}}</h2>
+            {{-- <h2> {{$student->firstname_fr}} {{$student->lastname_fr}}</h2> --}}
+            <h2> {{$project->name}}</h2>
             <p>
                 A suivi avec assiduité la formation 
                 <strong> 

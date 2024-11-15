@@ -8,8 +8,9 @@ return [
     'download_certificate' => 'تحميل الشهادة',
     'Dark' => 'الوضع الليلي',
     'Light' => 'الوضع عادي',
-    'English' => 'إنجليزي',
-    'Arabic' => 'عربي',
+    'English' => 'إنجليزية',
+    'Arabic' => 'عربية',
+    'created' => 'تم الانشاء',
 
     'all' => 'الكل',
     'Norank'  => 'لا توجد المرتبة',
@@ -148,8 +149,11 @@ return [
         '10' => 'الدفعة 10',
     ],
     'admin'  => [
-        'superadmin' => 'أدمين رئيسي',
-        'admin' => 'أدمين',
+        // 'superadmin' => 'أدمين رئيسي',
+        'admin' => 'مسئول',
+        'cati' => 'cati',
+        'incubateur' => 'incubateur',
+        'cde' => 'cde',
         'select_role_admin' => 'اختر نوع أدمين',
     ],
 ];

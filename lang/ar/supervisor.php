@@ -3,9 +3,9 @@
 return [
     'title' => 'أستاذ مشرف',
     'dashboard' => 'لوحــة التحكـــــم',
-    'supervisors' => 'استاذة المشرفون',
+    'supervisors' => 'المشرفون',
     'supervisor' => 'مشرف',
-    'groups' => 'الأعضاء',    
+    'groups' => 'الأعضاء',
     'title-dashboard' => 'الصفحة الرئيسية',
     'profile' => 'معلومات الحساب',
 
@@ -27,14 +27,14 @@ return [
 
     'phone' => 'رقم الهاتف',
     'email' => 'البريد الإلكتروني',
-    
-    
+
+
     'create'=> 'إضافة مشرف',
     'create_project'=> 'إضافة مشروع',
     'Add_students' => 'إضافة طلاب',
     'Add_project' => 'إضافة مشروع',
     'Add_supervisor' => 'اضافة مشرف',
-    'no_supervisors_available' => 'لا يوجد مشرفين متاحين',
+    'no_supervisors_available' => 'لا يوجد',
     'select_supervisor' => 'اختر مشرف',
     'import' => 'رفع ملف الطلبة',
     'edit' => 'تعديل بيانات المشرف',

@@ -21,7 +21,7 @@
           <label class="form-label" for="basic-default-password12">Password</label>
           <div class="input-group">
             <input type="password" class="form-control" id="basic-default-password12" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="basic-default-password2" />
-            <span id="basic-default-password2" class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+            <span id="basic-default-password2" class="input-group-text cursor-pointer"><i class="mdi mdi-lock-outline"></i></span>
           </div>
         </div>
 
@@ -65,7 +65,7 @@
           <label class="form-label" for="basic-default-password32">Password</label>
           <div class="input-group input-group-merge">
             <input type="password" class="form-control" id="basic-default-password32" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="basic-default-password" />
-            <span class="input-group-text cursor-pointer" id="basic-default-password"><i class="bx bx-hide"></i></span>
+            <span class="input-group-text cursor-pointer" id="basic-default-password"><i class="mdi mdi-lock-outline"></i></span>
           </div>
         </div>
 

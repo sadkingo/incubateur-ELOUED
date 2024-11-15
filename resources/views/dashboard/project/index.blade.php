@@ -1,6 +1,6 @@
 @extends('layouts/contentNavbarLayout')
 
-@section('title', trans('student.title-dashboard'))
+@section('title', trans('project.edit_project'))
 
 @section('page-script')
     <script src="{{ asset('assets/js/pages-account-settings-account.js') }}"></script>
@@ -8,281 +8,423 @@
 
 @section('content')
 <style>
-    .btn-custom-gray {
-        background-color: #d3d3d3;
-    }
-
-    .status-list li {
-        padding-bottom: 10px;
-    }
-
-    .table-container {
-        overflow-x: auto;
+    .loading-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
         width: 100%;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.8);
+        z-index: 9999;
+        justify-content: center;
+        align-items: center;
     }
-
-    .table-striped {
-        width: 100%;
-        max-width: 100%;
-        margin-bottom: 1rem;
-        background-color: transparent;
+    .loading-spinner {
+        width: 50px;
+        height: 50px;
+        border: 5px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 5px solid #3498db;
+        animation: spin 1s linear infinite;
     }
-
-    .table-striped th,
-    .table-striped td {
-        padding: 0.75rem;
-        vertical-align: top;
-        border-top: 1px solid #dee2e6;
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
     }
-
-    .table-striped thead th {
-        vertical-align: bottom;
-        border-bottom: 2px solid #dee2e6;
-    }
-
-    .table-striped tbody + tbody {
-        border-top: 2px solid #dee2e6;
-    }
-
-    .table-striped {
-        width: 100%;
-        max-width: 100%;
-        margin-bottom: 1rem;
-        background-color: transparent;
+    .loading-overlay.show {
+        display: flex;
     }
 </style>
-
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <h5 class="card-header">
-                    <div class="d-flex justify-content-between">
-                        <h4 class="fw-bold py-3 mb-4">
-                            <span class="text-muted fw-light">{{ trans('commission.dashboard') }} /</span> {{ trans('project.projects') }}
-                        </h4>
-                        <div>
-                            <button class="btn btn-success" onclick="updateSelectedStatus(2)">{{ trans('project.status_project.accepted') }}</button>
-                            <button class="btn btn-danger" onclick="updateSelectedStatus(0)">{{ trans('project.status_project.rejected') }}</button>
-                            <button class="btn btn-secondary" onclick="updateSelectedStatus(1)">{{ trans('project.status_project.under_studying') }}</button>
-                            <button class="btn btn-warning" onclick="updateSelectedStatus(3)">{{ trans('project.status_project.complete_project') }}</button>
+    <h4 class="fw-bold py-3 mb-4">
+        <span class="text-muted fw-light">{{ trans('project.dashboard') }} / {{ trans('project.project') }}/ </span>
+        {{ trans('project.edit_project') }}
+    </h4>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">{{ trans('project.edit_project') }}</h5>
+            <form method="post" action="{{ route('project.update', $project->id) }}" enctype="multipart/form-data" id="project-form">
+                @csrf
+                @method('PUT')
+                <div id="dynamic-fields">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 mb-2">
+                            <label for="name_project" class="form-label">{{ trans('auth/project.name_project') }}</label>
+                            <input type="text" class="form-control @error('name_project') is-invalid @enderror"
+                                  name="name_project" value="{{ old('name_project',$project->name) }}"
+                                  placeholder="{{ trans('auth/project.placeholder.name_project') }}">
+                            @error('name_project')
+                            <small class="text-danger d-block mt-1">
+                                {{ $message }}
+                            </small>
+                            @enderror
                         </div>
-                    </div>
-                </h5>
-                <hr class="my-0">
-                <div class="card-body pt-0">
-                    <div class="card-body">
-                        <div class="card">
-                            <h5 class="card-header pt-0 mt-1">
-                                <div class="row">
-                                    <div class="form-group col-md-6 px-1 mt-4">
-                                        <a href="{{ route('dashboard.projects.edit_all_dates') }}" class="btn btn-primary text-white">
-                                            <span class="tf-icons bx bx-plus"></span>&nbsp; {{ trans('project.add_deadline') }}
-                                        </a>
-                                    </div>
-                                </div>
-                            </h5>
-                            <div>
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">{{ trans('project.select') }}</th>
-                                            <th scope="col">#</th>
-                                            <th scope="col">{{trans('project.label.name')}}</th>
-                                            <th scope="col">{{ trans('project.status_project.status')}}</th>
-                                            <th scope="col">{{trans('student.firstname')}} & {{trans('student.lastname')}}</th>
-                                            <th scope="col">{{trans('student.groups')}}</th>
-                                            <th scope="col">{{trans('supervisor.supervisors')}}</th>
-                                            <th scope="col">{{trans('commission.commission')}}</th>
-                                            <th scope="col">{{trans('app.actions')}}</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($projects as $index => $project)
-                                            <tr>
-                                                <td><input type="checkbox" class="project-checkbox" value="{{ $project->id }}"></td>
-                                                <td>{{ $index + 1 }}</td>
-                                                <th scope="row"><a href="{{ url('dashboard/project/'.$project->id) }}">{{ $project->name }}</a></th>
-                                                <td>
-                                                    <ul class="status-list">
-                                                        <li class="{{ $project->status == 0 ? 'selected' : '' }}">
-                                                            <label>
-                                                                <input type="radio" name="status_{{ $project->id }}" class="form-check-input" {{ $project->status == 0 ? 'checked' : '' }} onclick="updateStatus({{ $project->id }}, 0)">
-                                                                <span class="btn btn-sm {{ $project->status == 0 ? 'btn-danger' : 'btn-custom-gray' }}">{{ trans('project.status_project.rejected') }}</span>
-                                                            </label>
-                                                        </li>
-                                                        <li class="{{ $project->status == 1 ? 'selected' : '' }}">
-                                                            <label>
-                                                                <input type="radio" name="status_{{ $project->id }}" class="form-check-input" {{ $project->status == 1 ? 'checked' : '' }} onclick="updateStatus({{ $project->id }}, 1)">
-                                                                <span class="btn btn-sm {{ $project->status == 1 ? 'btn-secondary' : 'btn-custom-gray' }}">{{ trans('project.status_project.under_studying') }}</span>
-                                                            </label>
-                                                        </li>
-                                                        <li class="{{ $project->status == 2 ? 'selected' : '' }}">
-                                                            <label>
-                                                                <input type="radio" name="status_{{ $project->id }}" class="form-check-input" {{ $project->status == 2 ? 'checked' : '' }} onclick="updateStatus({{ $project->id }}, 2)">
-                                                                <span class="btn btn-sm {{ $project->status == 2 ? 'btn-success' : 'btn-custom-gray' }}">{{ trans('project.status_project.accepted') }}</span>
-                                                            </label>
-                                                        </li>
-                                                        <li class="{{ $project->status == 3 ? 'selected' : '' }}">
-                                                            <label>
-                                                                <input type="radio" name="status_{{ $project->id }}" class="form-check-input" {{ $project->status == 3 ? 'checked' : '' }} onclick="updateStatus({{ $project->id }}, 3)">
-                                                                <span class="btn btn-sm {{ $project->status == 3 ? 'btn-warning' : 'btn-custom-gray' }}">{{ trans('project.status_project.complete_project') }}</span>
-                                                            </label>
-                                                        </li>
-                                                        
-                                                    </ul>
-                                                </td>
-                                                <td>
-                                                    @if (App::getLocale() == 'ar')
-                                                        {{ $project->student->firstname_ar }} {{ $project->student->lastname_ar }}
-                                                    @else
-                                                        {{ $project->student->firstname_fr }} {{ $project->student->lastname_fr }}
-                                                    @endif
-                                                </td>                                                
-                                                <td>
-                                                    @php
-                                                        $allStudents = \App\Models\StudentGroup::where('id_student', $project->student->id)->get();
-                                                    @endphp
-                                                    @if ($allStudents->count() > 0)
-                                                        <ul>
-                                                            @foreach($allStudents as $std)
-                                                                @php
-                                                                    $locale = app()->getLocale();
-                                                                    $name = $locale === 'ar' ? $std->firstname_ar . ' ' . $std->lastname_ar : $std->firstname_fr . ' ' . $std->lastname_fr;
-                                                                @endphp
-                                                                <li>{{ $name }}</li>
-                                                            @endforeach
-                                                        </ul>
-                                                    @else
-                                                        <span>{{ trans('project.no_members') }}</span>
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if($project->supervisingTeachers->isEmpty())
-                                                        <p>{{ trans('supervisor.no_supervisors_available') }}</p>
-                                                    @else
-                                                        <ul>
-                                                            @foreach($project->supervisingTeachers as $supervisor)
-                                                                @php
-                                                                    $locale = app()->getLocale();
-                                                                    $name = $locale === 'ar' ? $supervisor->firstname_ar . ' ' . $supervisor->lastname_ar : $supervisor->firstname_fr . ' ' . $supervisor->lastname_fr;
-                                                                @endphp
-                                                                <li>{{ $name }}</li>
-                                                            @endforeach
-                                                        </ul>
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if ($project->commission)
-                                                        {{ $project->commission->name_ar }}
-                                                        <div class="p-2">
-                                                            <button class="btn btn-primary text-white" onclick="openPrintCommission({{ $project->id }})">{{trans('app.print')}}</button>
-                                                        </div>
-                                                        
-                                                    @else
-                                                        <a href="{{ route('dashboard.projects.add_commission', $project->id) }}" class="btn btn-primary btn-sm">{{ trans('commission.add_commission') }}</a>
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    <div class="dropdown">
-                                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                                            <i class="bx bx-dots-vertical-rounded"></i>
-                                                        </button>
-                                                        <div class="dropdown-menu">
-                                                            @if ($project->type_project === null)
-                                                                <a class="dropdown-item" href="{{ url('dashboard/project/'.$project->id.'/add-type') }}">{{ trans('project.add_project_type') }}</a>
-                                                            @else
-                                                                <a class="dropdown-item" href="{{ url('dashboard/project/'.$project->id.'/edit-type') }}">{{ trans('project.edit_project_type') }}</a>
-                                                            @endif
-                                                            @if($project->project_classification == null)
-                                                                <a class="dropdown-item" href="{{ url('dashboard/project/'.$project->id.'/add-classification')}}">{{ trans('project.add_project_classification') }}</a>
-                                                            @else
-                                                                <a class="dropdown-item" href="{{ url('dashboard/project/'.$project->id.'/edit-classification')}}">{{ trans('project.edit_project_classification') }}</a>    
-                                                            @endif
-                                                            @if($project->project_classification != null && $project->type_project != null)
-                                                                <a class="dropdown-item" href="{{ url('dashboard/project/'.$project->id.'/add-project-tracking') }}">{{ trans('project.project_tracking') }}</a>
-                                                            @endif
-                                                            @if($project->project_classification == 1 || $project->project_classification == 2 || $project->project_classification == 4)
-                                                                <a class="dropdown-item" href="{{ url('dashboard/project/bmc-studing/'.$project->id) }}" >{{trans('project.bmc_tracking')}}</a>  
-                                                                <a class="dropdown-item" href="{{ url('dashboard/administrative/'.$project->id_student) }}" >{{trans('project.administrative_tracking')}}</a>
-                                                            @endif    
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                                {{ $projects->links() }}
+                        <div class="col-sm-12 col-md-6 mb-2">
+                            <label for="description" class="form-label">{{ trans('auth/project.description_project') }}</label>
+                            <textarea name="description" id="description" cols="50" rows="0"
+                                    class="form-control @error('description') is-invalid @enderror">{{ old('description',$project->description) }}</textarea>
+                            <div id="description_count" class="small text-muted">
+                                {{ trans('project.characters_remaining') }}: <span id="chars_left">500</span>
                             </div>
+                            @error('description')
+                            <small class="text-danger d-block">
+                                {{ $message }}
+                            </small>
+                            @enderror
                         </div>
+                        {{-- <div class="col-sm-12 col-md-6 mb-2">
+                            <label for="project_type" class="form-label">{{ trans('auth/project.project_type') }}</label>
+                            <select name="project_type" id="project_type" class="form-control @error('project_type') is-invalid @enderror">
+                                <option value="">{{ trans('auth/project.select_project_type') }}</option>
+                                <option value="commercial" @if($project->type_project == 'commercial') selected @endif>{{ trans('auth/project.project_commercial') }}</option>
+                                <option value="industrial" @if($project->type_project == 'industrial') selected @endif>{{ trans('auth/project.project_industrial') }}</option>
+                                <option value="agricultural" @if($project->type_project == 'agricultural') selected @endif>{{ trans('auth/project.project_agricultural') }}</option>
+                                <option value="service" @if($project->type_project == 'service') selected @endif>{{ trans('auth/project.project_service') }}</option>
+                            </select>
+                            @error('project_type')
+                            <small class="text-danger d-block">
+                                {{ $message }}
+                            </small>
+                            @enderror
+                        </div> --}}
+                        <div class="col-sm-12 col-md-6 mb-2">
+                            <label for="project_image" class="form-label">{{ trans('auth/project.project_images') }}</label>
+                            <input type="file" class="form-control @error('project_image.*') is-invalid @enderror"
+                                   name="project_image[]" dir="ltr" multiple
+                                   placeholder="{{ trans('auth/project.placeholder.project_image') }}">
+
+                            <!-- Display images -->
+                            <div class="row">
+                                @foreach($images as $index => $img)
+                                    <div class="col-lg-4 col-md-4 col-sm-6 mb-4">
+                                        <img src="{{ asset('storage/public/projects/images/'.$img->image) }}" data-src="{{ asset('storage/public/projects/images/'.$img->image) }}" data-index="{{ $index }}" data-toggle="lightbox" class="w-100 shadow-1-strong rounded mb-4" alt="{{ $img->name }}">
+                                    </div>
+                                @endforeach
+                            </div>
+
+                            @error('project_image.*')
+                            <small class="text-danger d-block">
+                                {{ $message }}
+                            </small>
+                            @enderror
+                        </div>
+
+                        <div class="col-sm-12 col-md-6 mb-2">
+                            <label for="video" class="form-label">{{ trans('auth/project.project_video') }}</label>
+                            <input type="text" dir="ltr" class="form-control @error('video') is-invalid @enderror"
+                                   name="video" value="{{ old('video') }}"
+                                   placeholder="{{ trans('auth/project.placeholder.video') }}">
+                            <div class="col-lg-4 col-md-4 col-sm-6 mb-4">
+                                <a href="{{ $project->video ? url($project->video) : '' }}" class="text-black" target="_blank">{{ trans('project.label.download_video')}}</a>
+                                {{-- <video controls class="w-100 shadow-1-strong rounded mb-4">
+                                    <source src="{{ url($project->video) }}" type="video/mp4">
+                                    <source src="{{ url($project->video) }}" type="video/ogg">
+                                        {{ trans('auth/project.video_not_supported') }}
+                                </video> --}}
+                            </div>
+
+                            @error('video')
+                            <small class="text-danger d-block">
+                                {{ $message }}
+                            </small>
+                            @enderror
+                        </div>
+                        {{-- <div class="col-sm-12 col-md-6 mb-2">
+                            <label for="bmc" class="form-label">{{ trans('auth/project.bmc') }}</label>
+                            <input type="file" dir="ltr" class="form-control @error('bmc') is-invalid @enderror"
+                                   name="bmc" value="{{ old('bmc') }}"
+                                   placeholder="{{ trans('auth/project.placeholder.bmc') }}">
+
+                            @if($project->bmc != null)
+                                <a href="{{ asset('storage/public/projects/bmc/'.$project->bmc) }}" class="text-black" target="_blank">{{ trans('project.label.download_bmc')}}</a>
+                            @endif
+                                @error('bmc')
+                            <small class="text-danger d-block">
+                                {{ $message }}
+                            </small>
+                            @enderror
+                        </div> --}}
+
+
+
+                        <div class="row mt-4">
+                          <div class="repeater">
+                              <div data-repeater-list="group-a">
+                                @if($students && $students->isNotEmpty())
+                                  @foreach($students as $student)
+                                      <div data-repeater-item class="form-group row mb-2">
+                                          <div class="col-sm-4 col-md-4 mb-2">
+                                              <label for="registerd_id" class="form-label">{{ trans('auth/student.registration_number') }}</label>
+                                              <input type="text" class="form-control registerd_id" name="registerd_id"
+                                                    placeholder="{{ trans('auth/student.placeholder.registration_number') }}"
+                                                    value="{{ $student->student->registration_number }}">
+                                          </div>
+                                          <div class="col-sm-3 col-md-3 mb-2">
+                                              <label for="firstname_ar" class="form-label">{{ trans('auth/student.firstname_ar') }}</label>
+                                              <input type="text" class="form-control firstname_ar" name="firstname_ar"
+                                                    placeholder="{{ trans('auth/student.placeholder.firstname_ar') }}"
+                                                    value="{{ $student->student->firstname_ar }}" disabled>
+                                          </div>
+                                          <div class="col-sm-3 col-md-3 mb-2">
+                                              <label for="lastname_ar" class="form-label">{{ trans('auth/student.lastname_ar') }}</label>
+                                              <input type="text" class="form-control lastname_ar" name="lastname_ar"
+                                                    placeholder="{{ trans('auth/student.placeholder.lastname_ar') }}"
+                                                    value="{{ $student->student->lastname_ar }}" disabled>
+                                          </div>
+                                          <div class="col-sm-2 col-md-2 mb-2 d-flex align-items-end">
+                                              <button type="button" class="btn btn-danger btn-icon mx-1" data-repeater-delete>
+                                                  <span class="bx bx-minus"></span>
+                                              </button>
+                                          </div>
+                                      </div>
+                                  @endforeach
+                                @else
+                                  <div data-repeater-item class="form-group row mb-2">
+                                    <div class="col-sm-4 col-md-4 mb-2">
+                                      <label for="registerd_id" class="form-label">{{ trans('auth/student.registration_number') }}</label>
+                                      <input type="text" class="form-control registerd_id" name="registerd_id" placeholder="{{ trans('auth/student.placeholder.registration_number') }}">
+                                    </div>
+                                    <div class="col-sm-3 col-md-3 mb-2">
+                                      <label for="firstname_ar" class="form-label">{{ trans('auth/student.firstname_ar') }}</label>
+                                      <input type="text" class="form-control firstname_ar" name="firstname_ar" placeholder="{{ trans('auth/student.placeholder.firstname_ar') }}" disabled>
+                                    </div>
+                                    <div class="col-sm-3 col-md-3 mb-2">
+                                      <label for="lastname_ar" class="form-label">{{ trans('auth/student.lastname_ar') }}</label>
+                                      <input type="text" class="form-control lastname_ar" name="lastname_ar" placeholder="{{ trans('auth/student.placeholder.lastname_ar') }}" disabled>
+                                    </div>
+                                    <div class="col-sm-2 col-md-2 mb-2 d-flex align-items-end">
+                                      <button type="button" class="btn btn-danger btn-icon mx-1" data-repeater-delete><span class="mdi mdi-minus"></span></button>
+                                    </div>
+                                  </div>
+                                @endif
+                              </div>
+                              <button type="button" class="btn btn-primary btn-icon mx-1" data-repeater-create>
+                                  <span class="mdi mdi-plus"></span>
+                              </button>
+                          </div>
+                      </div>
+
+                      <div class="row mt-4">
+                        <div class="repeater2">
+                          <div data-repeater-list="group-b">
+                            @if ($allSupervisors->isNotEmpty())
+                              @foreach ($allSupervisors as $oneSupervisor)
+                                <div data-repeater-item class="form-group row mb-2">
+                                  <div class="col-sm-4 col-md-4 mb-2">
+                                    <option value="">{{ trans('supervisor.supervisors') }}</option>
+                                    <select class="form-control" name="supervisor_id">
+                                      <option value="">{{ trans('supervisor.supervisors') }}</option>
+                                      @foreach ($supervisors as $supervisor)
+                                        <option value="{{ $supervisor->id }}" @if($oneSupervisor->supervising_teacher_id == $supervisor->id) selected @endif>{{ $supervisor->firstname_ar }} {{ $supervisor->lastname_ar }}</option>
+                                      @endforeach
+                                    </select>
+                                  </div>
+                                  <div class="col-sm-3 col-md-3 mb-2">
+                                    <label for="role" class="form-label">{{ trans('supervisor.role') }}</label>
+                                    <select name="supervisor_role" id="supervisor_role" class="form-control @error('supervisor_role') is-invalid @enderror">
+                                        <option value="" @if($oneSupervisor->role == null) selected @endif>{{ trans('auth/supertvisor.select_supervisor_role') }}</option>
+                                        <option value="1" @if($oneSupervisor->role == 1) selected @endif>{{ trans('auth/supertvisor.main_supervisor') }}</option>
+                                        <option value="2" @if($oneSupervisor->role == 2) selected @endif>{{ trans('auth/supertvisor.second_supervisor') }}</option>
+                                        <option value="3" @if($oneSupervisor->role == 3) selected @endif>{{ trans('auth/supertvisor.assistant_supervisor') }}</option>
+                                    </select>
+                                    @error('supervisor_role')
+                                      <small class="text-danger d-block mt-1">{{ $message }}</small>
+                                    @enderror
+                                  </div>
+                                  <div class="col-sm-2 col-md-2 mb-2 d-flex align-items-end">
+                                    <button type="button" class="btn btn-danger btn-icon mx-1" data-repeater-delete><span class="mdi mdi-minus"></span></button>
+                                  </div>
+                                </div>
+                              @endforeach
+                            @else
+                              <div data-repeater-item class="form-group row mb-2">
+                                <div class="col-sm-4 col-md-4 mb-2">
+                                  <option value="">{{ trans('supervisor.supervisors') }}</option>
+                                  <select class="form-control" name="supervisor_id">
+                                    <option value="">{{ trans('supervisor.supervisors') }}</option>
+                                    @foreach ($supervisors as $supervisor)
+                                      <option value="{{ $supervisor->id }}">{{ $supervisor->firstname_ar }} {{ $supervisor->lastname_ar }}</option>
+                                    @endforeach
+                                  </select>
+                                </div>
+                                <div class="col-sm-3 col-md-3 mb-2">
+                                  <label for="role" class="form-label">{{ trans('supervisor.role') }}</label>
+                                  <select name="supervisor_role" id="supervisor_role" class="form-control @error('supervisor_role') is-invalid @enderror">
+                                      <option value="">{{ trans('auth/supertvisor.select_supervisor_role') }}</option>
+                                      <option value="1">{{ trans('auth/supertvisor.main_supervisor') }}</option>
+                                      <option value="2">{{ trans('auth/supertvisor.second_supervisor') }}</option>
+                                      <option value="3">{{ trans('auth/supertvisor.assistant_supervisor') }}</option>
+                                  </select>
+                                  @error('supervisor_role')
+                                    <small class="text-danger d-block mt-1">{{ $message }}</small>
+                                  @enderror
+                                </div>
+                                <div class="col-sm-2 col-md-2 mb-2 d-flex align-items-end">
+                                  <button type="button" class="btn btn-danger btn-icon mx-1" data-repeater-delete><span class="mdi mdi-minus"></span></button>
+                                </div>
+                              </div>
+                            @endif
+
+
+                          </div>
+                          <button type="button" class="btn btn-primary btn-icon mx-1" data-repeater-create><span class="mdi mdi-plus"></span></button>
+                        </div>
+
+                      </div>
+
                     </div>
                 </div>
-            </div>
+                <div class="col-sm-12 mt-3 d-flex">
+                    <div class="col d-flex justify-content-end">
+                        <button type="submit" class="btn btn-primary" id="submit-button">
+                            {{ trans('auth/project.edit') }}
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
-@endsection
 
-@section('scripts')
-    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery.repeater@1.2.1/jquery.repeater.min.js"></script>
+
+
     <script type="text/javascript">
-        function openPrintCommission(projectId) {
-            var printWindow = window.open('/dashboard/print/commission/' + projectId, '_blank');
-            printWindow.onload = function() {
-                printWindow.print();
-            };
+
+
+      function debounce(func, delay) {
+          let timer;
+          return function(...args) {
+            clearTimeout(timer);
+            timer = setTimeout(() => func.apply(this, args), delay);
+          };
         }
 
-        function updateStatus(projectId, status) {
+        // AJAX search function
+        function searchUser($input) {
+          let registerdId = $input.val();
+          let $row = $input.closest('[data-repeater-item]'); // Get the closest repeater item
+
+          if (registerdId) {
             $.ajax({
-                type: 'POST',
-                url: '{{ route("dashboard.update_project_status") }}',
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    project_id: projectId,
-                    status: status
+              url: '{{ route("dashboard.students.getUserDetailsFromRegisterdId") }}',
+              method: 'POST',
+              headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+              },
+              data: {
+                registerd_id: registerdId
+              },
+              success: function(response) {
+                if (response.success) {
+                  $row.find('.firstname_ar').val(response.firstname_ar);
+                  $row.find('.lastname_ar').val(response.lastname_ar);
+                } else {
+                  $row.find('.firstname_ar').val('User not found.');
+                  $row.find('.lastname_ar').val('User not found.');
+                }
+              },
+              error: function() {
+                $row.find('.firstname_ar').val('User not found.');
+                $row.find('.lastname_ar').val('User not found.');
+              }
+            });
+          } else {
+            // Clear fields if no registerd_id is entered
+            $row.find('.firstname_ar').val('');
+            $row.find('.lastname_ar').val('');
+          }
+        }
+            $(document).ready(function() {
+              // Initialize the repeater
+              $('.repeater').repeater({
+                initEmpty: false,
+
+                show: function () {
+                  // Maximum of 5 items
+                  if ($(this).closest('[data-repeater-list]').children('[data-repeater-item]').length < 6) {
+                    $(this).slideDown();
+                  } else {
+                    alert('Maximum of 6 items allowed.');
+                  }
                 },
-                success: function(response) {
-                    console.log(response);
-                    toastr.success('{{ trans('project.status_updated') }}');
+
+                hide: function (deleteElement) {
+                  // Minimum of 1 item
+                  if ($(this).closest('[data-repeater-list]').children('[data-repeater-item]').length > 1) {
+                    $(this).slideUp(deleteElement);
+                  } else {
+                    alert('At least one item is required.');
+                  }
                 },
-                error: function(xhr, status, error) {
-                    console.error(error);
-                    toastr.error('{{ trans('project.status_update_failed') }}');
+              });
+              $('.repeater2').repeater({
+                initEmpty: false,
+
+                show: function () {
+                  // Maximum of 3 items
+                  if ($(this).closest('[data-repeater-list]').children('[data-repeater-item]').length < 4) {
+                    $(this).slideDown();
+                  } else {
+                    alert('Maximum of 3 items allowed.');
+                  }
+                },
+
+                hide: function (deleteElement) {
+                  // Minimum of 1 item
+                  if ($(this).closest('[data-repeater-list]').children('[data-repeater-item]').length > 1) {
+                    $(this).slideUp(deleteElement);
+                  } else {
+                    alert('At least one item is required.');
+                  }
+                },
+              });
+
+              $(document).on('keyup', '.registerd_id', debounce(function() {
+                searchUser($(this));
+              }, 500)); // Delay set to 500 ms (half a second)
+
+            });
+          </script>
+
+
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const description = document.getElementById('description');
+            const charsLeft = document.getElementById('chars_left');
+            const descriptionCount = document.getElementById('description_count');
+            const maxChars = 500;
+
+            description.addEventListener('input', function () {
+                const remaining = maxChars - description.value.length;
+                charsLeft.textContent = remaining;
+                if (remaining < 0) {
+                    descriptionCount.classList.add('text-danger');
+                } else {
+                    descriptionCount.classList.remove('text-danger');
                 }
             });
-        }
 
-        function updateSelectedStatus(status) {
-            var selectedProjects = [];
-            $('.project-checkbox:checked').each(function() {
-                selectedProjects.push($(this).val());
+            const submitButton = document.getElementById('submit-button');
+            const loadingOverlay = document.getElementById('loading-overlay');
+            const form = document.getElementById('project-form');
+
+            form.addEventListener('submit', function (e) {
+                loadingOverlay.classList.add('show');
+                submitButton.disabled = true;
             });
-
-            if (selectedProjects.length > 0) {
-                $.ajax({
-                    type: 'POST',
-                    url: '{{ url("dashboard/update_selected_projects_status") }}',
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        project_ids: selectedProjects,
-                        status: status
-                    },
-                    success: function(response) {
-                        console.log(response);
-                        toastr.success('{{ trans('project.status_updated') }}');
-                        location.reload();
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(error);
-                        toastr.error('{{ trans('project.status_update_failed') }}');
-                    }
-                });
-            } else {
-                toastr.warning('{{ trans('project.no_projects_selected') }}');
-            }
-        }
+        });
     </script>
 @endsection
+
+@push('scripts')
+
+@endpush
+
+<!-- Animation Overlay -->
+<div class="loading-overlay" id="loading-overlay">
+    <div class="loading-spinner"></div>
+</div>

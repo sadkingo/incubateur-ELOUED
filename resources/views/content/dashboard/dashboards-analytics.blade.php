@@ -17,238 +17,208 @@
 @section('content')
     <style>
         .card-title h6 {
-            word-break: break-word; 
-            overflow-wrap: break-word; 
+            word-break: break-word;
+            overflow-wrap: break-word;
         }
         .custom-icon {
-            color: purple; 
+            color: purple;
         }
         .custom-icn{
             color: yellow;
         }
-    </style>   
+    </style>
+    {{-- <div class="row"> --}}
+        <div class="card mb-3">
+            <div class="row row-bordered g-0">
+                <div class="col-md-8">
+                    <h5 class="card-header m-0 me-2 pb-3">{{ trans('dashboard.General statistics.') }}</h5>
+                    <div class="card-body">
+                        <div class="text-center">
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-outline-primary " type="button">
+                                    <select class="form-select form-select-sm" name="year" id="year">
+                                        @foreach ($uniqueYears as $uniqueYear)
+                                            <option value="{{ $uniqueYear }}">{{ $uniqueYear }}</option>
+                                        @endforeach
+                                    </select>
+                                </button>
+
+                            </div>
+                        </div>
+                    </div>
+                    {{-- <div id="totalRevenueChart" class="px-2"></div> --}}
+                    <div class="px-2 w-100 h-100">
+                        <canvas id="myChart"></canvas>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card-body">
+                        <div class="text-center">
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-outline-primary " type="button">
+                                    <select class="form-select form-select-sm" name="year" id="yearGender">
+                                        @foreach ($uniqueYears as $uniqueYear)
+                                            <option value="{{ $uniqueYear }}">{{ $uniqueYear }}</option>
+                                        @endforeach
+                                    </select>
+                                </button>
+
+                            </div>
+                        </div>
+                    </div>
+                    {{-- <div id="growthChart"></div> --}}
+                    <div class="px-2 w-100 h-100">
+                        <canvas id="myChartGender"></canvas>
+                    </div>
+
+                    <div class="d-flex px-xxl-4 px-lg-2 p-4 gap-xxl-3 gap-lg-1 gap-3 justify-content-between">
+                        <div class="d-flex">
+                            <div class="me-2">
+                                <span class="badge bg-label-primary p-2"><i
+                                        class="bx bx-dollar text-primary"></i></span>
+                            </div>
+                            <div class="d-flex flex-column">
+                                <small>2022</small>
+                                <h6 class="mb-0">$32.5k</h6>
+                            </div>
+                        </div>
+                        <div class="d-flex">
+                            <div class="me-2">
+                                <span class="badge bg-label-info p-2"><i class="bx bx-wallet text-info"></i></span>
+                            </div>
+                            <div class="d-flex flex-column">
+                                <small>2021</small>
+                                <h6 class="mb-0">$41.2k</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{-- </div> --}}
+
+
+
+
+
     <div class="row">
-        <div class="col-lg-8 mb-4 order-0">
+        <div class="col-lg-4 mb-4">
             <div class="card">
-                <div class="d-flex align-items-end row">
-                    <div class="col-sm-7">
-                        <div class="card-body">
-                            <h5 class="card-title text-primary">{{ trans('dashboard.welcome') }} 🎉</h5>
-                            <p class="mb-4">
-                                {{ trans('dashboard.Here, you can asily track annual revenue trends, monitor weekly and monthly order patterns, and gain insights into user behavior through comprehensive reports.') }}
-                            </p>
-                            {{-- <a href="{{ url('tldr') }}" class="btn btn-sm btn-outline-primary">View Badges</a> --}}
-                        </div>
-                    </div>
-                    <div class="col-sm-5 text-center text-sm-left">
-                        <div class="card-body pb-0 px-0 px-md-4">
-                            <img src="{{ asset('assets/img/illustrations/man-with-laptop-light.png') }}" height="140"
-                                alt="View Badge User" data-app-dark-img="illustrations/man-with-laptop-dark.png"
-                                data-app-light-img="illustrations/man-with-laptop-light.png">
+                <div class="card-body d-flex">
+                    <i class="mdi mdi-bag-personal-outline" style="font-size:35px"></i>
+                    <div class="mx-2">
+                        <span class="fw-semibold d-block mb-1">{{ trans('dashboard.students') }}</span>
+                        <div class="d-flex">
+                            <h3 class="card-title mb-0 d-flex align-items-center">{{ count($students) }}</h3>
+                            {{-- <small class="text-success fw-semibold"> <i class="bx bx-up-arrow-alt"></i> +2.14%</small> --}}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-lg-4 col-md-4 order-1">
-            <div class="row">
-                <div class="col-lg-6 col-md-12 col-6 mb-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="card-title d-flex align-items-start justify-content-between">
-                                <div class="avatar flex-shrink-0">
-                                    <i class='bx bx-user-check' style='color:#93e878; font-size:48px'></i>
-                                </div>
-                                <div class="dropdown">
-
-                                </div>
-                            </div>
-                            <span class="fw-semibold d-block mb-1">{{ trans('dashboard.admins') }}</span>
-                            <h3 class="card-title mb-2">{{ count($admins) }}</h3>
-                            <small class="text-success fw-semibold"><i class='bx bx-up-arrow-alt'></i> +1%</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-md-12 col-6 mb-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="card-title d-flex align-items-start justify-content-between">
-                                <div class="avatar flex-shrink-0">
-                                    <i class='text-info bx bx-user-check' style=' font-size:48px'></i>
-                                </div>
-                                <div class="dropdown">
-                                </div>
-                            </div>
-                            <span>{{ trans('dashboard.teachers') }}</span>
-                            <h3 class="card-title text-nowrap mb-1">{{ count($teachers) }}</h3>
-                            <small class="text-success fw-semibold"><i class='bx bx-up-arrow-alt'></i> +0%</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Total Revenue -->
-        <div class="col-12 col-lg-8 order-2 order-md-3 order-lg-2 mb-4">
+        <div class="col-lg-4 mb-4">
             <div class="card">
-                <div class="row row-bordered g-0">
-                    <div class="col-md-8">
-                        <h5 class="card-header m-0 me-2 pb-3">{{ trans('dashboard.General statistics.') }}</h5>
-                        <div class="card-body">
-                            <div class="text-center">
-                                <div class="dropdown">
-                                    <button class="btn btn-sm btn-outline-primary " type="button">
-                                        <select class="form-select form-select-sm" name="year" id="year">
-                                            @foreach ($uniqueYears as $uniqueYear)
-                                                <option value="{{ $uniqueYear }}">{{ $uniqueYear }}</option>
-                                            @endforeach
-                                        </select>
-                                    </button>
-
-                                </div>
-                            </div>
-                        </div>
-                        {{-- <div id="totalRevenueChart" class="px-2"></div> --}}
-                        <div class="px-2 w-100 h-100">
-                            <canvas id="myChart"></canvas>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card-body">
-                            <div class="text-center">
-                                <div class="dropdown">
-                                    <button class="btn btn-sm btn-outline-primary " type="button">
-                                        <select class="form-select form-select-sm" name="year" id="yearGender">
-                                            @foreach ($uniqueYears as $uniqueYear)
-                                                <option value="{{ $uniqueYear }}">{{ $uniqueYear }}</option>
-                                            @endforeach
-                                        </select>
-                                    </button>
-
-                                </div>
-                            </div>
-                        </div>
-                        {{-- <div id="growthChart"></div> --}}
-                        <div class="px-2 w-100 h-100">
-                            <canvas id="myChartGender"></canvas>
-                        </div>
-
-                        <div class="d-flex px-xxl-4 px-lg-2 p-4 gap-xxl-3 gap-lg-1 gap-3 justify-content-between">
-                            <div class="d-flex">
-                                <div class="me-2">
-                                    <span class="badge bg-label-primary p-2"><i
-                                            class="bx bx-dollar text-primary"></i></span>
-                                </div>
-                                <div class="d-flex flex-column">
-                                    <small>2022</small>
-                                    <h6 class="mb-0">$32.5k</h6>
-                                </div>
-                            </div>
-                            <div class="d-flex">
-                                <div class="me-2">
-                                    <span class="badge bg-label-info p-2"><i class="bx bx-wallet text-info"></i></span>
-                                </div>
-                                <div class="d-flex flex-column">
-                                    <small>2021</small>
-                                    <h6 class="mb-0">$41.2k</h6>
-                                </div>
-                            </div>
+                <div class="card-body d-flex">
+                    <i class="mdi mdi-bag-personal-plus-outline" style="font-size:35px"></i>
+                    <div class="mx-2">
+                        <span class="fw-semibold d-block mb-1">{{ trans('dashboard.student_groups') }}</span>
+                        <div class="d-flex">
+                            <h3 class="card-title mb-0 d-flex align-items-center">{{ $studentGroups }}</h3>
+                            {{-- <small class="text-success fw-semibold"> <i class="bx bx-up-arrow-alt"></i> +2.14%</small> --}}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!--/ Total Revenue -->
-        <div class="col-12 col-md-8 col-lg-4 order-3 order-md-2">
-            <div class="row">
-                <div class="col-6 mb-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="card-title d-flex align-items-start justify-content-between">
-                                <div class="avatar flex-shrink-0">
-                                    <i class='text-danger bx bx-user-check' style=' font-size:48px'></i>
-                                </div>
-
-                            </div>
-                            <span class="d-block mb-1">{{ trans('dashboard.students') }}</span>
-                            <h3 class="card-title text-nowrap mb-2">{{ count($students) }}</h3>
-                            <small class="text-success fw-semibold"><i class='bx bx-up-arrow-alt'></i> +3%</small>
+        <div class="col-lg-4 mb-4">
+            <div class="card">
+                <div class="card-body d-flex">
+                    <i class="mdi mdi-bag-personal-tag-outline" style="font-size:35px"></i>
+                    <div class="mx-2">
+                        <span class="fw-semibold d-block mb-1">{{ trans('dashboard.all_students') }}</span>
+                        <div class="d-flex">
+                            <h3 class="card-title mb-0 d-flex align-items-center">{{ $allStudents }}</h3>
+                            {{-- <small class="text-success fw-semibold"> <i class="bx bx-up-arrow-alt"></i> +2.14%</small> --}}
                         </div>
                     </div>
                 </div>
-                <div class="col-6 mb-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="card-title d-flex align-items-start justify-content-between">
-                                <div class="avatar flex-shrink-0">
-                                    <i class='text-primary bx bx-user-check' style=' font-size:48px'></i>
-                                </div>
-
-                            </div>
-                            <span class="fw-semibold d-block mb-1">{{ trans('dashboard.student_groups') }}</span>
-                            <h3 class="card-title mb-2">{{ $studentGroups }}</h3>
-                            <small class="text-success fw-semibold"><i class='bx bx-up-arrow-alt'></i> +2.14%</small>
+            </div>
+        </div>
+        <div class="col-lg-4 mb-4">
+            <div class="card">
+                <div class="card-body d-flex">
+                    <i class="bx bxs-buildings" style="font-size:48px"></i>
+                    <div class="mx-2">
+                        <span class="fw-semibold d-block mb-1">{{ trans('dashboard.projects') }}</span>
+                        <div class="d-flex">
+                            <h3 class="card-title mb-0 d-flex align-items-center">{{ $projects }}</h3>
+                            {{-- <small class="text-success fw-semibold"> <i class="bx bx-up-arrow-alt"></i> +2.14%</small> --}}
                         </div>
                     </div>
                 </div>
-                <div class="col-6 mb-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="card-title d-flex align-items-start justify-content-between">
-                                <div class="avatar flex-shrink-0">
-                                    <i class='text-primary bx bx-user-check' style=' font-size:48px'></i>
-                                </div>
-
-                            </div>
-                            <span class="fw-semibold d-block mb-1">{{ trans('dashboard.all_students') }}</span>
-                            <h3 class="card-title mb-2">{{ $allStudents }}</h3>
-                            <small class="text-success fw-semibold"><i class='bx bx-up-arrow-alt'></i> +2.14%</small>
+            </div>
+        </div>
+        <div class="col-lg-4 mb-4">
+            <div class="card">
+                <div class="card-body d-flex">
+                    <i class="bx bxs-buildings" style="font-size:48px"></i>
+                    <div class="mx-2">
+                        <span class="fw-semibold d-block mb-1">{{ trans('dashboard.accepted') }}</span>
+                        <div class="d-flex">
+                            <h3 class="card-title mb-0 d-flex align-items-center">{{ $acceptedProject }}</h3>
+                            {{-- <small class="text-success fw-semibold"> <i class="bx bx-up-arrow-alt"></i> +2.14%</small> --}}
                         </div>
                     </div>
                 </div>
-                <div class="col-6 mb-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="card-title d-flex align-items-start justify-content-between">
-                                <div class="avatar flex-shrink-0">
-                                    <i class='bx bxs-buildings' style="font-size:48px"></i>
-                                    {{-- {{-- <i class='text-primary bx bx-user-check' style=' font-size:48px'  ></i>  --}}
-                                </div>
-
-                            </div>
-                            <span class="fw-semibold d-block mb-1">{{ trans('dashboard.projects') }}</span>
-                            <h3 class="card-title mb-2">{{ $projects }}</h3>
-                            <small class="text-success fw-semibold"><i class='bx bx-up-arrow-alt'></i> +2.14%</small>
+            </div>
+        </div>
+        <div class="col-lg-4 mb-4">
+            <div class="card">
+                <div class="card-body d-flex">
+                    <i class="mdi mdi-security" style="font-size:35px"></i>
+                    <div class="mx-2">
+                        <span class="fw-semibold d-block mb-1">{{ trans('dashboard.admins') }}</span>
+                        <div class="d-flex">
+                            <h3 class="card-title mb-0 d-flex align-items-center">{{ count($admins) }}</h3>
+                            {{-- <small class="text-success fw-semibold"> <i class="bx bx-up-arrow-alt"></i> +2.14%</small> --}}
                         </div>
                     </div>
                 </div>
-                <div class="col-12 mb-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between flex-sm-row flex-column gap-3">
-                                <div class="d-flex flex-sm-column flex-row align-items-start justify-content-between w-100">
-                                    <div class="card-title">
-                                        <h6 class="mb-2">
-                                            {{ trans('dashboard.Number of students whose projects were accepted') }}
-                                        </h6>
-                                        <span class="badge bg-label-warning rounded-pill">
-                                            {{ trans('dashboard.accepted') }}
-                                        </span>
-                                    </div>
-                                    <div class="mt-sm-auto">
-                                        <small class="text-success text-nowrap fw-semibold"><i class='bx bx-chevron-up'></i> 1%</small>
-                                        <h3 class="mb-0">{{ $acceptedProject }}</h3>
-                                    </div>
-                                </div>
-                                {{-- <div ><i class='bx bx-trophy'></i></div> --}}
-                            </div>
+            </div>
+        </div>
+        <div class="col-lg-4 mb-4">
+            <div class="card">
+                <div class="card-body d-flex">
+                    <i class="mdi mdi-pencil-ruler-outline" style="font-size:35px"></i>
+                    <div class="mx-2">
+                        <span class="fw-semibold d-block mb-1">{{ trans('dashboard.teachers') }}</span>
+                        <div class="d-flex">
+                            <h3 class="card-title mb-0 d-flex align-items-center">{{ count($teachers) }}</h3>
+                            {{-- <small class="text-success fw-semibold"> <i class="bx bx-up-arrow-alt"></i> +2.14%</small> --}}
                         </div>
                     </div>
                 </div>
-                
-                
             </div>
         </div>
     </div>
+
+
+    {{-- <div class="col-lg-4 mb-4">
+        <div class="card">
+            <div class="card-body d-flex">
+                <i class="bx bxs-buildings" style="font-size:48px"></i>
+                <div class="mx-2">
+                    <span class="fw-semibold d-block mb-1">المشاريع</span>
+                    <div class="d-flex">
+                        <h3 class="card-title mb-0 d-flex align-items-center">15</h3>
+                        <small class="text-success fw-semibold"> <i class="bx bx-up-arrow-alt"></i> +2.14%</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> --}}
+
+
     <div class="row">
         <!-- Project Statistics -->
         <div class="col-md-6 col-lg-6 col-xl-6 order-0 mb-4">
@@ -364,7 +334,7 @@
             </div>
         </div>
         <!--/ Project Statistics -->
-        
+
         <!-- Project Classification Stats -->
         <div class="col-md-6 col-lg-6 col-xl-6 order-2 mb-4">
             <div class="card h-100">
@@ -381,7 +351,7 @@
             </div>
         </div>
         <!--/ Project Classification Stats -->
-        
+
         <!-- Startup and Patent Label Students Stats -->
         <div class="col-md-6 col-lg-6 col-xl-6 order-3 mb-4">
             <div class="card h-100">
@@ -407,7 +377,7 @@
                                     <small class="fw-semibold">{{ $mimiLbaleStudentsCount }}</small>
                                 </div>
                             </div>
-                        </li>                       
+                        </li>
                         <li class="d-flex mb-4 pb-1">
                             <div class="avatar flex-shrink-0 me-3">
                                 <span class="avatar-initial rounded bg-label-info"><i class='bx bx-rocket'></i></span>
@@ -461,7 +431,7 @@
             </div>
         </div>
         <!--/ Startup and Patent Label Students Stats -->
-        
+
         <!-- Chart for Projects by Year -->
         <div class="col-md-6 col-lg-6 col-xl-6 order-1 mb-4">
             <div class="card h-100">
@@ -489,7 +459,7 @@
                 </div>
                 <div class="card-body">
                     <div class="d-flex flex-column p-2">
-                        @if(count($miniProjectStatsByFaculty) > 0)
+                        @if($miniProjectStatsByFaculty && count($miniProjectStatsByFaculty) > 0)
                             <ul class="list-group">
                                 @foreach($miniProjectStatsByFaculty as $facultyName => $count)
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -517,7 +487,7 @@
                 </div>
                 <div class="card-body">
                     <div class="d-flex flex-column p-2">
-                        @if(count($startupProjectStatsByFaculty) > 0)
+                        @if($startupProjectStatsByFaculty && count($startupProjectStatsByFaculty) > 0)
                             <ul class="list-group">
                                 @foreach($startupProjectStatsByFaculty as $facultyName => $count)
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -545,7 +515,7 @@
                 </div>
                 <div class="card-body">
                     <div class="d-flex flex-column p-2">
-                        @if(count($patentProjectStatsByFaculty) > 0)
+                        @if($patentProjectStatsByFaculty && count($patentProjectStatsByFaculty) > 0)
                             <ul class="list-group">
                                 @foreach($patentProjectStatsByFaculty as $facultyName => $count)
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -562,7 +532,7 @@
             </div>
         </div>
         <!--/ Statistics of projects awarded to a patent project by faculty -->
-       
+
         <!-- Statistics of projects awarded to a patent startup project by faculty -->
         <div class="col-md-6 col-lg-6 col-xl-6 order-1 mb-4">
             <div class="card h-100">
@@ -573,7 +543,7 @@
                 </div>
                 <div class="card-body">
                     <div class="d-flex flex-column p-2">
-                        @if(count($patentStartupProjectStatsByFaculty) > 0)
+                        @if($patentStartupProjectStatsByFaculty && count($patentStartupProjectStatsByFaculty) > 0)
                             <ul class="list-group">
                                 @foreach($patentStartupProjectStatsByFaculty as $facultyName => $count)
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -590,7 +560,7 @@
             </div>
         </div>
         <!--/ Statistics of projects awarded to a patent startup project by faculty -->
-        
+
         <!-- Mini Project Stages Statistics -->
         <div class="col-md-6 col-lg-6 col-xl-6 order-4 mb-4">
             <div class="card h-100">
@@ -606,12 +576,12 @@
                             <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                                 <div class="me-2">
                                     <h6 class="mb-0">
-                                        <i class="fas fa-project-diagram"></i> 
+                                        <i class="fas fa-project-diagram"></i>
                                         {{ trans("dashboard.$stage") }}
                                     </h6>
                                     @foreach ($data as $status => $count)
                                     <small class="text-muted">
-                                        <i class="fas fa-tasks"></i> 
+                                        <i class="fas fa-tasks"></i>
                                         {{ trans("dashboard.$status") }}: {{ $count }}
                                     </small><br>
                                     @endforeach
@@ -624,7 +594,7 @@
             </div>
         </div>
         <!--/ Mini Project Stages Statistics -->
-        
+
         <!-- Startup Project Stages Statistics -->
         <div class="col-md-6 col-lg-6 col-xl-6 order-4 mb-4">
             <div class="card h-100">
@@ -640,12 +610,12 @@
                                 <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                                     <div class="me-2">
                                         <h6 class="mb-0">
-                                            <i class="fas fa-rocket"></i> 
+                                            <i class="fas fa-rocket"></i>
                                             {{ trans("dashboard.$stage") }}
                                         </h6>
                                         @foreach ($data as $status => $count)
                                             <small class="text-muted">
-                                                <i class="fas fa-tasks"></i> 
+                                                <i class="fas fa-tasks"></i>
                                                 {{ trans("dashboard.$status") }}: {{ $count }}
                                             </small><br>
                                         @endforeach
@@ -674,12 +644,12 @@
                             <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                                 <div class="me-2">
                                     <h6 class="mb-0">
-                                        <i class="fas fa-lightbulb"></i> 
+                                        <i class="fas fa-lightbulb"></i>
                                         {{ trans("dashboard.$stage") }}
                                     </h6>
                                     @foreach ($data as $status => $count)
                                     <small class="text-muted">
-                                        <i class="fas fa-tasks"></i> 
+                                        <i class="fas fa-tasks"></i>
                                         {{ trans("dashboard.$status") }}: {{ $count }}
                                     </small><br>
                                     @endforeach
@@ -692,7 +662,7 @@
             </div>
         </div>
         <!--/ Patent Stages Statistics -->
-        
+
         <!-- Patent Startup  Stages Statistics -->
         <div class="col-md-6 col-lg-6 col-xl-6 order-4 mb-4">
             <div class="card h-100">
@@ -708,7 +678,7 @@
                             <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                                 <div class="me-2">
                                     <h6 class="mb-0">
-                                        <i class="fas fa-lightbulb"></i><i class="fas fa-rocket"></i> 
+                                        <i class="fas fa-lightbulb"></i><i class="fas fa-rocket"></i>
                                         {{ trans("dashboard.$stage") }}
                                     </h6>
                                     @foreach ($data as $status => $count)
@@ -726,7 +696,7 @@
             </div>
         </div>
         <!--/ Patent Startup  Stages Statistics -->
-    </div>   
+    </div>
 @endsection
 
 @section('js')
@@ -1036,6 +1006,6 @@
                 }
             });
         });
-    
+
     </script>
 @endsection

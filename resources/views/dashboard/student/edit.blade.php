@@ -15,7 +15,7 @@
     <div class="card">
         <div class="card-body">
             <h5 class="card-title">{{ trans('student.edit') }}</h5>
-            <form method="post" action="{{ route('dashboard.students.update' , 'test') }}">
+            <form method="post" action="{{ route('students.update' , 'test') }}">
                 @method('PUT')
                 @csrf
                 <input type="hidden" name="id" value="{{ $student->id }}">

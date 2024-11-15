@@ -8,5 +8,10 @@ return [
     'forgot_password' =>  'نسيت كلمة السر ؟',
     'loginSubmit' => 'دخول',
     'have_not_account' => 'اذا لا يوجد لك حساب ؟',
-    'create_account' => 'إنشاء حساب'
+    'create_account' => 'إنشاء حساب',
+    'login.as.student' => 'الدخول كطالب',
+    'number' => 'الرقم',
+    'code' => 'الرمز',
+    'back' => 'رجوع'
+
 ];

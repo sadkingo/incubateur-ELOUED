@@ -23,7 +23,8 @@ class RouteServiceProvider extends ServiceProvider
     public const ADMIN = 'dashboard';
     public const LOGIN = '/login';
     public const TEACHER = '/teacher';
-    public const STUDENT = '/student';
+    public const STUDENT = '/projects';
+    public const MANAGER = '/manager';
     // public const STUDENT = '/account';
 
     /**

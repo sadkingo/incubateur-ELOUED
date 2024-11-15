@@ -11,13 +11,13 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class Admin extends Authenticatable
 {
     use HasFactory, SoftDeletes;
-    
+
     protected $fillable = [
         'name',
         'email',
         'phone',
         'password',
-        'role',
+        'role', // 'admin','incubateur','cde','cati','superadmin'
     ];
     /**
      * The attributes that should be hidden for serialization.
@@ -38,7 +38,7 @@ class Admin extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
     public function setPasswordAttribute($value): void
-    {
+{
         $this->attributes['password'] = Hash::make($value);
     }
 }

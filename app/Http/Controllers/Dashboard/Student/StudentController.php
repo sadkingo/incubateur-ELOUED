@@ -13,6 +13,8 @@ use App\Models\Student;
 use App\Models\StudentGroup;
 use App\Models\SupervisingTeacher;
 
+use function PHPUnit\Framework\isEmpty;
+
 class StudentController extends Controller
 {
     private $students;
@@ -32,8 +34,8 @@ class StudentController extends Controller
      */
     public function index(Request $request)
     {
-        
-        $students = $this->students->paginate($request->perPage ? $request->perPage : PAGINATE_COUNT, $request->year,$request->start_date,$request->end_date, $request->search, $request->registration_number,$request->batch, $request->group,$request->rank,$request->passport);
+
+        $students = $this->students->paginate($request->perPage ? $request->perPage : 100, $request->year,$request->start_date,$request->end_date, $request->search, $request->registration_number,$request->batch, $request->group,$request->rank,$request->passport);
         return view('dashboard.student.index', compact('students'));
     }
 
@@ -55,13 +57,9 @@ class StudentController extends Controller
      */
     public function store(StoreStudentRequest $request)
     {
-
-        $data = $request->all() + [
-            'created_by' => auth('admin')->id(),
-        ];
-        $this->students->create($data);
+        $this->students->create($request->all());
         toastr()->success(trans('message.success.create'));
-        return redirect()->route('dashboard.students.index');
+        return redirect()->route('students.index');
     }
 
     /**
@@ -81,8 +79,7 @@ class StudentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
+    public function edit($id){
         $student = $this->students->find($id);
         return view('dashboard.student.edit', compact('student'));
     }
@@ -94,14 +91,10 @@ class StudentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateStudentRequest $request)
-    {
-        $data = $request->all() + [
-            'created_by' => auth('admin')->id(),
-        ];
-        $this->students->update($request->id, $data);
+    public function update(UpdateStudentRequest $request) {
+        $this->students->update($request->id, $request->all());
         toastr()->success(trans('message.success.update'));
-        return redirect()->route('dashboard.students.index');
+        return redirect()->route('students.index');
     }
 
     /**
@@ -110,11 +103,10 @@ class StudentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
-    {
+    public function destroy(Request $request) {
         $this->students->delete($request->id);
         toastr()->success(trans('message.success.delete'));
-        return redirect()->route('dashboard.students.index');
+        return redirect()->route('students.index');
     }
 
     // StudentController.php
@@ -126,19 +118,22 @@ class StudentController extends Controller
             3 => ['key' => 'startup_dz_registration', 'percentage' => 75],
             4 => ['key' => 'discussion', 'percentage' => 100],
         ];
-    
+
         $stage = $stages[$projectStage] ?? ['key' => 'unknown', 'percentage' => 0];
         $stage['name'] = trans('student.' . $stage['key']);
-    
+
         return $stage;
     }
 
     public function showProfile($id){
-        $student = $this->students->find($id);
+        $student = Student::find($id);
         $project = Project::whereHas('supervisingTeacherProjects', function($query) use ($student) {
             $query->where('id_student', $student->id);
         })->first();
-        $studentGroups = StudentGroup::where('id_student', $student->id)->get();
+        $studentGroups = null;
+        if($project) {
+          $studentGroups = StudentGroup::where('project_id', $project->id)->get();
+        }
         $supervisors = SupervisingTeacher::whereHas('supervisingTeacherProjects', function($query) use ($student) {
             $query->where('id_student', $student->id);
         })->get();
@@ -149,10 +144,10 @@ class StudentController extends Controller
     public function editStage($id)
     {
         $student = $this->students->find($id);
-        
+
         return view('dashboard.student.edit_stage', compact('student'));
     }
-    
+
     public function updateStage(Request $request, $id){
         $student = $this->students->find($id);
         if ($student) {
@@ -165,27 +160,16 @@ class StudentController extends Controller
         return response()->json(['success' => false, 'message' => 'Student not found']);
     }
 
-    public function certificates($student_id){
+    // public function certificates($project_id){
 
-        $student = $this->students->find($student_id);
+    //     $project = Project::find($project_id);
 
-        if (!$student) {
-            return redirect()->back()->withErrors(['message' => 'Student not found.']);
-        }
+    //     if (!$project) {
+    //         return redirect()->back()->withErrors(['message' => 'Project not found.']);
+    //     }
 
-        $project = Project::where('id_student', $student->id)->first();
-
-        if (!$project) {
-            return redirect()->back()->withErrors(['message' => 'Project not found.']);
-        }
-
-        $teamMembers = StudentGroup::where('id_student', $student->id)
-                                ->orWhere('id_student', $project->id_student) 
-                                ->get();
-
-        $hasOtherMembers = $teamMembers->count() > 1;
-
-        return view('student-dashboard.certificates', compact('student', 'project', 'teamMembers', 'hasOtherMembers'));
-    }
+    //     return view('student-dashboard.certificates')
+    //     ->with('project',$project);
+    // }
 
 }

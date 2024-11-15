@@ -44,9 +44,9 @@ class StatisticsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request){
-       
+
         $today = now();
-        $selectedYear = $request->input('year', $today->year);      
+        $selectedYear = $request->input('year', $today->year);
         $years = [];
         $admins = $this->admins->all();
         $teachers = $this->teachers->all();
@@ -57,33 +57,33 @@ class StatisticsController extends Controller
         $studentFirst = Evaluation::whereRank(1)->count();
         $studentSecond = Evaluation::whereRank(2)->count();
         $studentThird = Evaluation::whereRank(3)->count();
-        $studentGroups = StudentGroup::all()->count();
-    
+        $studentGroups = StudentGroup::groupBy('project_id')->count();
+
         $projects = Project::all()->count();
         $acceptedProject = Project::where('status', 2)->count();
         $RejectedProjects = Project::where('status', 0)->count();
         $projectsUnderStudy = Project::where('status', 1)->count();
         $compledProject = Project::where('status', 3)->count();
         $newProjects = Project::where('new', 1)->count();
-    
+
         $allStudents = $studentGroups + $students->count();
-    
+
         $projectsByYear = Project::select(DB::raw('YEAR(academic_year) as year'), DB::raw('COUNT(*) as count'))
             ->groupBy('year')
             ->orderBy('year', 'desc')
             ->pluck('count', 'year');
         $projectsByYearData = $projectsByYear->toArray();
-    
+
         $projectsBySelectedYear = Project::whereYear('academic_year', $selectedYear)
             ->select(DB::raw('COUNT(*) as count'))
             ->pluck('count')
             ->first();
-        
+
         $miniProjectCount          = Project::where('project_classification', 1)->count();
         $startupProjectCount       = Project::where('project_classification', 2)->count();
         $patentProjectCount        = Project::where('project_classification', 3)->count();
         $patentStartupProjectCount = Project::where('project_classification', 4)->count();
-        
+
         $mimiLbaleStudentsCount = Project::where('project_classification', 1)
                   ->where('project_tracking', 5)
                   ->where('status_project_tracking', 2)
@@ -93,7 +93,7 @@ class StatisticsController extends Controller
                   ->where('project_tracking', 5)
                   ->where('status_project_tracking', 2)
                   ->count();
-    
+
         $patentLabelStudentsCount = Project::where('project_classification', 3)
                   ->where('project_tracking', 7)
                   ->where('status_project_tracking', 2)
@@ -102,8 +102,8 @@ class StatisticsController extends Controller
         $patentStartupLabelStudentCount = Project::where('project_classification', 4)
                   ->where('project_tracking', 10)
                   ->where('status_project_tracking', 2)
-                  ->count();  
-                  
+                  ->count();
+
         $uniqueYears = array_unique(array_map(function ($date) {
             return $date->year;
         }, $years));
@@ -120,7 +120,7 @@ class StatisticsController extends Controller
                 ]
             ]
         ];
-    
+
         $chartGenderData = [
             'labels' => ['Male Students', 'Female Students'],
             'datasets' => [
@@ -136,9 +136,9 @@ class StatisticsController extends Controller
                 ]
             ]
         ];
-    
+
         $projectsByYearData = $projectsByYear->toArray();
-    
+
         $chartProjectsByYearData = [
             'labels' => array_keys($projectsByYearData),
             'datasets' => [
@@ -151,7 +151,7 @@ class StatisticsController extends Controller
                 ]
             ]
         ];
-    
+
         $chartProjectClassificationData = [
             'labels' => [
                 trans('dashboard.Mini Project'),
@@ -206,57 +206,59 @@ class StatisticsController extends Controller
             ->where('status_project_tracking', 3)
             ->count();
 
-        $miniProjectStatsByFaculty = Student::join('projects', 'students.id', '=', 'projects.id_student')
-            ->join('faculties', 'students.id_faculty', '=', 'faculties.id') 
-            ->where('projects.project_classification', 1)
-            ->where('projects.bmc_status', 2)
-            ->whereNotNull('projects.bmc')
-            ->whereNotNull('projects.administrative_file')
-            ->where('projects.project_tracking', 5)
-            ->where('projects.status_project_tracking', 2)
-            ->where('projects.status', 2)
-            ->select('students.id_faculty', 'faculties.name_ar', DB::raw('COUNT(*) as count'))
-            ->groupBy('students.id_faculty', 'faculties.name_ar')
-            ->pluck('count', 'faculties.name_ar');
-   
-        $startupProjectStatsByFaculty = Student::join('projects', 'students.id', '=', 'projects.id_student')
-            ->join('faculties', 'students.id_faculty', '=', 'faculties.id') 
-            ->where('projects.project_classification', 2)
-            ->where('projects.bmc_status', 2)
-            ->whereNotNull('projects.bmc')
-            ->whereNotNull('projects.administrative_file')
-            ->where('projects.project_tracking', 5)
-            ->where('projects.status_project_tracking', 2)
-            ->where('projects.status', 2)
-            ->select('students.id_faculty', 'faculties.name_ar', DB::raw('COUNT(*) as count'))
-            ->groupBy('students.id_faculty', 'faculties.name_ar')
-            ->pluck('count', 'faculties.name_ar');
-    
-        $patentProjectStatsByFaculty = Student::join('projects', 'students.id', '=', 'projects.id_student')
-            ->join('faculties', 'students.id_faculty', '=', 'faculties.id') 
-            ->where('projects.project_classification', 3)
-            ->where('projects.bmc_status', 0)
-            ->whereNull('projects.bmc')
-            ->whereNull('projects.administrative_file')
-            ->where('projects.project_tracking', 7)
-            ->where('projects.status_project_tracking', 2)
-            ->where('projects.status', 2)
-            ->select('students.id_faculty', 'faculties.name_ar', DB::raw('COUNT(*) as count'))
-            ->groupBy('students.id_faculty', 'faculties.name_ar')
-            ->pluck('count', 'faculties.name_ar');
+        $miniProjectStatsByFaculty = Student::join('student_groups', 'students.id', '=', 'student_groups.student_id')
+        ->join('projects', 'student_groups.project_id', '=', 'projects.id')
+        ->join('faculties', 'students.id_faculty', '=', 'faculties.id')
+        ->where('projects.project_classification', 1)
+        ->where('projects.bmc_status', 2)
+        ->whereNotNull('projects.bmc')
+        ->where('projects.project_tracking', 5)
+        ->where('projects.status_project_tracking', 2)
+        ->where('projects.status', 2)
+        ->select('students.id_faculty', 'faculties.name_ar', DB::raw('COUNT(DISTINCT projects.id) as count'))
+        ->groupBy('students.id_faculty', 'faculties.name_ar')
+        ->pluck('count', 'faculties.name_ar');
 
-        $patentStartupProjectStatsByFaculty = Student::join('projects', 'students.id', '=', 'projects.id_student')
-            ->join('faculties', 'students.id_faculty', '=', 'faculties.id')
-            ->where('projects.project_classification', 4)
-            ->where('projects.bmc_status', 2)
-            ->whereNotNull('projects.bmc')
-            ->where('projects.project_tracking', 10)
-            ->where('projects.status_project_tracking', 2)
-            ->where('projects.status', 2)
-            ->select('students.id_faculty', 'faculties.name_ar', DB::raw('COUNT(*) as count'))
-            ->groupBy('students.id_faculty', 'faculties.name_ar')
-            ->pluck('count', 'faculties.name_ar');
-            
+        $startupProjectStatsByFaculty = Student::join('student_groups', 'students.id', '=', 'student_groups.student_id')
+        ->join('projects', 'student_groups.project_id', '=', 'projects.id')
+        ->join('faculties', 'students.id_faculty', '=', 'faculties.id')
+        ->where('projects.project_classification', 2)
+        ->where('projects.bmc_status', 2)
+        ->whereNotNull('projects.bmc')
+        ->where('projects.project_tracking', 5)
+        ->where('projects.status_project_tracking', 2)
+        ->where('projects.status', 2)
+        ->select('students.id_faculty', 'faculties.name_ar', DB::raw('COUNT(DISTINCT projects.id) as count'))
+        ->groupBy('students.id_faculty', 'faculties.name_ar')
+        ->pluck('count', 'faculties.name_ar');
+
+
+        $patentProjectStatsByFaculty = Student::join('student_groups', 'students.id', '=', 'student_groups.student_id')
+        ->join('projects', 'student_groups.project_id', '=', 'projects.id')
+        ->join('faculties', 'students.id_faculty', '=', 'faculties.id')
+        ->where('projects.project_classification', 3)
+        ->where('projects.bmc_status', 0)
+        ->whereNotNull('projects.bmc')
+        ->where('projects.project_tracking', 7)
+        ->where('projects.status_project_tracking', 2)
+        ->where('projects.status', 2)
+        ->select('students.id_faculty', 'faculties.name_ar', DB::raw('COUNT(DISTINCT projects.id) as count'))
+        ->groupBy('students.id_faculty', 'faculties.name_ar')
+        ->pluck('count', 'faculties.name_ar');
+
+        $patentStartupProjectStatsByFaculty = Student::join('student_groups', 'students.id', '=', 'student_groups.student_id')
+        ->join('projects', 'student_groups.project_id', '=', 'projects.id')
+        ->join('faculties', 'students.id_faculty', '=', 'faculties.id')
+        ->where('projects.project_classification', 4)
+        ->where('projects.bmc_status', 2)
+        ->whereNotNull('projects.bmc')
+        ->where('projects.project_tracking', 10)
+        ->where('projects.status_project_tracking', 2)
+        ->where('projects.status', 2)
+        ->select('students.id_faculty', 'faculties.name_ar', DB::raw('COUNT(DISTINCT projects.id) as count'))
+        ->groupBy('students.id_faculty', 'faculties.name_ar')
+        ->pluck('count', 'faculties.name_ar');
+
         $miniProjectStages = [
                 'training' => [
                     'in_training' => Project::where('project_classification', 1)
@@ -335,7 +337,7 @@ class StatisticsController extends Controller
                         ->count(),
                 ],
         ];
-    
+
         $startupProjectStages = [
                 'training' => [
                     'in_training' => Project::where('project_classification', 2)
@@ -414,7 +416,7 @@ class StatisticsController extends Controller
                     ->count(),
             ],
         ];
-    
+
         $patentStages = [
             'initial_model_preparation' => [
                 'in_progress' => Project::where('project_classification', 3)
@@ -602,16 +604,16 @@ class StatisticsController extends Controller
                 'projects',
                 'chartData',
                 'chartGenderData',
-                'chartProjectsByYearData', 
+                'chartProjectsByYearData',
                 'newProjects',
                 'RejectedProjects',
                 'projectsUnderStudy',
                 'compledProject',
-                'projectsBySelectedYear', 
+                'projectsBySelectedYear',
                 'selectedYear',
                 'chartProjectClassificationData',
-                'mimiLbaleStudentsCount',  
-                'startupLabelStudentsCount',       
+                'mimiLbaleStudentsCount',
+                'startupLabelStudentsCount',
                 'patentLabelStudentsCount',
                 'patentStartupLabelStudentCount',
                 'miniProjectsInTraining',
@@ -623,7 +625,7 @@ class StatisticsController extends Controller
                 'patentStartupStages',
                 'miniProjectStatsByFaculty',
                 'startupProjectStatsByFaculty',
-                'patentProjectStatsByFaculty', 
+                'patentProjectStatsByFaculty',
                 'patentStartupProjectStatsByFaculty',
             )
         );
@@ -635,17 +637,17 @@ class StatisticsController extends Controller
         $admins = $this->admins->all();
         $teachers = $this->teachers->all();
         $students = $this->students->all();
-        $studentGroups = StudentGroup::all()->count();
+        $studentGroups = StudentGroup::groupBy('project_id')->count();
         $projects = Project::all()->count();
         $allStudents = $studentGroups + $students->count();
-        
+
         $acceptedProject = Project::where('status', 2)->count();
         $RejectedProjects = Project::where('status', 0)->count();
         $projectsUnderStudy = Project::where('status', 1)->count();
         $compledProject = Project::where('status', 3)->count();
         $newProjects = Project::where('new', 1)->count();
 
-        return view('dashboard.statistics.print_statistic_membres', 
+        return view('dashboard.statistics.print_statistic_membres',
                         compact(
                                 'admins',
                                 'teachers',
@@ -663,8 +665,8 @@ class StatisticsController extends Controller
 
     public function printProjectStatistic(Request $request){
         $today = now();
-        $selectedYear = $request->input('year', $today->year);    
-        $projects = Project::all()->count();        
+        $selectedYear = $request->input('year', $today->year);
+        $projects = Project::all()->count();
         $acceptedProject = Project::where('status', 2)->count();
         $RejectedProjects = Project::where('status', 0)->count();
         $projectsUnderStudy = Project::where('status', 1)->count();
@@ -674,7 +676,7 @@ class StatisticsController extends Controller
             ->select(DB::raw('COUNT(*) as count'))
             ->pluck('count')
             ->first();
-        return view('dashboard.statistics.print_statistice_project', 
+        return view('dashboard.statistics.print_statistice_project',
                         compact(
                             'projects',
                             'acceptedProject',
@@ -689,7 +691,7 @@ class StatisticsController extends Controller
 
     public function printMiniProject(){
         $miniProjectStatsByFaculty = Student::join('projects', 'students.id', '=', 'projects.id_student')
-        ->join('faculties', 'students.id_faculty', '=', 'faculties.id') 
+        ->join('faculties', 'students.id_faculty', '=', 'faculties.id')
         ->where('projects.project_classification', 1)
         ->where('projects.bmc_status', 2)
         ->whereNotNull('projects.bmc')
@@ -708,7 +710,7 @@ class StatisticsController extends Controller
     public function printStartupProject(){
 
         $startupProjectStatsByFaculty = Student::join('projects', 'students.id', '=', 'projects.id_student')
-            ->join('faculties', 'students.id_faculty', '=', 'faculties.id') 
+            ->join('faculties', 'students.id_faculty', '=', 'faculties.id')
             ->where('projects.project_classification', 2)
             ->where('projects.bmc_status', 2)
             ->whereNotNull('projects.bmc')
@@ -727,7 +729,7 @@ class StatisticsController extends Controller
     public function printPatentProject(){
 
         $patentProjectStatsByFaculty = Student::join('projects', 'students.id', '=', 'projects.id_student')
-            ->join('faculties', 'students.id_faculty', '=', 'faculties.id') 
+            ->join('faculties', 'students.id_faculty', '=', 'faculties.id')
             ->where('projects.project_classification', 3)
             ->where('projects.bmc_status', 0)
             ->whereNull('projects.bmc')
@@ -762,8 +764,8 @@ class StatisticsController extends Controller
         $patentStartupLabelStudentCount = Project::where('project_classification', 4)
             ->where('project_tracking', 10)
             ->where('status_project_tracking', 2)
-            ->count();  
-        
+            ->count();
+
         return view('dashboard.statistics.print_statistic_project_classification',
                         compact(
                             'mimiLbaleStudentsCount',
@@ -1110,7 +1112,7 @@ class StatisticsController extends Controller
                     ->where('status_project_tracking', 2)
                     ->count(),
             ],
-        ];   
+        ];
 
         return view('dashboard.statistics.print_statistic_patent_startup_project_stage', compact('patentStartupStages'));
     }

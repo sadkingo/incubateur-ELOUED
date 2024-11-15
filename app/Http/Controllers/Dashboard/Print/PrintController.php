@@ -47,7 +47,7 @@ class PrintController extends Controller
         // $month = 3;
         $group = $request->group == null ? null : $request->group;
         // dd($group);
-        $students = $this->students->paginate($request->perPage ? $request->perPage : PAGINATE_COUNT, $year,$request->start_date,$request->end_date, $request->search, $request->registration_number,$request->batch, $request->group,$request->rank,$request->passport);
+        $students = $this->students->paginate($request->perPage ? $request->perPage : 100, $year,$request->start_date,$request->end_date, $request->search, $request->registration_number,$request->batch, $request->group,$request->rank,$request->passport);
         return view('dashboard.printer.attendence', compact('students', 'group', 'year', 'month'));
 
         // dd($students);
@@ -73,7 +73,7 @@ class PrintController extends Controller
         $group = $request->group;
         $batch = $request->batch;
 
-        $students = $this->students->paginate($request->perPage ? $request->perPage : PAGINATE_COUNT, $request->year,$request->start_date,$request->end_date, $request->search, $request->registration_number,$request->batch, $request->group,$request->rank,$request->passport);
+        $students = $this->students->paginate($request->perPage ? $request->perPage : 100, $request->year,$request->start_date,$request->end_date, $request->search, $request->registration_number,$request->batch, $request->group,$request->rank,$request->passport);
 
         // $students = $this->students->listPrintStudent($request->search, $request->registration_number, $batch, $group);
 
@@ -108,15 +108,15 @@ class PrintController extends Controller
     {
         $group = $request->group;
         $batch = $request->batch;
-        $students = $this->students->paginate($request->perPage ? $request->perPage : PAGINATE_COUNT, $request->year,$request->start_date,$request->end_date, $request->search, $request->registration_number,$request->batch, $request->group,$request->rank,$request->passport);
+        $students = $this->students->paginate($request->perPage ? $request->perPage : 100, $request->year,$request->start_date,$request->end_date, $request->search, $request->registration_number,$request->batch, $request->group,$request->rank,$request->passport);
 
         return view('dashboard.printer.reviews-list', compact('students', 'group', 'batch'));
     }
     public function certificate(Request $request){
         $group = $request->group;
         $batch = $request->batch;
-        $students = $this->students->paginate($request->perPage ? $request->perPage : PAGINATE_COUNT, $request->year,$request->start_date,$request->end_date, $request->search, $request->registration_number,$request->batch, $request->group,$request->rank,$request->passport);
-        
+        $students = $this->students->paginate($request->perPage ? $request->perPage : 100, $request->year,$request->start_date,$request->end_date, $request->search, $request->registration_number,$request->batch, $request->group,$request->rank,$request->passport);
+
         return view('dashboard.printer.certificate-list', compact('students', 'group', 'batch'));
     }
 
@@ -129,7 +129,7 @@ class PrintController extends Controller
     }
 
     public function printSupervisors($student_id){
-        
+
         $student = Student::find($student_id);
         if (!$student) {
             return redirect()->back()->with('error', 'Student not found');
@@ -151,25 +151,25 @@ class PrintController extends Controller
         $project = Project::find($project_id);
         $student = Student::where('id', '=', $project->id_student)->first();
         //dd($student);
-        return view('dashboard.printer.certificat', compact('student'));
+        return view('dashboard.printer.certificat', compact('student','project'));
     }
 
     public function generateCertificate($project_id, $student_id = null) {
 
         $project = Project::find($project_id);
-    
+
         if (!$project) {
             return redirect()->back()->with('error', 'Project not found');
         }
-    
+
         $student = $student_id ? Student::find($student_id) : Student::where('id', $project->id_student)->first();
-    
+
         if (!$student) {
             return redirect()->back()->with('error', 'Student not found');
         }
-    
+
         $teamMembers = StudentGroup::where('id_student', $student->id)->get();
-    
+
         $stages = [
             1 => 'Étape de configuration',
             2 => 'Créer BMC',
@@ -177,25 +177,26 @@ class PrintController extends Controller
             4 => 'Étape de discussion',
             5 => 'Projet innovant label',
         ];
-    
+
         $currentStage = $stages[$project->project_tracking] ?? 'Unknown Stage';
-    
+
         return view('student-dashboard.certificate', compact('student', 'project', 'currentStage', 'teamMembers'));
     }
+
     public function generateStudentCertificate($project_id, $student_id = null) {
         $project = Project::find($project_id);
-    
+
         if (!$project) {
             return redirect()->back()->with('error', 'Project not found');
         }
-    
+
         //$student = $student_id ? Student::find($student_id) : Student::where('id', $project->id_student)->first();
         $student = StudentGroup::find($student_id);
         //dd($student);
         if (!$student) {
             return redirect()->back()->with('error', 'Student not found');
         }
-    
+
         $stages = [
             1 => 'Étape de configuration',
             2 => 'Créer BMC',
@@ -203,25 +204,25 @@ class PrintController extends Controller
             4 => 'Étape de discussion',
             5 => 'Projet innovant label',
         ];
-    
+
         $currentStage = $stages[$project->project_tracking] ?? 'Unknown Stage';
-    
+
         return view('student-dashboard.certificate_students', compact('student', 'project', 'currentStage'));
     }
-    
+
 
     public function printCommission($id){
-        $project = Project::with(['student', 'commission'])->find($id);
+        $project = Project::find($id);
         //dd($project);
         if (!$project) {
             abort(404);
         }
-    
-        $allStudents = StudentGroup::where('id_student', $project->student->id)->get();
-    
 
-        return view('dashboard.printer.commission', compact('project', 'allStudents'));
+        $group = StudentGroup::where('project_id', $project->id)->get();
+
+
+        return view('dashboard.printer.commission', compact('project', 'group'));
     }
-    
+
 
 }

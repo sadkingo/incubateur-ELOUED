@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::table('student_groups', function (Blueprint $table) {
             $table->integer('id_departement')->after('id_faculty')->nullable();
-            $table->integer('id_commission')->after('id_departement')->nullable();
+            $table->integer('commission_id')->after('id_departement')->nullable();
         });
     }
 

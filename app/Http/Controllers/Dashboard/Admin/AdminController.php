@@ -26,7 +26,7 @@ class AdminController extends Controller
     public function index(Request $request)
     {
         $admins = $this->admins->paginate($perPage = 10, $request->search);
-        
+
         return view('dashboard.admin.index',compact('admins'));
     }
 
@@ -51,7 +51,7 @@ class AdminController extends Controller
        // dd($request->all());
         $this->admins->create($request->all());
         toastr()->success(trans('message.success.create'));
-        return redirect()->route('dashboard.admins.index');
+        return redirect()->route('admins.index');
     }
 
     /**
@@ -88,7 +88,7 @@ class AdminController extends Controller
     {
         $this->admins->update($request->id,$request->all());
         toastr()->success(trans('message.success.update'));
-        return redirect()->route('dashboard.admins.index');
+        return redirect()->route('admins.index');
     }
 
     /**
@@ -101,6 +101,6 @@ class AdminController extends Controller
     {
         $this->admins->delete($request->id);
         toastr()->success(trans('message.success.delete'));
-        return redirect()->route('dashboard.admins.index');
+        return redirect()->route('admins.index');
     }
 }

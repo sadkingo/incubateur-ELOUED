@@ -47,9 +47,18 @@
             'enter_bmc_file' => 'Enter bmc file',
             'studying_bmc' => 'bmc file is being studied',
             'incorrect' => 'under study',
-            'missing' => 'Please enter the administrative file'
+            'missing' => 'Please enter the administrative file',
+        ],
+        'status' => [
+          'all' => 'All Projects', //
+          'rejected' => 'Rejected', // 0
+          'under_studying' => "Under Study", // 1
+          'accepted' => 'Accepted', // 2
+          'completed' => 'Completed', //  3
         ],
         'administrative_tracking' => 'Administrative tracking',
+        'archive' => 'archive',
+        'restore' => 'restore',
         'characters_remaining' => 'remaining characters',
         'edit_project' => 'update project',
         'delete' => 'delete project',

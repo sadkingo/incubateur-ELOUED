@@ -16,6 +16,11 @@ class AdministrativeFiles extends Model
         'photo',
         'status',
         'student_id',
-        'student_group_id',
+        'project_id',
     ];
+
+
+    public function student() {
+        return $this->belongsTo(Student::class);
+    }
 }

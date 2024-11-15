@@ -15,7 +15,7 @@
     <div class="card">
         <div class="card-body">
             <h5 class="card-title">{{ trans('student.create') }}</h5>
-            <form method="post" action="{{ route('dashboard.students.store') }}">
+            <form method="post" action="{{ route('students.store') }}">
                 @csrf
                 <div class="row ">
                     <div class="col-sm-12 col-md-3 mb-2 ">

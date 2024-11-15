@@ -5,36 +5,51 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
-class Project extends Model
+class Project extends Authenticatable
 {
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
+        'commission_id' ,
         'name',
         'description',
         'video',
         'bmc',
-        'id_commission' ,
         'start_date',
         'end_date',
-        'academic_year'
+        'academic_year',
+        'code',
+        'password'
     ];
 
-    public function student()
-    {
-        return $this->belongsTo(Student::class, 'id_student');
+
+    public function studentGroups() {
+      return $this->hasMany(StudentGroup::class);
     }
 
-    
-
-    public function commission()
-    {
-        return $this->belongsTo(Commission::class, 'id_commission');
+    public function supervisingGroups() {
+      return $this->hasMany(SupervisingTeacherGroups::class);
     }
 
-    public function supervisingTeachers()
-    {
+    public function students() {
+        // return $this->hasManyThrough(Student::class, StudentGroup::class, 'project_id', 'id', 'id', 'student_id');
+        return $this->belongsToMany(Student::class, StudentGroup::class, 'project_id', 'student_id') ; // Include additional pivot table columns if needed
+
+    }
+
+    public function faculty() {
+      return $this->belongsTo(Faculty::class, 'faculty_id');
+    }
+
+    public function commission() {
+        return $this->belongsTo(Commission::class, 'commission_id');
+    }
+
+    public function supervisingTeachers() {
         return $this->hasManyThrough(
             SupervisingTeacher::class,
             SupervisingTeacherProject::class,
@@ -49,6 +64,26 @@ class Project extends Model
         return $this->hasMany(SupervisingTeacherProject::class, 'id_project', 'id');
     }
 
-    
- 
+    public function getAuthIdentifierName()
+    {
+        return 'code'; // This should match the field you are using for authentication
+    }
+
+    public function getAuthIdentifier()
+    {
+        return $this->getAttribute($this->getAuthIdentifierName());
+    }
+
+    public function setPasswordAttribute($password) {
+      $this->attributes['password'] = Hash::make($password);
+    }
+    // Optionally, you can add methods for password verification if needed
+    public function getAuthPassword() {
+        return $this->password; // Ensure you have this method for password verification
+    }
+
+    public function statusAdministrative() {
+      return $this->hasMany(AdministrativeFiles::class);
+    }
+
 }

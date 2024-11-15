@@ -4,10 +4,10 @@
         'title_project' => 'تقرير المشاريع',
         'dashboard' => 'لوحــة التحكـــــم',
         'projects' => 'المشاريع',
-        'project_title_type_add' => 'اضافة نوع المشروع',   
-        'project_title_type_edit' => 'تعديل على نوع المشروع',   
-        'project_title_classification_add' => 'اضافة تصنيف المشروع',   
-        'project_title_classification_edit' => 'تعديل على تصنيف المشروع',   
+        'project_title_type_add' => 'اضافة نوع المشروع',
+        'project_title_type_edit' => 'تعديل على نوع المشروع',
+        'project_title_classification_add' => 'اضافة تصنيف المشروع',
+        'project_title_classification_edit' => 'تعديل على تصنيف المشروع',
         'project_title_tracking_add' => 'مرحلة المشروع',
         'title-dashboard' => 'الصفحة الرئيسية',
         'project' => 'مشروع',
@@ -38,6 +38,8 @@
         'bmc_tracking'    => 'تتبع حالة bmc',
         'status_administrative' => 'حالة الملف الاداري ',
         'administrative_tracking' => 'تتبع الملف الاداري',
+        'archive' => 'أرشفة',
+        'restore' => 'إعادة',
         'status_project' =>[
             'status' => 'حالة المشروع',
             'bcm_status' => 'حالة bmc',
@@ -53,7 +55,14 @@
             'missing'          => 'يرجى ادخال الملف الاداري',
             'rejected_file' => 'تم رفض الملف أعد إدخاله ',
         ],
-        
+        'status' => [
+          'all' => 'جميع المشاريع', //
+          'rejected' => 'المرفوضة', // 0
+          'under_studying' => "قيد الدراسة", // 1
+          'accepted' => 'المقبولة', // 2
+          'completed' => 'المكتملة', //  3
+        ],
+
         'characters_remaining' => 'الحروف المتبقية',
         'edit_project' => 'تحديث المشروع',
         'delete'  => 'حذف المشروع',
@@ -88,7 +97,7 @@
             'download_video' => 'تحميل فيديو ',
             "type_project" => "نوع المشروع",
             "cassification_project" => "تصنيف المشروع",
-            
+
         ],
         'project_classification' => ' تصنيف المشروع',
         'team_members' => 'الطلبة الأعضاء',

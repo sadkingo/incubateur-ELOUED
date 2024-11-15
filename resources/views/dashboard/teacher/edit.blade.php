@@ -15,7 +15,7 @@
     <div class="card">
         <div class="card-body">
             <h5 class="card-title">{{ trans('teacher.edit') }}</h5>
-            <form method="post" action="{{ route('dashboard.teachers.update', 'test') }}">
+            <form method="post" action="{{ route('teacher.update',$teacher->id) }}">
                 @method('PUT')
                 @csrf
                 <input type="hidden" name="id" value="{{ $teacher->id }}">
@@ -68,7 +68,7 @@
                     <div class="col-sm-12 col-md-3 mb-2">
                         <label for="gender" class="form-label">{{ trans('app.label.gender') }}</label>
                         <select class="form-select @error('gender') is-invalid @enderror"
-                            name="gender"value="{{ $teacher->gender }}">
+                            name="gender" value="{{ $teacher->gender }}">
                             <option value="1" {{ $teacher->gender == 1 ? 'selected' : '' }}>{{ trans('app.male') }}</option>
                             <option value="2" {{ $teacher->gender == 2 ? 'selected' : '' }}>{{ trans('app.female') }}</option>
                         </select>
@@ -80,18 +80,17 @@
                     </div>
                     <div class="col-sm-12 col-md-3 mb-2">
                         <label for="birthday" class="form-label">{{ trans('app.label.birthday') }}</label>
-                        <input type="date" class="form-control @error('birthday') is-invalid @enderror" name="birthday"
-                            value="{{ $teacher->birthday }}">
+                        <input type="date" class="form-control @error('birthday') is-invalid @enderror" name="birthday" value="{{ $teacher->birthday }}">
                         @error('birthday')
                             <small class="text-danger d-block">
                                 {{ $message }}
                             </small>
                         @enderror
                     </div>
-                   
+
                     <div class="col-sm-12 col-md-6 mb-2">
                         <label for="address" class="form-label">{{ trans('app.label.address') }}</label>
-                        <input type="text" class="form-control @error('address') is-invalid @enderror" name="email"
+                        <input type="text" class="form-control @error('address') is-invalid @enderror" name="address"
                             value="{{ $teacher->address }}" placeholder="{{ trans('app.placeholder.address') }}">
                         @error('address')
                             <small class="text-danger d-block">
@@ -100,8 +99,32 @@
                         @enderror
                     </div>
                     <div class="col-sm-12 col-md-6 mb-2">
+                      <label for="grade" class="form-label">{{ trans('app.label.grade') }}</label>
+                      <input type="text" class="form-control @error('grade') is-invalid @enderror" name="grade"
+                          value="{{ $teacher->grade }}" placeholder="{{ trans('app.placeholder.grade') }}" required>
+                      @error('grade')
+                          <small class="text-danger d-block">
+                              {{ $message }}
+                          </small>
+                      @enderror
+                  </div>
+                  <div class="col-sm-12 col-md-6 mb-2">
+                      <label for="commission_id" class="form-label">{{ trans('app.label.commission') }}</label>
+                      <select class="form-control" name="commission_id" required>
+                          <option >{{ trans('app.placeholder.commissions')}}</option>
+                          @foreach ($commissions as $commission)
+                              <option value="{{ $commission->id}}" {{ $commission->id == $teacher->commission_id ? 'selected' : '' }}>{{$commission->name_ar}}</option>
+                          @endforeach
+                      </select>
+                      @error('commission_id')
+                          <small class="text-danger d-block">
+                              {{ $message }}
+                          </small>
+                      @enderror
+                  </div>
+                    <div class="col-sm-12 col-md-6 mb-2">
                         <label for="email" class="form-label">{{ trans('app.label.email') }}</label>
-                        <input type="text" class="form-control @error('email') is-invalid @enderror" name="email"
+                        <input type="email" class="form-control @error('email') is-invalid @enderror" name="email"
                             value="{{ $teacher->email }}" placeholder="{{ trans('app.placeholder.email') }}">
                         @error('email')
                             <small class="text-danger d-block">
@@ -111,7 +134,7 @@
                     </div>
                     <div class="col-sm-12 col-md-6 mb-2">
                         <label for="phone" class="form-label">{{ trans('app.label.phone') }}</label>
-                        <input type="text" class="form-control @error('phone') is-invalid @enderror" name="phone"
+                        <input type="phone" class="form-control @error('phone') is-invalid @enderror" name="phone"
                             value="{{ $teacher->phone }}" placeholder="{{ trans('app.placeholder.phone') }}">
                         @error('phone')
                             <small class="text-danger d-block">

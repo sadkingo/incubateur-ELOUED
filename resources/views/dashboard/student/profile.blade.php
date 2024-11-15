@@ -93,15 +93,10 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex flex-column align-items-center text-center">
-                                @if($student->gender == 1)
-                                {{-- <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin"
-                                    class="rounded-circle" width="150"> --}}
-                                    <img src="{{asset('assets/img/avatars/man.jpeg')}}" alt="Admin"
-                                        class="rounded-circle" width="150">
-                                @else
-                                    <img src="{{asset('assets/img/avatars/women.jpeg')}}" alt="Admin"
-                                        class="rounded-circle" width="150">
-                                @endif    
+                                    <div class="avatar-container">
+                                      <img src="{{ $student->photoUrl() && $student->photoPath() ? $student->photoUrl() : asset('assets/img/avatars/default.png') }}" alt="" class="rounded-circle avatar-image" width="150" height="150">
+                                      <span class="edit-icon mdi mdi-pencil text-secondary" data-bs-toggle="modal" data-bs-target="#uploadModal"></span>
+                                    </div>
                                 <div class="mt-3">
                                     @php
                                         $locale = app()->getLocale();
@@ -144,7 +139,7 @@
                                         $locale = app()->getLocale();
                                         $name =
                                             $locale === 'ar'
-                                                ? $faculty->name_ar 
+                                                ? $faculty->name_ar
                                                 : $faculty->name_fr ;
                                     @endphp
                                     {{ $name }}
@@ -215,7 +210,7 @@
                                     <h6 class="d-flex align-items-center mb-3">
                                         <i class="material-icons text-info mr-2">{{ trans('student.info_student') }}</i>
                                     </h6>
-                                    @if ($studentGroups->count() > 0)
+                                    @if ($studentGroups && $studentGroups->count() > 0)
                                         @foreach ($studentGroups as $group)
                                             @php
                                               $locale = app()->getLocale();
@@ -276,7 +271,7 @@
                                         <table class="table">
                                             <thead>
                                                 <tr>
-                                                    <th>{{ trans('student.nameSupervisor') }}</th>          
+                                                    <th>{{ trans('student.nameSupervisor') }}</th>
                                                     <th>{{ trans('auth/student.department') }}</th>
                                                     <th>{{ trans('auth/student.specialty') }}</th>
                                                 </tr>
@@ -290,19 +285,19 @@
                                                             $name =
                                                             $locale === 'ar'
                                                               ? $supervisor->firstname_ar . ' ' . $supervisor->lastname_ar
-                                                    
+
                                                               : $supervisor->firstname_fr . ' ' . $supervisor->lastname_fr;
                                                           @endphp
-                                                          {{ $name }} 
+                                                          {{ $name }}
                                                         </td>
                                                         <td>{{ $supervisor->departement }}</td>
                                                         <td>{{ $supervisor->speciality }}</td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>
-                                    </table>    
-                                    </div>   
-                                  
+                                    </table>
+                                    </div>
+
                                   @else
                                       <small>{{ trans('student.no_supervisor') }}</small>
                                   @endif
@@ -320,7 +315,76 @@
             </div>
         </div>
     </div>
+
+
+
+
+
+
+
+
+
+
+    <div class="modal" id="uploadModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+          <form class="modal-content" id="contentForm" method="POST" action="{{ route('student.upload.photo') }}">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel1">Modal title</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                  @csrf
+                  <input type="hidden" name="student_id" value="{{ $student->id }}">
+                  <input type="file" class="form-control" name="image" id="newPhotoInput" accept="image/*">
+              </div>
+              <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Upload</button>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              </div>
+          </form>
+      </div>
+  </div>
+
+
+<style>
+  .edit-icon {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background-color: #ffffff;
+    border-radius: 100%;
+    padding: 0 5px;
+    cursor: pointer;
+    font-size: 20px;
+    color: #007bff;
+
+  }
+.avatar-container  {
+  position: relative;
+  display: inline-block;
+}
+
+.avatar-container img {
+  border: 1px solid lightslategrey;
+  padding: 5px;
+}
+
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
     <script>
+
         $(document).ready(function() {
             $("#printSupervisors").click(function(e) {
                 // منع الحدث الافتراضي للنقر
@@ -340,7 +404,43 @@
                     printWindow.print();
                 };
             });
+
+
+
+
+
+  $('#contentForm').submit(function(event) {
+    event.preventDefault();
+
+    var formData = new FormData(this);
+
+    $.ajax({
+        url: $(this).attr('action'),
+        type: $(this).attr('method'),
+        data: formData,
+        dataType: "json",
+        contentType: false, // Don't set content type (let browser handle it)
+        processData: false, // Don't process data (let browser handle it)
+        success: function(response) {
+            Swal.fire({
+                icon: response.icon,
+                title: response.state,
+                text: response.message,
+                confirmButtonText: "Ok"
+              });
+        },
+        error: function(xhr, textStatus, errorThrown) {
+            const response = JSON.parse(xhr.responseText);
+            Swal.fire({
+                icon: response.icon,
+                title: response.state,
+                text: response.message,
+                confirmButtonText: "Ok"
+            });
+        }
+    });
+  });
         });
-       
+
     </script>
 @endsection

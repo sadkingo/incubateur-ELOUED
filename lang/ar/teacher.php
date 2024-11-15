@@ -42,15 +42,15 @@ return [
     'placeholder' => [
         'name' => 'البحث بالإسم',
 
-        'firstname_ar' => 'أدخل الإسم بالعربية',
-        'lastname_ar' => 'أدخل اللقب بالعربية',
-
+        
         'firstname_fr' => 'Entrez le prenom en français',
         'lastname_fr'  => 'Entrez le nom de famille en français',
-
+        
         'birthday' => 'تاريخ الميلاد',
         'gender' => 'الجنس',
         'address' => 'أدخل العنوان',
+        'firstname_ar' => 'أدخل الإسم بالعربية',
+        'lastname_ar' => 'أدخل اللقب بالعربية',
         'phone' => 'أدخل رقم الهاتف',
         'email' => 'أدخل البريد الالكتروني',
         'password' => 'كلمة السر',

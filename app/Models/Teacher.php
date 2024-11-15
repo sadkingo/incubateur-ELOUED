@@ -13,6 +13,7 @@ class Teacher extends Authenticatable
     use HasFactory , SoftDeletes;
 
     protected $fillable = [
+        'commission_id',
         'firstname_ar',
         'firstname_fr',
         'lastname_ar',
@@ -26,7 +27,6 @@ class Teacher extends Authenticatable
         'address',
         'photo',
         'status',
-        'id_commission',
     ];
 
     public function setPasswordAttribute($value): void
@@ -41,7 +41,7 @@ class Teacher extends Authenticatable
 
     public function commission()
     {
-        return $this->belongsTo(Commission::class, 'id_commission');
+        return $this->belongsTo(Commission::class, 'commission_id');
     }
 
 }

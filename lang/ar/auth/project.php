@@ -50,8 +50,8 @@
             'obtain_a_certificate_of_registration_for_the_patent_filing_application' => 'الحصول على شهادة تسجيل طلب الايداع براءة اختراع',
             'receiving_reservations_and_amendments_requested_from_INAPI' => 'استقبال التحفظات والتعديلات المطلوبة من INAPI',
             'resend_the_amended_form_after_lifting_the_reservations' => 'اعادة ارسال النموذج المعدل بعد رفع التحفظات',
-            'obtained_a_patent' => 'حصول على براءة اختراع',
-            'obtained_a_patent_startup' => 'حصول على براءة اختراع مؤسسة ناشئة',
+            'obtained_a_patent' => 'تسجيل براءة اختراع',
+            'obtained_a_patent_startup' => 'تسجيل براءة اختراع مؤسسة ناشئة',
 
 
         ],
@@ -81,6 +81,7 @@
         'identification_card_download' => 'تحميل بطاقة الهوية',
         'registration_certificate' => 'شهادة التسجيل',
         'registration_certificate_download' => 'تحميل شهادة التسجيل',
+        'download' => 'تحميل',
         'photo' => 'صورة شمسية',
         'status_pending' => 'قيد الدراسة',
         'status_accepted' => 'القبول',

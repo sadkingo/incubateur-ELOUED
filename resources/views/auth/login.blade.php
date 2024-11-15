@@ -44,20 +44,20 @@
                             </div>
 
                             <div class="mb-3 form-password-toggle">
-                                <div class="d-flex justify-content-between">
+                                {{-- <div class="d-flex justify-content-between"> --}}
                                     <label class="form-label" for="password">{{ trans('auth/auth.password') }}</label>
-                                    <a href="{{ url('auth/forgot-password-basic') }}">
+                                    {{-- <a href="{{ url('auth/forgot-password-basic') }}">
                                         <small>{{ trans('auth/auth.forgot_password') }}</small>
-                                    </a>
-                                </div>
-                                <div class="input-group mb-2">
+                                    </a> --}}
+                                {{-- </div> --}}
+                                <div class="input-group mb-2" dir="{{ app()->isLocale('ar') ? 'rtl' : 'ltr'}}">
                                     <input type="password" id="password"
                                         class="form-control @error('password') is-invalid @enderror" name="password"
                                         placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
                                         aria-describedby="password" style="border-radius: none" />
 
                                     <span class="input-group-text" style="border-radius: none">
-                                        <span class="ursor-pointer"><i class="bx bx-hide"></i></span>
+                                        <span class="ursor-pointer"><i class="mdi mdi-lock-outline"></i></span>
                                     </span>
                                 </div>
                                 @error('password')
@@ -68,17 +68,17 @@
                             </div>
 
                             <div class="mb-3">
-                                <button class="btn btn-primary d-grid w-100"
-                                    type="submit">{{ trans('auth/auth.loginSubmit') }}</button>
+                                <button class="btn btn-primary d-grid w-100" type="submit">{{ trans('auth/auth.loginSubmit') }}</button>
                             </div>
                         </form>
 
-                        <p class="text-center">
+                        {{-- <p class="text-center">
                             <span>{{ trans('auth/auth.have_not_account') }}</span>
                             <a href="{{ route('auth.registerForm') }}">
                                 <span>{{ trans('auth/auth.create_account') }}</span>
                             </a>
-                        </p>
+                        </p> --}}
+                        <a class="btn btn-primary d-grid w-100" type="button" href="{{ route('auth.loginAsStudent') }}">{{ trans('auth/auth.login.as.student') }}</a>
                     </div>
                 </div>
             </div>

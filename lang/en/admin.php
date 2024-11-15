@@ -17,9 +17,16 @@
         'delete_confirmation' => 'Are you sure about deleting this admin?',
         'label' =>[
             'name' => 'name',
+            'phone' => 'phone number',
+            'role' => 'admin responsibility',
+            'email' => 'email',
+    
         ],
         'placeholder' =>[
             'name' => 'Search by name',
+            'phone' => 'phone number',
+            'email' => 'email',
+    
         ],
     ];
 

@@ -18,20 +18,20 @@
 @section('content')
 <style>
     .project-description {
-       max-width: 800px; 
-       font-size: 16px; 
-       line-height: 1.6; 
-       color: #333; 
+       max-width: 800px;
+       font-size: 16px;
+       line-height: 1.6;
+       color: #333;
    }
 
    .project-description p {
-       margin-bottom: 1.5em; 
+       margin-bottom: 1.5em;
    }
 
    .project-description h2 {
-       font-size: 2em; 
-       margin-bottom: 0.5em; 
-       color: #007bff; 
+       font-size: 2em;
+       margin-bottom: 0.5em;
+       color: #007bff;
    }
 
    .project-description.ar {
@@ -73,7 +73,7 @@
                         {!! nl2br(e($project->description)) !!}
                     </div>
                 </div>
-                
+
                 <div class="mb-5 wow fadeIn">
                     <div class="text-start mb-1-6 wow fadeIn">
                         <h2 class="h1 mb-0 text-primary">
@@ -84,7 +84,7 @@
                                 @elseif($project->type_project === 'agricultural') {{trans('auth/project.project_agricultural')}}
                                 @else {{trans('auth/project.project_service')}}
                                 @endif
-                        </span> 
+                        </span>
                         </h2>
                     </div>
                     <br>
@@ -100,13 +100,13 @@
                                 @elseif($project->project_classificationt === 3) {{trans('project.patent')}}
                                 @elseif($project->project_classification === 4)  {{trans('project.patent start up')}}
                                 @endif
-                        </span> 
+                        </span>
                         </h2>
                     </div>
                     <br>
                 </div>
-                
-                
+
+
                 <div class="mb-5 wow fadeIn">
                     <div class="text-start mb-1-6 wow fadeIn">
                         <h2 class="mb-0 text-primary">{{ trans('project.label.project_images') }}</h2>
@@ -122,7 +122,7 @@
                         @endforeach
                     </div>
                 </div>
-                
+
                 @if($project->bmc != null)
                     @if( $project->bmc_status == 2)
                         <div class="wow fadeIn">
@@ -140,17 +140,17 @@
                             <span class="text-warning">{{ trans('project.status_project.studying_bmc') }}</span>
                             <a href="{{ url('dashboard/project/bmc-studing/'.$project->id)}}">{{trans('project.edit_status_bmc')}} </a>
                         </div>
-                        <br> 
-                    @endif        
-                @endif    
+                        <br>
+                    @endif
+                @endif
                 <div class="wow fadeIn">
                     <div class="text-start mb-1-6 wow fadeIn">
                         <h2 class="mb-0 text-primary">{{trans('project.label.project_video')}}</h2>
                     </div>
                     <br>
                     <div class="col-lg-4 col-md-4 col-sm-6 mb-4 ">
-                        <a href="{{ url($project->video) }}" class="text-black" target="_blank">{{ trans('project.label.download_video')}}</a>
-                    </div>    
+                        <a href="$project->video }}" class="text-black" target="_blank">{{ trans('project.label.download_video')}}</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -160,12 +160,12 @@
     document.addEventListener("DOMContentLoaded", function() {
         var descriptionElement = document.querySelector('.project-description');
         var descriptionText = descriptionElement.innerText || descriptionElement.textContent;
-        
+
         // Regular expressions to detect Arabic, English, and French
         var arabicPattern = /[\u0600-\u06FF\u0750-\u077F]/;
         var englishPattern = /[A-Za-z]/;
         var frenchPattern = /[A-Za-zàâäéèêëîïôöùûüÿçœæ]/;
-        
+
         if (arabicPattern.test(descriptionText)) {
             descriptionElement.classList.add('ar');
         } else if (englishPattern.test(descriptionText)) {

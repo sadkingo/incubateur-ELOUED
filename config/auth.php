@@ -48,9 +48,13 @@ return [
             'driver' => 'session',
             'provider' => 'teachers',
         ],
+        'manager' =>[
+            'driver' => 'session',
+            'provider' => 'managers',
+        ],
         'student' => [
             'driver' => 'session',
-            'provider' => 'students',
+            'provider' => 'projects',
         ],
     ],
 
@@ -84,9 +88,13 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\Teacher::class,
         ],
-        'students' => [
+        'managers' => [
+          'driver' => 'eloquent',
+          'model' => App\Models\Manager::class,
+        ],
+        'projects' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Student::class,
+            'model' => App\Models\project::class,
         ],
 
         // 'users' => [

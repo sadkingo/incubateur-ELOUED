@@ -2,7 +2,7 @@
 /******/ 	"use strict";
 /******/ 	// The require scope
 /******/ 	var __webpack_require__ = {};
-/******/ 	
+/******/
 /************************************************************************/
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
@@ -15,12 +15,12 @@
 /******/ 			}
 /******/ 		};
 /******/ 	})();
-/******/ 	
+/******/
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	(() => {
 /******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
 /******/ 	})();
-/******/ 	
+/******/
 /******/ 	/* webpack/runtime/make namespace object */
 /******/ 	(() => {
 /******/ 		// define __esModule on exports
@@ -31,7 +31,7 @@
 /******/ 			Object.defineProperty(exports, '__esModule', { value: true });
 /******/ 		};
 /******/ 	})();
-/******/ 	
+/******/
 /************************************************************************/
 var __webpack_exports__ = {};
 /*!***********************************************!*\
@@ -694,10 +694,10 @@ var Helpers = {
           var formPasswordToggleInput = formPasswordToggle.querySelector('input');
           if (formPasswordToggleInput.getAttribute('type') === 'text') {
             formPasswordToggleInput.setAttribute('type', 'password');
-            formPasswordToggleIcon.classList.replace('bx-show', 'bx-hide');
+            formPasswordToggleIcon.classList.replace('mdi-lock-open-outline', 'mdi-lock-outline');
           } else if (formPasswordToggleInput.getAttribute('type') === 'password') {
             formPasswordToggleInput.setAttribute('type', 'text');
-            formPasswordToggleIcon.classList.replace('bx-hide', 'bx-show');
+            formPasswordToggleIcon.classList.replace('mdi-lock-outline', 'mdi-lock-open-outline');
           }
         });
       });

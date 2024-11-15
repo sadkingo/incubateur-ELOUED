@@ -34,7 +34,7 @@
         'Add_students' => 'Add students',
         'Add_project' => 'Add project',
         'Add_supervisor' => 'Add supervisor',
-        'no_supervisors_available' => 'No supervisors available',
+        'no_supervisors_available' => 'Not available',
         'select_supervisor' => 'select supervisor',
         'import' => 'Upload student file',
         'edit' => 'Edit admin data',

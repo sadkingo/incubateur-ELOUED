@@ -208,9 +208,9 @@
             <p>DE PARTICIPATION A LA FORMATION </p>
         </div>
         <div class="content">
-            @if ($studentGroup)
+            @if ($student)
                 <p>Nous Attestons que:</p>
-                <h2> {{$studentGroup->firstname_fr}} {{$studentGroup->lastname_fr}}</h2>
+                <h2> {{$student->full_name_fr}}</h2>
                 <p>
                     A suivi avec assiduité la formation 
                     <strong> 

@@ -4,33 +4,26 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class StudentGroup extends Authenticatable
-{
-    
-    use HasFactory, SoftDeletes;
+class StudentGroup extends Model {
 
+    use HasFactory;
 
     protected $fillable = [
-        'firstname_ar',
-        'firstname_fr',
-        'lastname_ar',
-        'lastname_fr',
-        'gender',
-        'birthday',
-        'state_of_birth',
-        'registration_number',
-        'academicLevel',
-        'specialty',
-        'id_faculty',
-        'id_department',
-        'id_commission',
-        'photo',        
+        'student_id',
+        'project_id',
     ];
 
-    public function student(){
-        return $this->belongsTo(Student::class, 'id_student');
+    public function student() {
+        return $this->belongsTo(Student::class);
     }
+
+    /**
+     * Get the project associated with this group entry.
+     */
+    public function project() {
+        return $this->belongsTo(Project::class);
+    }
+
 }

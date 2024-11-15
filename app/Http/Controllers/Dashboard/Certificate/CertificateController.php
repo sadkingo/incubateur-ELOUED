@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers\Dashboard\Certificate;
 
-use Illuminate\Http\Request;
+use App\Exports\CertificatesExport;
 use App\Http\Controllers\Controller;
+use App\Models\Certificate;
 use App\Models\Project;
 use App\Models\Student;
 use App\Models\StudentGroup;
-use Illuminate\Support\Facades\Storage;
-use App\Repositories\Student\StudentRepository;
 use App\Repositories\Certificate\CertificateRepository;
+use App\Repositories\Student\StudentRepository;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CertificateController extends Controller
 {
@@ -32,27 +35,27 @@ class CertificateController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
-    {
-        $studentsQuery = Student::query()
-            ->with(['projectss', 'studentGroups', 'certificates'])
-            ->when($request->project_classification, function ($query) use ($request) {
-                return $query->whereHas('projectss', function ($query) use ($request) {
-                    $query->where('project_classification', $request->project_classification);
-                });
-            });
+    // public function index(Request $request)
+    // {
+    //     $studentsQuery = Student::query()
+    //         ->with(['projects', 'studentGroups', 'certificates'])
+    //         ->when($request->project_classification, function ($query) use ($request) {
+    //             return $query->whereHas('projects', function ($query) use ($request) {
+    //                 $query->where('project_classification', $request->project_classification);
+    //             });
+    //         });
 
-        $students = $studentsQuery->paginate(
-            $request->perPage ? $request->perPage : PAGINATE_COUNT,
-            ['*'],
-            'page',
-            $request->page ? $request->page : 1
-        );
+    //     $students = $studentsQuery->paginate(
+    //         $request->perPage ? $request->perPage : 100,
+    //         ['*'],
+    //         'page',
+    //         $request->page ? $request->page : 1
+    //     );
 
-        $listStduents = $this->students->listStudentHasNotCertificate();
+    //     $listStduents = $this->students->listStudentHasNotCertificate();
 
-        return view('dashboard.certificate.index', compact('students', 'listStduents'));
-    }
+    //     return view('dashboard.certificate.index', compact('students', 'listStduents'));
+    // }
     /**
      * Show the form for creating a new resource.
      *
@@ -136,27 +139,31 @@ class CertificateController extends Controller
         //
     }
 
-    public function printStudent($id){  
-        $student = Student::find($id);
-        $studentGroups = StudentGroup::where('id_student', $id)->get();
-        $project = Project::where('id_student', $student->id)->first();
-        return view('dashboard.certificate.print', compact('student','studentGroups', 'project'));
-    }
+    // public function printStudent($id){
+    //     $certificate = Certificate::find($id);
+    //     $project = Project::find($certificate->project_id)->first();
+    //     $group = StudentGroup::where('project_id', $project->id)->get();
+
+    //     return view('dashboard.certificate.print')
+    //     ->with('certificate', $certificate)
+    //     ->with('group', $group)
+    //     ->with('project', $project);
+    // }
 
     public function generateCertificate($id_student) {
 
         $student = Student::find($id_student);
-        
+
         if (!$student) {
             return redirect()->back()->with('error', 'Student not found');
         }
-    
+
         $project = Project::where('id_student', $student->id)->first();
-        
+
         if (!$project) {
             return redirect()->back()->with('error', 'Project not found');
-        }    
-        
+        }
+
         if ($project->project_classification == 1 || $project->project_classification == 2) {
             $stages = [
                 1 => 'Étape de configuration',
@@ -164,7 +171,7 @@ class CertificateController extends Controller
                 3 => 'L\'étape de préparation du prototype',
                 4 => 'Étape de discussion',
                 5 => 'Projet innovant label',
-            ];    
+            ];
         } elseif ($project->project_classification == 3) {
             $stages = [
                 1 => 'L\'étape de préparation du prototype',
@@ -193,32 +200,31 @@ class CertificateController extends Controller
                 1 => 'Unknown Stage',
             ];
         }
-    
+
         $currentStage = $stages[$project->project_tracking] ?? 'Unknown Stage';
-    
+
         return view('student-dashboard.certificate', compact('student', 'project', 'currentStage'));
     }
 
-    public function generateStudentCertificate($id) {
+    public function generateStudentCertificate($cid,$sid) {
 
-        $studentGroup = StudentGroup::find($id);
-        
-        if (!$studentGroup) {
-            return redirect()->back()->with('error', 'Student not found');
+        $certificate = Certificate::find($cid);
+        if (!$certificate) {
+            return redirect()->back()->with('error', 'Certificate not found');
         }
-        $student = Student::where('id',$studentGroup->id_student)->first();
-        
-        if (!$student) {
-            return redirect()->back()->with('error', 'Student not found');
-        }
-        
-        $project = Project::where('id_student',$student->id)->first();
-        //dd($project);
+
+        $project = $certificate->project;
         if (!$project) {
-            return redirect()->back()->with('error', 'Project not found');
+            return redirect()->back()->with('error', 'Project not found for this certificate');
         }
-    
-    
+
+        $student = $project->students->where('id', $sid)->first();
+
+        if (!$student) {
+            return redirect()->back()->with('error', 'Student not found for this project');
+        }
+
+
         if ($project->project_classification == 1 || $project->project_classification == 2) {
             $stages = [
                 1 => 'Étape de configuration',
@@ -226,7 +232,7 @@ class CertificateController extends Controller
                 3 => 'L\'étape de préparation du prototype',
                 4 => 'Étape de discussion',
                 5 => 'Projet innovant label',
-            ];    
+            ];
         } elseif ($project->project_classification == 3) {
             $stages = [
                 1 => 'L\'étape de préparation du prototype',
@@ -255,11 +261,40 @@ class CertificateController extends Controller
                 1 => 'Unknown Stage',
             ];
         }
-    
+
         $currentStage = $stages[$project->project_tracking] ?? 'Unknown Stage';
-    
-        return view('dashboard.certificate.certificate', compact('student', 'studentGroup','project', 'currentStage'));
+
+        return view('dashboard.certificate.certificate', compact('student','project', 'currentStage'));
     }
+
+
+    public function export(Request $request) {
+        $classification = $request->query('classification');
     
+        $query = Certificate::with(['project.students'])->select('id', 'file_name','project_id');
+    
+        if (($classification !== null) && ($classification != 'all')) {
+            $query->whereHas('project', function ($query) use ($classification) {
+                $query->where('project_classification', $classification);
+            });
+        }
+        $certificates = $query->get();
+    
+        $data = [];
+        foreach ($certificates as $certificate) {
+            if ($certificate->project) {
+                foreach ($certificate->project->students as $student) {
+                    $data[] = [
+                        'ID' => $student->id,
+                        'File Name' => $certificate->file_name,
+                        'Project Name' => $certificate->project->name,
+                        'Student Name' => $student->name,
+                    ];
+                }
+            }
+        }
+
+        return Excel::download(new CertificatesExport($data), 'certificates.xlsx');
+    }
     
 }

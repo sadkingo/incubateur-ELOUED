@@ -1,6 +1,6 @@
 @extends('layouts/contentNavbarLayout')
 
-@section('title', trans('student.title'))
+@section('title', trans('student.edit'))
 
 @section('page-script')
     <script src="{{ asset('assets/js/pages-account-settings-account.js') }}"></script>
@@ -8,337 +8,218 @@
 
 @section('content')
     <h4 class="fw-bold py-3 mb-4">
-        <span class="text-muted fw-light">{{ trans('student.dashboard') }} /</span> {{ trans('student.students') }}
+        <span class="text-muted fw-light">{{ trans('student.dashboard') }} / {{ trans('student.students') }}/ </span>
+        {{ trans('student.edit') }}
     </h4>
+
     <div class="card">
-        {{-- <h5 class="card-header pt-0 mt-1">
-            <form action="" method="GET" id="filterStudentForm" class="">
-                <div class="row">
-                    @if (auth('admin')->check())
-                        <div class="form-group col-md-2 px-1 mt-4">
-                            <a href="{{ route('dashboard.students.create') }}" class="btn btn-primary text-white">
-                                <span class="tf-icons bx bx-plus"></span>&nbsp
-                                ; {{ trans('student.create') }}
-                            </a>
-                        </div>
-                    @endif
-
-                    <div class="form-group col-md-3 mb-2" dir="{{ config('app.locale') == 'ar' ? 'rtl' : 'ltr' }}">
-                        <label for="search" class="form-label">{{ trans('app.label.name') }}</label>
-                        <input type="text" id="search" name="search" value="{{ Request::get('search') }}"
-                            class="form-control input-solid"
-                            placeholder="{{ Request::get('search') != '' ? '' : trans('app.placeholder.name') }}">
+        <div class="card-body">
+            <h5 class="card-title">{{ trans('student.edit') }}</h5>
+            <form id="editStudentForm" method="POST" action="{{ route('dashboard.student.update') }}">
+                {{-- @method('PUT') --}}
+                @csrf
+                <input type="hidden" name="id" value="{{ $student->id }}">
+                <div class="row ">
+                    <div class="col-sm-12 col-md-3 mb-2 ">
+                        <label for="firstname_ar"
+                            class="form-label text-end">{{ trans('auth/student.firstname_ar') }}</label>
+                        <input type="text" class="form-control @error('firstname_ar') is-invalid @enderror"
+                            name="firstname_ar" value="{{ $student->firstname_ar }}"
+                            placeholder="{{ trans('auth/student.placeholder.firstname_ar') }}">
+                        @error('firstname_ar')
+                            <small class="text-danger d-block mt-1">
+                                {{ $message }}
+                            </small>
+                        @enderror
                     </div>
-                    <div class="form-group col-md-3 mb-2" dir="{{ config('app.locale') == 'ar' ? 'rtl' : 'ltr' }}">
+                    <div class="col-sm-12 col-md-3 mb-2">
+                        <label for="lastname_ar" class="form-label">{{ trans('auth/student.lastname_ar') }}</label>
+                        <input type="text" class="form-control @error('lastname_ar') is-invalid @enderror"
+                            name="lastname_ar" value="{{ $student->lastname_ar }}"
+                            placeholder="{{ trans('auth/student.placeholder.lastname_ar') }}">
+                        @error('lastname_ar')
+                            <small class="text-danger d-block">
+                                {{ $message }}
+                            </small>
+                        @enderror
+                    </div>
+                    <div class="col-sm-12 col-md-3 mb-2">
+                        <label for="firstname_fr" class="form-label">{{ trans('auth/student.firstname_fr') }}</label>
+                        <input type="text" class="form-control @error('firstname_fr') is-invalid @enderror"
+                            name="firstname_fr" dir="ltr" value="{{ $student->firstname_fr }}"
+                            placeholder="{{ trans('auth/student.placeholder.firstname_fr') }}">
+                        @error('firstname_fr')
+                            <small class="text-danger d-block">
+                                {{ $message }}
+                            </small>
+                        @enderror
+                    </div>
+                    <div class="col-sm-12 col-md-3 mb-2">
+                        <label for="lastname_fr" class="form-label">{{ trans('auth/student.lastname_fr') }}</label>
+                        <input type="text" dir="ltr" class="form-control @error('lastname_fr') is-invalid @enderror"
+                            name="lastname_fr" value="{{ $student->lastname_fr }}"
+                            placeholder="{{ trans('auth/student.placeholder.lastname_fr') }}">
+                        @error('lastname_fr')
+                            <small class="text-danger d-block">
+                                {{ $message }}
+                            </small>
+                        @enderror
+                    </div>
+                    <div class="col-sm-12 col-md-3 mb-2">
+                        <label for="gender" class="form-label">{{ trans('app.label.gender') }}</label>
+                        <select class="form-select @error('gender') is-invalid @enderror"
+                            name="gender" value="{{ $student->gender }}">
+                            <option value="1" {{ $student->gender == 1 ? 'selected' : '' }}>{{ trans('app.male') }}</option>
+                            <option value="2" {{ $student->gender == 2 ? 'selected' : '' }}>{{ trans('app.female') }}</option>
+                        </select>
+                        @error('gender')
+                            <small class="text-danger d-block">
+                                {{ $message }}
+                            </small>
+                        @enderror
+                    </div>
+                    <div class="col-sm-12 col-md-3 mb-2">
+                        <label for="birthday" class="form-label">{{ trans('app.label.birthday') }}</label>
+                        <input type="date" class="form-control @error('birthday') is-invalid @enderror" name="birthday"
+                            value="{{ $student->birthday }}">
+                        @error('birthday')
+                            <small class="text-danger d-block">
+                                {{ $message }}
+                            </small>
+                        @enderror
+                    </div>
+                    <div class="col-sm-12 col-md-3 mb-2">
+                        <label for="state_of_birth" class="form-label">{{ trans('app.label.state_of_birth') }}</label>
+                        <input type="text" class="form-control @error('state_of_birth') is-invalid @enderror"
+                            name="state_of_birth" value="{{ $student->state_of_birth }}"
+                            placeholder="{{ trans('app.placeholder.state_of_birth') }}">
+                        @error('state_of_birth')
+                            <small class="text-danger d-block">
+                                {{ $message }}
+                            </small>
+                        @enderror
+                    </div>
+                    <div class="col-sm-12 col-md-3 mb-2">
+                        <label for="place_of_birth" class="form-label">{{ trans('app.label.place_of_birth') }}</label>
+                        <input type="text" class="form-control @error('place_of_birth') is-invalid @enderror"
+                            name="place_of_birth" value="{{ $student->place_of_birth }}"
+                            placeholder="{{ trans('app.placeholder.place_of_birth') }}">
+                        @error('place_of_birth')
+                            <small class="text-danger d-block">
+                                {{ $message }}
+                            </small>
+                        @enderror
+                    </div>
+
+                    <div class="col-sm-12 col-md-6 mb-2">
                         <label for="registration_number"
-                            class="form-label">{{ trans('student.label.registration_number') }}</label>
-                        <input type="text" id="registration_number" name="registration_number"
-                            value="{{ Request::get('registration_number') }}" class="form-control input-solid"
-                            placeholder="{{ Request::get('registration_number') != '' ? '' : trans('student.placeholder.registration_number') }}">
+                            class="form-label">{{ trans('app.label.registration_number') }}</label>
+                        <input type="text" class="form-control @error('registration_number') is-invalid @enderror"
+                            name="registration_number" value="{{ $student->registration_number }}"
+                            placeholder="{{ trans('app.placeholder.registration_number') }}">
+                        @error('registration_number')
+                            <small class="text-danger d-block">
+                                {{ $message }}
+                            </small>
+                        @enderror
+                    </div>
+                    <div class="col-sm-12 col-md-6 mb-2">
+                        <label for="group" class="form-label">{{ trans('app.label.group') }}</label>
+                        <input type="text" class="form-control @error('group') is-invalid @enderror" name="group"
+                            value="{{ $student->group }}" placeholder="{{ trans('app.placeholder.group') }}">
+                        @error('group')
+                            <small class="text-danger d-block">
+                                {{ $message }}
+                            </small>
+                        @enderror
                     </div>
 
-                    <div class="form-group col-md-2 mb-2 mb-2" dir="{{ config('app.locale') == 'ar' ? 'rtl' : 'ltr' }}">
-                        <label for="batch" class="form-label">{{ trans('student.label.batch') }}</label>
-                        <select class="form-select" id="batch" name="batch" aria-label="Default select example">
-                            @if (Request::get('batch') != null)
-                                <option value="{{ Request::get('batch') }}">
-                                    {{ trans('app.batchs.' . Request::get('batch')) }}</option>
-                            @else
-                                <option value="">{{ trans('app.select.batch') }}</option>
-                            @endif
-                            <option value="">{{ trans('app.all') }}</option>
-                            <option value="1">{{ trans('app.batchs.1') }}</option>
-                            <option value="2">{{ trans('app.batchs.2') }}</option>
-                            <option value="3">{{ trans('app.batchs.3') }}</option>
-                            <option value="4">{{ trans('app.batchs.4') }}</option>
-                            <option value="5">{{ trans('app.batchs.5') }}</option>
-                            <option value="6">{{ trans('app.batchs.6') }}</option>
-                            <option value="7">{{ trans('app.batchs.7') }}</option>
-                            <option value="8">{{ trans('app.batchs.8') }}</option>
-                            <option value="9">{{ trans('app.batchs.9') }}</option>
-                            <option value="10">{{ trans('app.batchs.10') }}</option>
-                        </select>
+                    <div class="col-sm-12 col-md-6 mb-2">
+                        <label for="email" class="form-label">{{ trans('app.label.email') }}</label>
+                        <input type="text" class="form-control @error('email') is-invalid @enderror" name="email"
+                            value="{{ $student->email }}" placeholder="{{ trans('app.placeholder.email') }}">
+                        @error('email')
+                            <small class="text-danger d-block">
+                                {{ $message }}
+                            </small>
+                        @enderror
                     </div>
-                    <div class="form-group col-md-2 mb-2" dir="{{ config('app.locale') == 'ar' ? 'rtl' : 'ltr' }}">
-                        <label for="group" class="form-label">{{ trans('student.label.group') }}</label>
-                        <select class="form-select" id="group" name="group" aria-label="Default select example">
-                            @if (Request::get('group') != null)
-                                <option value="{{ Request::get('group') }}">
-                                    {{ trans('app.groups.' . Request::get('group')) }}</option>
-                            @else
-                                <option value="">{{ trans('attendence.select.group') }}</option>
-                            @endif
-                            <option value="">{{ trans('app.all') }}</option>
-
-                            @for ($group = 1; $group <= $groups; $group++)
-                                <option value="{{ $group }}">{{ trans('app.groups.' . $group) }}</option>
-                            @endfor
-                        </select>
+                    <div class="col-sm-12 col-md-6 mb-2">
+                        <label for="phone" class="form-label">{{ trans('app.label.phone') }}</label>
+                        <input type="text" class="form-control @error('phone') is-invalid @enderror" name="phone"
+                            value="{{ $student->phone }}" placeholder="{{ trans('app.placeholder.phone') }}">
+                        @error('phone')
+                            <small class="text-danger d-block">
+                                {{ $message }}
+                            </small>
+                        @enderror
                     </div>
-
-                    <div class="form-group col-md-3 mb-2" dir="{{ config('app.locale') == 'ar' ? 'rtl' : 'ltr' }}">
-                        <label for="start_date" class="form-label">{{ trans('student.label.start_date') }}</label>
-                        <input type="date" class="form-control input-solid" placeholder="YYYY-MM-DD"
-                            style="background-color: #ffffff" name="start_date" id="start_date"
-                            value="{{ Request::get('start_date') }}" />
+                    <div class="col-sm-12 col-md-6 mb-2">
+                        <label for="password" class="form-label">{{ trans('app.label.password') }}</label>
+                        <input type="password" class="form-control @error('password') is-invalid @enderror"
+                            name="password">
+                        @error('password')
+                            <small class="text-danger d-block">
+                                {{ $message }}
+                            </small>
+                        @enderror
                     </div>
-                    <div class="form-group col-md-3" dir="{{ config('app.locale') == 'ar' ? 'rtl' : 'ltr' }}">
-                        <label for="end_date" class="form-label">{{ trans('student.label.end_date') }}</label>
-                        <input type="date" class="form-control input-solid" placeholder="YYYY-MM-DD"
-                            style="background-color: #ffffff" name="end_date" id="end_date"
-                            value="{{ Request::get('end_date') }}" />
-                    </div>
-                    <div class="form-group col-md-2 mb-2">
-                        <label for="year" class="form-label">{{ trans('app.label.year') }}</label>
-                        <select class="form-select" id="year" name="year" aria-label="Default select example">
-                            <option value="">{{ trans('app.select.year') }}</option>
-                            <option value="">{{ trans('app.option.year_all') }}</option>
-                            @for ($i = $start_date; $i <= \Carbon\Carbon::now()->format('Y'); $i++)
-                                <option value="{{ $i }}" {{ Request::get('year') == $i ? 'selected' : '' }}>
-                                    {{ trans('app.year') . ' ' . $i }}</option>
-                            @endfor
-                        </select>
+                    <div class="col-sm-12 col-md-6 mb-2">
+                        <label for="password_confirmation"
+                            class="form-label">{{ trans('app.label.confirme_password') }}</label>
+                        <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror"
+                            name="password_confirmation">
+                        @error('password_confirmation')
+                            <small class="text-danger d-block">
+                                {{ $message }}
+                            </small>
+                        @enderror
                     </div>
 
-                    <div class="form-group col-md-2 mb-2">
-                        <label for="rank" class="form-label">{{ trans('app.label.rank') }}</label>
-                        <select class="form-select" id="rank" name="rank" aria-label="Default select example">
-                            <option value="">{{ trans('app.select.rank') }}</option>
-                            <option value="all" {{ Request::get('rank') == 'all' ? 'selected' : '' }}>{{ trans('app.option.rank_all') }}</option>
-                            <option value="1" {{ Request::get('rank') == 1 ? 'selected' : '' }}>
-                                {{ trans('app.ranks.1') }}</option>
-                            <option value="2"{{ Request::get('rank') == 2 ? 'selected' : '' }}>
-                                {{ trans('app.ranks.2') }}</option>
-                            <option value="3"{{ Request::get('rank') == 3 ? 'selected' : '' }}>
-                                {{ trans('app.ranks.3') }}</option>
-                        </select>
+                    <div class="col-sm-12 mt-3 d-flex">
+                        <div class="col d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary">{{ trans('app.update') }}</button>
+                        </div>
                     </div>
-
-                    <div class="form-group col-md-2 mb-2">
-                        <label for="passport" class="form-label">{{ trans('app.label.passport') }}</label>
-                        <select class="form-select" id="passport" name="passport" aria-label="Default select example">
-                            <option value="">{{ trans('app.select.passport') }}</option>
-                            <option value="0" {{ Request::get('passport') == 0 ? 'selected' : '' }}>
-                                {{ trans('app.no_passport') }}</option>
-                            <option value="1"{{ Request::get('passport') == 1 ? 'selected' : '' }}>
-                                {{ trans('app.have_passport') }}</option>
-
-                        </select>
-                    </div>
-                    <div class="form-group col-md-3 mb-2">
-                        <label for="perPage" class="form-label">{{ trans('app.label.perPage') }}</label>
-                        <select class="form-select" id="perPage" name="perPage" aria-label="Default select example">
-                            <option value="">{{ trans('app.select.perPage') }}</option>
-                            <option value="{{ $students->count() *$students->perPage() }}">{{ trans('app.all') }}</option>
-                            <option value="10" {{ Request::get('perPage') == 10 ? 'selected' : '' }}>
-                                10</option>
-                            <option value="50"{{ Request::get('perPage') == 50 ? 'selected' : '' }}>
-                                50</option>
-                                <option value="100"{{ Request::get('perPage') == 100 ? 'selected' : '' }}>
-                                    100</option>
-                        </select>
-                    </div>
-                    {{-- perPage  
                 </div>
             </form>
-            <div class="row">
-                @if (count($students))
-                    <div class="form-group col-md-2 mt-4">
-                        <button target="_blank" id="printStudent"
-                            data-url="{{ route('dashboard.print.students', [
-                                'batch' => Request::get('batch'),
-                                'group' => Request::get('group'),
-                                'search' => Request::get('search'),
-                                'registration_number' => Request::get('registration_number'),
-                                'week'  => Request::get('week'),
-                                'month' => Request::get('month'),
-                                'year'  => Request::get('year'),
-                                'rank'  => Request::get('rank'),
-                                'passport'   => Request::get('passport'),
-                                'start_date' => Request::get('start_date'),
-                                'end_date'   => Request::get('end_date'),
-                                'perPage'    => Request::get('perPage'),
-                            ]) }}"
-                            class="btn
-                        btn-primary text-white mr-2">
-                            <span class="bx bxs-printer"></span>&nbsp; {{ trans('app.print') }}
-                        </button>
-                    </div>
-                @endif
-            </div>
-        </h5> --}}
-        <div class="table-responsive text-nowrap">
-            <table class="table mb-2">
-                <thead>
-                    <tr class="text-nowrap">
-                        <th>#</th>
-                        <th>{{ trans('student.name') }}</th>
-                        <th>{{ trans('student.email') }}</th>
-                        <th>{{ trans('student.phone') }}</th>
-                        <th>{{ trans('student.birthday') }}</th>
-                        <th>{{ trans('student.state_place_of_birth') }}</th>
-                        <th>{{ trans('student.gender') }}</th>
-                        <th>{{ trans('student.registration_number') }}</th>
-                        <th>{{ trans('student.group') }}</th>
-                        {{-- <th>Created</th> --}}
-                        @if (auth('admin')->check())
-                            <th>{{ trans('app.actions') }}</th>
-                        @endif
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($students as $key => $student)
-                        @php
-                            $rowNumber = ($students->currentPage() - 1) * $students->perPage() + $loop->index + 1;
-                        @endphp
-                        <tr>
-                           
-
-                            <th scope="row">{{ $rowNumber }}</th>
-                            <td>
-                                <a href="{{ url('dashboard/students/' . $student->id . '/profile') }}">{{ $student->name }}</a>
-
-                            </td>
-                            <td>{{ $student->email }}</td>
-                            <td>{{ $student->phone }}</td>
-                            <td>{{ $student->birthday }}</td>
-                            <td>{{ $student->state_of_birth }} -{{ $student->place_of_birth }}</td>
-                            <td>{{ $student->gender == 1 ? trans('student.male') : trans('student.female') }}</td>
-                            <td>{{ $student->registration_number }}</td>
-                            <td>{{ $student->group }}</td>
-                            {{-- <td>{{ $student->createdBy->name }}</td> --}}
-                            @if (auth('admin')->check())
-                                <td>
-                                    <div class="dropdown">
-                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                            data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i>
-                                        </button>
-                                        <div class="dropdown-menu">
-                                            <a class="dropdown-item"
-                                                href="{{ route('dashboard.students.edit', $student->id) }}">
-                                                <i class="bx bx-edit-alt me-2"></i>
-                                                {{ trans('student.edit') }}
-                                            </a>
-                                            <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
-                                                data-bs-target="#deleteStudentModal{{ $student->id }}">
-                                                <i class="bx bx-trash me-2"></i>
-                                                {{ trans('student.delete') }}
-                                            </a>
-                                        </div>
-                                    </div>
-                                </td>
-                            @endif
-                        </tr>
-                        @include('dashboard.student.delete')
-                    @empty
-                        <tr>
-                            <td colspan="10" class="text-center text-danger"><em>@lang('لا يوجد سجلات.')</em></td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-            {{ $students->appends(request()->all())->links() }}
         </div>
     </div>
-@endsection
-
-@section('scripts')
-    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $.ajaxSetup({
-                headers: {
-                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-                },
-            });
-
-            $('#group').on('change', function(event) {
-                timer = setTimeout(function() {
-                    submitForm();
-                }, 1000);
-
-            });
-            $('#start_date').on('change', function(event) {
-                timer = setTimeout(function() {
-                    submitForm();
-                }, 1000);
-
-            });
-            $('#end_date').on('change', function(event) {
-                timer = setTimeout(function() {
-                    submitForm();
-                }, 1000);
-
-            });
-            $('#batch').on('change', function(event) {
-                timer = setTimeout(function() {
-                    submitForm();
-                }, 1000);
-
-            });
-            $('#year').on('change', function(event) {
-                timer = setTimeout(function() {
-                    submitForm();
-                }, 1000);
-
-            });
 
 
-            $('#rank').on('change', function(event) {
-                timer = setTimeout(function() {
-                    submitForm();
-                }, 1000);
 
-            });
-            $('#passport').on('change', function(event) {
-                timer = setTimeout(function() {
-                    submitForm();
-                }, 1000);
+    <script>
+      $(document).ready(function() {
+        $('#editStudentForm').submit(function(event) {
+          event.preventDefault();
 
-            });
-            $('#perPage').on('change', function(event) {
-                timer = setTimeout(function() {
-                    submitForm();
-                }, 1000);
+          var formData = $(this).serialize();
 
-            });
-            //perPage
-
-
-            // $('#search').on('keyup', function(event) {
-            //     // console.log('search' , $('#search').val());
-            //     $("#search").focus();
-            //     timer = setTimeout(function() {
-            //         submitForm();
-            //     }, 4000);
-
-            // })
-            $('#search').on('keyup', function(event) {
-                $("#search").focus();
-                timer = setTimeout(function() {
-                    submitForm();
-                }, 4000);
-
-            })
-            $('#registration_number').on('keyup', function(event) {
-                $("#registration_number").focus();
-                timer = setTimeout(function() {
-                    submitForm();
-                }, 4000);
-
-            })
-
-            function submitForm() {
-                $("#filterStudentForm").submit();
+          $.ajax({
+            url: $(this).attr('action'),
+            type: $(this).attr('method'),
+            data: formData,
+            dataType: 'json',
+            success: function(response) {
+              Swal.fire({
+                icon: response.icon,
+                title: response.state,
+                text: response.message,
+                confirmButtonText: "Ok"
+              });          },
+            error: function(xhr, textStatus, errorThrown) {
+              const response = JSON.parse(xhr.responseText);
+              Swal.fire({
+                icon: response.icon,
+                title: response.state,
+                text: response.message,
+                confirmButtonText: "Ok"
+              });
             }
-            $("#printStudent").click(function(e) {
-                let url = $(this).attr('data-url');
-                var printWindow = window.open(url, '_blank', 'height=auto,width=auto');
-                printWindow.print();
-            });
+          });
         });
-    </script>
+
+      });
+  </script>
+
 @endsection

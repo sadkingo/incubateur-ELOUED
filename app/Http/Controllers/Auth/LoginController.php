@@ -6,6 +6,7 @@ use App\Traits\AuthTrait;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\StudentLoginRequest;
 
 class LoginController extends Controller
 {
@@ -21,6 +22,11 @@ class LoginController extends Controller
         return view('auth.login');
     }
 
+    public function loginAsStudent()
+    {
+        return view('auth.student.login');
+    }
+
     public function submitLogin(LoginRequest $request)
     {
         $data = [
@@ -30,4 +36,15 @@ class LoginController extends Controller
 
         return $this->login($data);
     }
+
+    public function submitStudentLogin(StudentLoginRequest $request)
+    {
+        $data = [
+            'code' => $request->code,
+            'password' => $request->password,
+        ];
+
+        return $this->login($data);
+    }
+
 }

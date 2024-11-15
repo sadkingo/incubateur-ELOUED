@@ -49,9 +49,8 @@ class RegisterStudentRequest extends FormRequest
             //'id_department' => 'required|numeric',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after:start_date',
-
-            'phone' => 'required|numeric|unique:students,phone',
-            'email' => 'required|email|unique:students,email',
+            'phone'        => 'required|numeric|unique:supervising_teachers,phone|unique:teachers,phone|unique:managers,phone|unique:admins,phone|unique:students,phone',
+            'email'        => 'required|email|unique:supervising_teachers,email|unique:teachers,email|unique:managers,email|unique:admins,email|unique:students,email',
             'password' => 'required|min:8|max:255',
             'password_confirmation' => 'required_with:password|same:password|min:8|max:255'
         ];

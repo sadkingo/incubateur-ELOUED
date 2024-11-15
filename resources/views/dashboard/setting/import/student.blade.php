@@ -1,6 +1,6 @@
 <div class="modal fade" id="importStudentFileModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <form action="{{ route('dashboard.student.import.excel') }}" method="POST" enctype="multipart/form-data"> 
+        <form action="{{ route('dashboard.student.import.excel') }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('POST')
             <div class="modal-content">
@@ -12,8 +12,7 @@
                     <div class="row">
                         <div class="col-sm-12 col-md-12">
                             <label for="name" class="form-label">{{ trans('student.label.file') }}</label>
-                            <input type="file" id="file" name="file" class="form-control"
-                                >
+                            <input type="file" id="file" name="file" class="form-control">
                         </div>
                     </div>
                 </div>

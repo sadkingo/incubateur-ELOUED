@@ -14,5 +14,8 @@ return [
     'settings'=> 'الاعدادات',
     'projects'=> 'المشاريع',
     'commissions' => 'اللجان',
-    'statistics' => 'الاحصاء'
+    'managers' => 'العمداء',
+    'faculties' => 'الكليات',
+    'statistics' => 'الاحصاء',
+    'supervisors' => 'المشرفين',
 ];

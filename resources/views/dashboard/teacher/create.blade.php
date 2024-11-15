@@ -15,14 +15,14 @@
     <div class="card">
         <div class="card-body">
             <h5 class="card-title">{{ trans('teacher.create') }}</h5>
-            <form method="post" action="{{ route('dashboard.teachers.store') }}">
+            <form method="POST" action="{{ route('teacher.store') }}">
                 @csrf
                 <div class="row ">
                     <div class="col-sm-12 col-md-3 mb-2 ">
                         <label for="firstname_ar" class="form-label text-end">{{ trans('app.label.firstname_ar') }}</label>
                         <input type="text" class="form-control @error('firstname_ar') is-invalid @enderror"
                             name="firstname_ar" value="{{ old('firstname_ar') }}"
-                            placeholder="{{ trans('app.placeholder.firstname_ar') }}">
+                            placeholder="{{ trans('app.placeholder.firstname_ar') }}" required>
                         @error('firstname_ar')
                             <small class="text-danger d-block mt-1">
                                 {{ $message }}
@@ -33,7 +33,7 @@
                         <label for="lastname_ar" class="form-label">{{ trans('teacher.lastname_ar') }}</label>
                         <input type="text" class="form-control @error('lastname_ar') is-invalid @enderror"
                             name="lastname_ar" value="{{ old('lastname_ar') }}"
-                            placeholder="{{ trans('teacher.placeholder.lastname_ar') }}">
+                            placeholder="{{ trans('teacher.placeholder.lastname_ar') }}" required>
                         @error('lastname_ar')
                             <small class="text-danger d-block">
                                 {{ $message }}
@@ -44,7 +44,7 @@
                         <label for="firstname_fr" class="form-label">{{ trans('app.label.firstname_fr') }}</label>
                         <input type="text" class="form-control @error('firstname_fr') is-invalid @enderror"
                             name="firstname_fr" dir="ltr" value="{{ old('firstname_fr') }}"
-                            placeholder="{{ trans('app.placeholder.firstname_fr') }}">
+                            placeholder="{{ trans('app.placeholder.firstname_fr') }}" required>
                         @error('firstname_fr')
                             <small class="text-danger d-block">
                                 {{ $message }}
@@ -55,7 +55,7 @@
                         <label for="lastname_fr" class="form-label">{{ trans('app.label.lastname_fr') }}</label>
                         <input type="text" dir="ltr" class="form-control @error('lastname_fr') is-invalid @enderror"
                             name="lastname_fr" value="{{ old('lastname_fr') }}"
-                            placeholder="{{ trans('app.placeholder.lastname_fr') }}">
+                            placeholder="{{ trans('app.placeholder.lastname_fr') }}" required>
                         @error('lastname_fr')
                             <small class="text-danger d-block">
                                 {{ $message }}
@@ -64,8 +64,7 @@
                     </div>
                     <div class="col-sm-12 col-md-3 mb-2">
                         <label for="gender" class="form-label">{{ trans('app.label.gender') }}</label>
-                        <select class="form-select @error('gender') is-invalid @enderror"
-                            name="gender"value="{{ old('gender') }}">
+                        <select class="form-select @error('gender') is-invalid @enderror" name="gender"value="{{ old('gender') }}" required>
                             <option value="" selected>-- {{ trans('app.select_gender') }} --</option>
                             <option value="1">{{ trans('app.male') }}</option>
                             <option value="2">{{ trans('app.female') }}</option>
@@ -78,8 +77,7 @@
                     </div>
                     <div class="col-sm-12 col-md-3 mb-2">
                         <label for="birthday" class="form-label">{{ trans('app.label.birthday') }}</label>
-                        <input type="date" class="form-control @error('birthday') is-invalid @enderror" name="birthday"
-                            value="{{ old('birthday') }}">
+                        <input type="date" class="form-control @error('birthday') is-invalid @enderror" name="birthday" value="{{ old('birthday') }}" required>
                         @error('birthday')
                             <small class="text-danger d-block">
                                 {{ $message }}
@@ -90,7 +88,7 @@
                     <div class="col-sm-12 col-md-6 mb-2">
                         <label for="address" class="form-label">{{ trans('app.label.address') }}</label>
                         <input type="text" class="form-control @error('address') is-invalid @enderror" name="address"
-                            value="{{ old('address') }}" placeholder="{{ trans('app.placeholder.address') }}">
+                            value="{{ old('address') }}" placeholder="{{ trans('app.placeholder.address') }}" >
                         @error('address')
                             <small class="text-danger d-block">
                                 {{ $message }}
@@ -100,7 +98,7 @@
                     <div class="col-sm-12 col-md-6 mb-2">
                         <label for="grade" class="form-label">{{ trans('app.label.grade') }}</label>
                         <input type="text" class="form-control @error('grade') is-invalid @enderror" name="grade"
-                            value="{{ old('grade') }}" placeholder="{{ trans('app.placeholder.grade') }}">
+                            value="{{ old('grade') }}" placeholder="{{ trans('app.placeholder.grade') }}" required>
                         @error('grade')
                             <small class="text-danger d-block">
                                 {{ $message }}
@@ -108,14 +106,14 @@
                         @enderror
                     </div>
                     <div class="col-sm-12 col-md-6 mb-2">
-                        <label for="commission" class="form-label">{{ trans('app.label.commission') }}</label>
-                        <select class="form-control" name="id_commission" >
+                        <label for="commission_id" class="form-label">{{ trans('app.label.commission') }}</label>
+                        <select class="form-control" name="commission_id" required>
                             <option >{{ trans('app.placeholder.commissions')}}</option>
                             @foreach ($commissions as $commission)
                                 <option value="{{ $commission->id}}">{{$commission->name_ar}}</option>
                             @endforeach
                         </select>
-                        @error('grade')
+                        @error('commission_id')
                             <small class="text-danger d-block">
                                 {{ $message }}
                             </small>
@@ -123,8 +121,7 @@
                     </div>
                     <div class="col-sm-12 col-md-6 mb-2">
                         <label for="email" class="form-label">{{ trans('app.label.email') }}</label>
-                        <input type="text" class="form-control @error('email') is-invalid @enderror" name="email"
-                            value="{{ old('email') }}" placeholder="{{ trans('app.placeholder.email') }}">
+                        <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" placeholder="{{ trans('app.placeholder.email') }}" required>
                         @error('email')
                             <small class="text-danger d-block">
                                 {{ $message }}
@@ -133,8 +130,7 @@
                     </div>
                     <div class="col-sm-12 col-md-6 mb-2">
                         <label for="phone" class="form-label">{{ trans('app.label.phone') }}</label>
-                        <input type="text" class="form-control @error('phone') is-invalid @enderror" name="phone"
-                            value="{{ old('phone') }}" placeholder="{{ trans('app.placeholder.phone') }}">
+                        <input type="phone" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" placeholder="{{ trans('app.placeholder.phone') }}" required>
                         @error('phone')
                             <small class="text-danger d-block">
                                 {{ $message }}
@@ -143,7 +139,7 @@
                     </div>
                     <div class="col-sm-12 col-md-6 mb-2">
                         <label for="password" class="form-label">{{ trans('app.label.password') }}</label>
-                        <input type="password" class="form-control @error('password') is-invalid @enderror" name="password">
+                        <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" required>
                         @error('password')
                             <small class="text-danger d-block">
                                 {{ $message }}
@@ -153,8 +149,7 @@
                     <div class="col-sm-12 col-md-6 mb-2">
                         <label for="password_confirmation"
                             class="form-label">{{ trans('app.label.confirme_password') }}</label>
-                        <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror"
-                            name="password_confirmation">
+                        <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror" name="password_confirmation" required>
                         @error('password_confirmation')
                             <small class="text-danger d-block">
                                 {{ $message }}

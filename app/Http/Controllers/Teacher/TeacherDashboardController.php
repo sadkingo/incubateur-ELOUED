@@ -29,26 +29,23 @@ class TeacherDashboardController extends Controller
         $allStudents = Student::all();
         return view('teacher-dashboard.index',compact('allStudents'));
     }
+
     public function projects(){
-        
         $projects = Project::all();
-        
         return view('teacher-dashboard.projects',compact('projects'));
     }
 
-    public function showProject(Project $project)
-    {
+    public function showProject(Project $project) {
         $student = Student::where('id',$project->id_student)->get();
-        $projectImages = ProjectImage::where('id_project',$project->id)->get();    
+        $projectImages = ProjectImage::where('id_project',$project->id)->get();
         return view('teacher-dashboard.project-show', compact('student','project','projectImages'));
     }
 
-    public function updateProjectStatus(Request $request)
-    {
+    public function updateProjectStatus(Request $request) {
         $project = Project::find($request->project_id);
         $project->status = $request->status;
         $project->save();
-        
+
         return response()->json([
             'message' => 'Project status updated successfully',
             'status' => $project->status

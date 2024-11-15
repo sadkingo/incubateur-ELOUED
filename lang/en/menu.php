@@ -14,5 +14,9 @@ return [
     'commissions' => 'committees',
     'certificates'  => 'Certificates',
     'settings'=> 'Settings',
-    'statistics' => 'statistics'
+    'statistics' => 'statistics',
+    'managers' => 'managers',
+    'faculties' => 'faculties',
+    'supervisors' => 'supervisors',
+
 ];

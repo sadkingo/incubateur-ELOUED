@@ -6,10 +6,10 @@ return [
     'commissions' => 'اللجان',
     'commission'  => 'اللجنة',
     'save' => "حفظ",
-    'name_ar' => 'اسم اللحنة',
-    'name_fr' => 'Nom du commission',
-    'teacher_count' => 'عدد الاساتذة الموجوجين في اللجنة',
-    'projet_count' => 'عدد المشاريع الموجوجين في اللجنة',
+    'name_ar' => 'اسم اللجنة بالعربية',
+    'name_fr' => 'اسم اللجنة بالفرنسية',
+    'teacher_count' => 'الاساتذة',
+    'projet_count' => 'المشاريع',
     'birthday' => 'تاريخ الميلاد',
     'gender' => 'الجنس',
     'female' => 'انثى',
@@ -24,6 +24,8 @@ return [
     'Commission updated successfully' => 'تم تحديث اللجنة بنجاح',
     'label' =>[
         'name' => 'الإسم',
+        'name_ar' => 'اسم اللجنة بالعربية',
+        'name_fr' => 'اسم اللجنة بالفرنسية',
     ],
 
     'firstname_fr' => 'الإسم بالفرنسية',
@@ -44,9 +46,12 @@ return [
     'confirme_password' => 'تأكيد كلمة السر',
     'stat'  => 'احصاء اللجان',
     'project_accepted' => 'عدد المشاريع المقبولة',
-    'projet_rejected' => 'عدد المشاريع المرفوضة',
+    'project_rejected' => 'عدد المشاريع المرفوضة',
     'placeholder' => [
         'name' => 'البحث بالإسم',
+
+        'name_ar' => 'اسم اللجنة بالعربية',
+        'name_fr' => 'اسم اللجنة بالفرنسية',
 
         'firstname_ar' => 'أدخل الإسم بالعربية',
         'lastname_ar' => 'أدخل اللقب بالعربية',

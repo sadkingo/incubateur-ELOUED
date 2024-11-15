@@ -8,6 +8,7 @@ use App\Repositories\Student\StudentRepository;
 use App\Http\Requests\Student\UpdateStudentRequest;
 use App\Models\Departement;
 use App\Models\Faculty;
+use App\Models\Student;
 use App\Models\StudentGroup;
 
 class AccountController extends Controller
@@ -29,9 +30,10 @@ class AccountController extends Controller
      */
     public function index()
     {
-        $student = $this->students->find(auth('student')->id());
-        $studentGroups= StudentGroup::where('id_student', $student->id)->get();
-        
+        $student = Student::find(auth('student')->id());
+        $project= StudentGroup::where('student_id', $student->id)->first();
+        $studentGroups= StudentGroup::where('project_id', $project->project_id)->get();
+
         return view('student-dashboard.profile',compact('student','studentGroups'));
     }
 
@@ -40,8 +42,7 @@ class AccountController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         $faculties = Faculty::all();
         $departments = Departement::all();
         return view('student-dashboard.create' ,compact('faculties', 'departments'));
@@ -105,7 +106,7 @@ class AccountController extends Controller
         toastr()->success(trans('message.success.create'));
         return redirect()->route('student.index');
     }
-    
+
 
     public function edit($id){
         $studentGroup = StudentGroup::findOrFail($id);
@@ -130,14 +131,14 @@ class AccountController extends Controller
             'gender.required' => 'Gender is required',
             'birthday.required' => 'Date of birthday is required',
         ]);
-    
+
         $studentGroup = StudentGroup::findOrFail($id);
         $studentGroup->update($request->all());
-    
+
         toastr()->success(trans('message.success.update'));
         return redirect()->route('student.index');
     }
-    
+
 
     public function destroy($id){
         $studentGroup = StudentGroup::findOrFail($id);

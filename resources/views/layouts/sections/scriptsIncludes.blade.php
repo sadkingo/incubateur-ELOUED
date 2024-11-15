@@ -21,5 +21,12 @@
 
 <!-- Place this tag in your head or just before your close body tag. -->
 <script async defer src="https://buttons.github.io/buttons.js"></script>
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.repeater/1.1.2/jquery.repeater.js"></script>
+{{-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.repeater/1.1.2/jquery.repeater.js"></script> --}}
+<script src="{{ asset('assets/js/jquery.dataTables.min.js') }}?v={{ time() }}"></script>
+<link rel="stylesheet" href="{{ asset('assets/css/mine.css') }}?v={{ time() }}" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
+<script src="{{ asset('assets/js/dropzone-min.js') }}?v={{ time() }}"></script>
+<link rel="stylesheet" href="{{ asset('assets/css/dropzone.css') }}?v={{ time() }}" />
+
+

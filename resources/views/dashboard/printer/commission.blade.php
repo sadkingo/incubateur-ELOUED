@@ -66,8 +66,7 @@
     <div class="card mt-5">
         <div class="card-header" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}" >
             @php
-                $locale = app()->getLocale();
-                $name = $locale === 'ar' ? $project->commission->name_ar  : $project->commission->name_fr;
+                $name = app()->getLocale() === 'ar' ? $project->commission->name_ar  : $project->commission->name_fr;
             @endphp
             {{ $project->commission->id }} -  {{ $name }}
         </div>
@@ -75,7 +74,7 @@
             <table class="table table-print" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
                 <thead>
                     <tr>
-                        <th>{{ trans('student.firstname') }}</th>
+                        {{-- <th>{{ trans('student.firstname') }}</th> --}}
                         <th>{{ trans('project.label.name') }}</th>
                         <th>{{ trans('project.label.type_project') }}</th>
                         <th>{{ trans('project.project_classification') }}</th>
@@ -84,11 +83,6 @@
                 </thead>
                 <tbody>
                     <tr>
-                        @php
-                            $locale = app()->getLocale();
-                            $name = $locale === 'ar' ? $project->student->firstname_ar . ' ' . $project->student->lastname_ar : $project->student->firstname_fr . ' ' . $project->student->lastname_fr;
-                        @endphp
-                        <td>{{ $name }}</td>
                         <td>{{ $project->name }}</td>
                         <td>
                             @if($project->type_project == 1)
@@ -100,7 +94,6 @@
                             @else
                                 {{ trans('auth/project.project_service') }}
                             @endif
-                           
                         </td>
                         <td>
                             @if($project->project_classification == 1)
@@ -110,17 +103,12 @@
                             @else
                                 {{ trans('auth/project.patent') }}
                             @endif
-                          
                         </td>
                         <td>
-                            @if ($allStudents->count() > 0)
+                            @if ($group->count() > 0)
                                 <ul>
-                                    @foreach($allStudents as $std)
-                                        @php
-                                            $locale = app()->getLocale();
-                                            $name = $locale === 'ar' ? $std->firstname_ar . ' ' . $std->lastname_ar : $std->firstname_fr . ' ' . $std->lastname_fr;
-                                        @endphp
-                                        <li>{{ $name }}</li>
+                                    @foreach($group as $student)
+                                        <li>{{ app()->getLocale() === 'ar' ? $student->student->full_name_ar : $student->full_name_fr }}</li>
                                     @endforeach
                                 </ul>
                             @else

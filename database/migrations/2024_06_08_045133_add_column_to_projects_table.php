@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('projects', function (Blueprint $table) {
-            $table->integer('id_commission')->after('id_student')->nullable();
+            $table->integer('commission_id')->after('id_student')->nullable();
         });
     }
 
@@ -26,7 +26,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('projects', function (Blueprint $table) {
-            $table->dropColumn('id_commission');
+            $table->dropColumn('commission_id');
         });
     }
 };

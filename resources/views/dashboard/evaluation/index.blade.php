@@ -321,7 +321,7 @@
                                             @endif
                                             <a class="dropdown-item"
                                                 href="{{ route('dashboard.evaluations.show', $student->id) }}">
-                                                <i class="bx bx-show me-2"></i>
+                                                <i class="mdi mdi-lock-open-outline me-2"></i>
                                                 {{ trans('evaluation.show') }}
                                             </a>
                                         </div>

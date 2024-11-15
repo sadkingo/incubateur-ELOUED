@@ -62,7 +62,7 @@
                                     <div class="row">
                                         @if (auth('admin')->check())
                                             <div class="form-group col-md-2 px-1 mt-4">
-                                                <a href="{{ route('dashboard.students.create') }}" class="btn btn-primary text-white">
+                                                <a href="{{ route('students.create') }}" class="btn btn-primary text-white">
                                                     <span class="tf-icons bx bx-plus"></span>&nbsp; {{ trans('student.create') }}
                                                 </a>
                                             </div>

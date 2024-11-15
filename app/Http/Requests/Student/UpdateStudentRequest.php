@@ -45,8 +45,8 @@ class UpdateStudentRequest extends FormRequest
             'start_date' => 'date',
             'end_date' => 'date|after:start_date',
 
-            'phone' => 'numeric|unique:students,phone,'.$this->id,
-            'email' => 'email|unique:students,email,'.$this->id,
+            'phone'        => 'required|numeric|unique:students,phone,' . $this->id . '|unique:supervising_teachers,phone|unique:managers,phone|unique:admins,phone|unique:teachers,phone',
+            'email'        => 'required|email|unique:students,email,' . $this->id . '|unique:supervising_teachers,email|unique:managers,email|unique:admins,email|unique:teachers,email',
             'password' => 'sometimes|string|nullable|min:8|max:255',
             'password_confirmation' => 'sometimes|string|nullable|same:password|min:8|max:255'
         ];
