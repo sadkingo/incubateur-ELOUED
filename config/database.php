@@ -90,7 +90,21 @@ return [
             'prefix' => '',
             'prefix_indexes' => true,
         ],
-
+        'remote_mysql' => [
+            'driver' => 'mysql',
+            'host' => env('REMOTE_DB_HOST', 'srv480.hstgr.io'),
+            'port' => env('REMOTE_DB_PORT', '3306'),
+            'database' => env('REMOTE_DB_DATABASE', 'u985783776_license_db'),
+            'username' => env('REMOTE_DB_USERNAME', 'u985783776_license'),
+            'password' => env('REMOTE_DB_PASSWORD', '4?If|545!'),
+            'unix_socket' => env('REMOTE_DB_SOCKET', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'strict' => true,
+            'engine' => null,
+        ],
+    
     ],
 
     /*

