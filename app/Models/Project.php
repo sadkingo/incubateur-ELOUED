@@ -67,12 +67,11 @@ class Project extends Authenticatable
     public function getAuthIdentifierName()
     {
         return 'code'; // This should match the field you are using for authentication
-      }
-      
-      public function getAuthIdentifier()
-      {
-      return 'code'; // This should match the field you are using for authentication
-        // return $this->getAttribute($this->getAuthIdentifierName());
+    }
+
+    public function getAuthIdentifier()
+    {
+        return $this->getAttribute($this->getAuthIdentifierName());
     }
 
     public function setPasswordAttribute($password) {
