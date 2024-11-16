@@ -229,7 +229,7 @@
 
       var contextMenu = $('<ul class="context-menu" dir="{{ app()->isLocale("ar") ? "rtl" : "" }}"></ul>')
           .append('<li><a onclick="editCommission(' + id + ')"><i class="tf-icons mdi mdi-pencil-outline mx-1"></i>{{ trans("app.edit") }}</a></li>')
-          .append('<li><a onclick="printCommission(' + id +')"><i class="tf-icons mdi mdi-printer-outline mx-1"></i>{{ trans("app.print") }}</a></li>')
+          // .append('<li><a onclick="printCommission(' + id +')"><i class="tf-icons mdi mdi-printer-outline mx-1"></i>{{ trans("app.print") }}</a></li>')
           .append('<li class="px-0 pe-none"><div class="divider border-top my-0"></div></li>')
           .append('<li><a onclick="deleteCommission(' + id + ')"><i class="tf-icons mdi mdi-trash-can-outline mx-1"></i>{{ trans("app.delete") }}</a></li>');
 

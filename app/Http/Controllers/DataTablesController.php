@@ -245,8 +245,8 @@ class DataTablesController extends Controller {
           return '
             <a class="btn btn-icon border-info text-info bg-white" onclick="editCommission(' . $commission->id . ')"><i class="mdi mdi-pencil-outline text-info"></i></a>
             <a href="javascript:void(0)" class="btn btn-icon border-danger text-danger bg-white" onclick="deleteCommission(' . $commission->id . ')"><i class="mdi mdi-trash-can-outline text-danger"></i></a>
-            <a class="btn btn-icon bg-white border border-success" onclick="printCommission(' . $commission->id . ')" ><i class="mdi mdi-printer text-success"></i></a>
-          ';
+            ';
+            // <a class="btn btn-icon bg-white border border-success" onclick="printCommission(' . $commission->id . ')" ><i class="mdi mdi-printer text-success"></i></a>
         })
         ->rawColumns(['actions'])
         ->make(true);
