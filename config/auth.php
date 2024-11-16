@@ -94,7 +94,7 @@ return [
         ],
         'projects' => [
             'driver' => 'eloquent',
-            'model' => App\Models\project::class,
+            'model' => App\Models\Project::class,
         ],
 
         // 'users' => [

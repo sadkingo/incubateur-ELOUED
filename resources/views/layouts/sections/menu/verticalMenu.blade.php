@@ -138,7 +138,7 @@
 
           <li class="menu-item {{ request()->routeIs('supervisors') ? 'active' : '' }}">
             <a href="{{ route('supervisors')}}" class="menu-link">
-                <i class="menu-icon bx bx-buildings bx-flip-horizontal" ></i>
+                <i class="menu-icon mdi mdi-pencil-ruler-outline" ></i>
                 <div class="icon-text-spacing">{{ trans('menu.supervisors') }}</div>
             </a>
           </li>
