@@ -9,8 +9,7 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\StudentLoginRequest;
 use App\Models\Project;
 
-class LoginController extends Controller
-{
+class LoginController extends Controller {
     use AuthTrait;
     /**
      * Handle the incoming request.
