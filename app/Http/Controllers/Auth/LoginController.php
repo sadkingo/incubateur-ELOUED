@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\StudentLoginRequest;
+use App\Models\Project;
 
 class LoginController extends Controller
 {
