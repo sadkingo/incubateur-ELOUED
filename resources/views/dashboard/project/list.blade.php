@@ -364,6 +364,61 @@
 </div>
 
 
+{{-- Add Bmc modal --}}
+<div class="modal fade" id="addBmcModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel2">{{ trans('project.create_bmc') }}</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <form id="addBmcForm" action="{{ url('student/project/storeBmc') }}" method="POST" enctype="multipart/form-data">
+                  @csrf
+                  <input type="hidden" name="id" id="addBmcModalId" />
+                  <div class="row mb-4">
+                    <div class="form-group">
+                      <label for="bmc" class="form-label">{{ trans('auth/project.bmc') }}</label>
+                      <input type="file" class="form-control" id="bmc" name="bmc" required>
+                    </div>
+                  </div>
+                  <div class="text-end">
+                      <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{ trans('app.close') }}</button>
+                      <button type="submit" class="btn btn-primary">{{ trans('auth/project.accept') }}</button>
+                  </div>
+              </form>
+          </div>
+      </div>
+  </div>
+</div>
+
+{{-- Reformat Bmc modal --}}
+<div class="modal fade" id="reformatBmcModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel2">{{ trans('project.update_bmc') }}</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <form id="reformatBmcForm" action="{{ url('student/project/reformatBmc') }}" method="POST" enctype="multipart/form-data">
+                  @csrf
+                  <input type="hidden" name="id" id="reformatBmcModalId" />
+                  <div class="row mb-4">
+                    <div class="form-group">
+                      <label for="bmc">{{trans('project.upload_BMC')}}</label>
+                      <input type="file" class="form-control" id="bmc" name="bmc" required>
+                  </div>
+                  </div>
+                  <div class="text-end">
+                      <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{ trans('app.close') }}</button>
+                      <button type="submit" class="btn btn-primary">{{ trans('project.update_bmc') }}</button>
+                  </div>
+              </form>
+          </div>
+      </div>
+  </div>
+</div>
 
   <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
@@ -482,6 +537,19 @@
       $('#downloadBmcLink').attr('href', "{{ asset('storage/public/projects/bmc/') }}" + "/" + bmc);
 
     }
+
+    function reformatBmc(id) {
+      $('#reformatBmcModal').modal('show');
+      $('#reformatBmcModalId').val(id);
+    }
+
+    function addBmc(id) {
+      $('#addBmcModal').modal('show');
+      $('#addBmcModalId').val(id);
+    }
+
+    
+
 
     function deleteProject(id) {
       Swal.fire({
@@ -1094,7 +1162,6 @@ $(document).ready(function() {
         });
       });
 
-
       $('#addDeadLineForm').submit(function(event) {
         $('#addDeadLineModal').modal('hide');
 
@@ -1128,6 +1195,77 @@ $(document).ready(function() {
         });
       });
 
+      $('#addBmcForm').submit(function(event) {
+        event.preventDefault();
+        $('#addBmcModal').modal('hide');
+
+
+        var formData = new FormData(this);
+
+        $.ajax({
+          url: $(this).attr('action'),
+          type: $(this).attr('method'),
+          data: formData,
+          dataType: 'json',
+          processData: false,           // Don't process the data
+          contentType: false,           // Don't set content type header
+          success: function(response) {
+            Swal.fire({
+              icon: response.icon,
+              title: response.state,
+              text: response.message,
+              confirmButtonText: "Ok"
+            });
+            table.ajax.reload();
+          },
+          error: function(xhr, textStatus, errorThrown) {
+            const response = JSON.parse(xhr.responseText);
+            Swal.fire({
+              icon: response.icon,
+              title: response.state,
+              text: response.message,
+              confirmButtonText: "Ok"
+            });
+          }
+        });
+      });
+
+      $('#reformatBmcForm').submit(function(event) {
+        event.preventDefault();
+        $('#reformatBmcModal').modal('hide');
+
+
+        var formData = new FormData(this);
+
+        $.ajax({
+          url: $(this).attr('action'),
+          type: $(this).attr('method'),
+          data: formData,
+          dataType: 'json',
+          processData: false,  // Prevent jQuery from processing the data
+          contentType: false,  // Prevent jQuery from setting contentType
+          success: function(response) {
+            Swal.fire({
+              icon: response.icon,
+              title: response.state,
+              text: response.message,
+              confirmButtonText: "Ok"
+            });
+            table.ajax.reload();
+          },
+          error: function(xhr, textStatus, errorThrown) {
+            const response = JSON.parse(xhr.responseText);
+            Swal.fire({
+              icon: response.icon,
+              title: response.state,
+              text: response.message,
+              confirmButtonText: "Ok"
+            });
+          }
+        });
+      });
+
+      
 });
 
 </script>

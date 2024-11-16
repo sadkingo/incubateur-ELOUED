@@ -366,67 +366,115 @@ class ProjectController extends Controller {
         ]);
     }
 
-    public function addBmcFile($id){
-        $project = Project::findOrFail($id);
-        return view('student-project.addBmc', compact('project'));
-    }
+    // public function addBmcFile($id){
+    //     $project = Project::findOrFail($id);
+    //     return view('student-project.addBmc', compact('project'));
+    // }
 
-    public function storeBmcFile(Request $request, $id){
-        $project = Project::findOrFail($id);
-
+    public function storeBmcFile(Request $request){
         $validator = Validator::make($request->all(), [
-            'bmc' => 'required|max:10000|mimes:pdf,ppt,pptx',
-
-        ], [
-            'bmc.max' => 'The BMC file must be less than 10MB.',
-
+            'bmc' => 'required|mimes:pdf,ppt,pptx',
+            'id' => 'required|exists:projects,id',
         ]);
+        
+        
+        if ($validator->fails()) {
+            return response()->json([
+                'icon' => 'error',
+                'state' => __("Error"),
+                'message' => $validator->errors()->first()
+            ], 422);
+        }
 
-        if ($request->hasFile('bmc')) {
-            $bmc = $request->file('bmc');
-            if ($bmc->getSize() > 10000000) {
-                return back()->withErrors(['bmc' => 'The BMC file must be less than 10MB.'])->withInput();
+        try {
+            $project = Project::findOrFail($request->id);
+
+            if ($request->hasFile('bmc')) {
+                $bmc = $request->file('bmc');
+                $bmcName = time() . '_bmc.' . $bmc->getClientOriginalExtension();
+                $bmc->storeAs('public/public/projects/bmc/', $bmcName);
+                $project->bmc = $bmcName;
+                $project->bmc_status = 1;
+                $project->save();
+                return response()->json([
+                    'icon' => 'success',
+                    'state' => __("Success"),
+                    'message' => __("Bmc File Uploaded Successfully.")
+                ]);
+    
             }
-            $bmcName = time() . '_bmc.' . $bmc->getClientOriginalExtension();
-            $bmc->storeAs('public/public/projects/bmc/', $bmcName);
-            $project->bmc = $bmcName;
-            $project->bmc_status = 1;
-            $project->save();
-            toastr()->success(trans('message.success.create'));
-            return redirect()->route('manager.index');
-            // return redirect()->route('student.index');
+            return response()->json([
+                'icon' => 'success',
+                'state' => __("Success"),
+                'message' => __("There Is No Bmc File.")
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'icon' => 'error',
+                'state' => __("Error"),
+                'message' => $e->getMessage()
+            ]);
         }
+
     }
 
-    public function reformatBmcFile($id){
+    // public function reformatBmcFile($id){
 
-        $project = Project::findOrFail($id);
+    //     $project = Project::findOrFail($id);
 
-        return view('student-project.reformatBmc', compact('project'));
-    }
+    //     return view('student-project.reformatBmc', compact('project'));
+    // }
 
-    public function updateBmcFile(Request $request, $id){
-        $project = Project::findOrFail($id);
-
-        $request->validate([
-            'bmc' => 'required|max:10000|mimes:pdf,ppt,pptx',
+    public function updateBmcFile(Request $request){
+        $validator = Validator::make($request->all(), [
+            'bmc' => 'required|mimes:pdf,ppt,pptx',
+            'id' => 'required|exists:projects,id',
         ]);
-
-        if ($project->count() > 0) {
-            Storage::delete('public/public/projects/bmc/' . $project->bmc);
+        
+        
+        if ($validator->fails()) {
+            return response()->json([
+                'icon' => 'error',
+                'state' => __("Error"),
+                'message' => $validator->errors()->first()
+            ], 422);
         }
 
-        $bmc = $request->file('bmc');
-        $bmcName = time() . '_bmc.' . $bmc->getClientOriginalExtension();
-        $bmc->storeAs('public/public/projects/bmc/', $bmcName);
+        try {
+            $project = Project::findOrFail($request->id);
+            if ($request->hasFile('bmc')) {
 
-        $project->bmc = $bmcName;
-        $project->bmc_status = 1;
-        $project->save();
+                if ($project->bmc && Storage::exists('public/projects/bmc/' . $project->bmc)) {
+                    Storage::delete('public/projects/bmc/' . $project->bmc);
+                }
 
-        toastr()->success(trans('message.success.update_bmc'));
-        // return redirect()->route('student.index');
-        return redirect()->route('manager.index');
+                $bmc = $request->file('bmc');
+                $bmcName = time() . '_bmc.' . $bmc->getClientOriginalExtension();
+                $bmc->storeAs('public/public/projects/bmc/', $bmcName);
+
+                $project->bmc = $bmcName;
+                $project->bmc_status = 1;
+                $project->save();
+
+                return response()->json([
+                    'icon' => 'success',
+                    'state' => __("Success"),
+                    'message' => __("Bmc File Uploaded Successfully.")
+                ]);
+            }
+
+            return response()->json([
+                'icon' => 'success',
+                'state' => __("Success"),
+                'message' => __("There Is No Bmc File.")
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'icon' => 'error',
+                'state' => __("Error"),
+                'message' => $e->getMessage()
+            ]);
+        }
     }
 
     public function administrative($id){

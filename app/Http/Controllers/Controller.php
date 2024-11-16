@@ -230,4 +230,73 @@ class Controller extends BaseController {
         }
     }
 
+    public function getBmcState($project) {
+        if ($project->project_classification != null){
+            if (in_array($project->project_classification, [1, 2, 4]) && $project->status == 2){
+                if ($project->statusAdministrative){
+                    // if (!$multipleRecords){
+                    //     if ($project->statusAdministrative->status == 0) {
+                    //         return '<span class="text-secondary">يتم دراسة ملفك الاداري</span>';
+                    //     }elseif($project->statusAdministrative->status == 1){
+                    //         if($project->project_tracking == 2 && $project->status_project_tracking == 1 ){
+                    //             if ($project->bmc_status == 0){
+                    //                 return '<a href="'. url("student/project/' . $project->id . '/addBmc") .'"
+                    //                     class="btn btn-primary text-white">'. trans('project.status_project.enter_bmc_file') .'</a>';
+                    //             }elseif($project->bmc_status == 1){
+                    //                 return '<span class="text-secondary">'. trans('project.status_project.under_studying') .'</span>';
+                    //             }elseif($project->bmc_status == 2){
+                    //                 return '<span class="text-success">'. trans('project.status_project.bmc_accepted') .'</span>';
+                    //             }elseif($project->bmc_status == 3){
+                    //                 return '<a href="'. url('student/project/' . $project->id . '/reformatBmc') .'"
+                    //                     class="btn btn-primary text-white">
+                    //                     '. trans('project.status_project.bmc_reformat') .'
+                    //                 </a>';
+                    //             }else{
+                    //                 return '<span class="text-warning">'. trans('project.administrative.add') .'</span>';
+                    //             }
+                    //         }elseif($project->project_tracking == 2 && $project->status_project_tracking == 2){
+                    //             return '<span class="text-success">'. trans('project.status_project.bmc_accepted') .'</span>';
+                    //         }else{
+                    //             return '<span class="text-warning">أكمل مرحلة التكوين أولا </span>';
+                    //         }    
+                    //     }else{
+                    //         return '<span class="text-warning">'. trans('project.status_project.missing') .'</span>';
+                    //     }
+                    // }else{
+                        if ($project->statusAdministrative->every(fn($item) => $item->status == 1)){
+                            if($project->project_tracking == 2 && $project->status_project_tracking == 1 ){    
+                                if ($project->bmc_status == 0){
+                                    return '<button class="btn btn-primary text-white" onclick="addBmc(' . $project->id . ')">'. trans('project.status_project.enter_bmc_file') .'</button>';
+                                }elseif($project->bmc_status == 1){
+                                    return '<span class="text-secondary">'. trans('project.status_project.under_studying') .'</span>';
+                                }elseif($project->bmc_status == 2){
+                                    return '<span class="text-success">'. trans('project.status_project.bmc_accepted') .'</span>';
+                                }elseif($project->bmc_status == 3){
+                                    return '<button class="btn btn-primary text-white" onclick="reformatBmc(' . $project->id . ')">
+                                        '. trans('project.status_project.bmc_reformat') .'
+                                    </button>';
+                                }else{
+                                    return '<span class="text-warning">'. trans('project.administrative.add') .'</span>';
+                                }
+                            }elseif($project->project_tracking == 2 && $project->status_project_tracking == 2){
+                                return '<span class="text-success">'. trans('project.status_project.bmc_accepted') .'</span>';
+                            }else{
+                                return '<span class="text-warning">أكمل  مرحلة التكوين أولا </span>';
+                            }    
+                        }else{
+                            return '<span class="text-secondary">يتم دراسة ملفك الاداري</span>';
+                        }
+                    // }
+                }else{
+                    return '<span class="text-warning">'. trans('project.administrative.add') .'</span>';
+                }
+            }else{
+                return '<span class="text-warning">'. trans('project.classification.not_eligible') .'</span>';
+            }
+        }else{
+            return '<span class="text-warning">'. trans('project.classification.no_classifi') .'</span>';
+        }
+
+    }
+
 }

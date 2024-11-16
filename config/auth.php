@@ -96,7 +96,6 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\Project::class,
         ],
-
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',

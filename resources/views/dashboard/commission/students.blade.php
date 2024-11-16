@@ -95,17 +95,17 @@
         <thead>
             <tr>
                 <th>{{ trans('print.ID') }}</th>
-                <th>{{ trans('student.lastname') }}</th>
-                <th>{{ trans('student.firstname') }}</th>
+                <th>{{ trans('auth/auth.code') }}</th>
+                <th>{{ trans('project.label.name') }}</th>
             </tr>
         </thead>
         <tbody>
-            @if (count($students))
-                @foreach ($students as $key => $student)
+            @if ($projects->count())
+                @foreach ($projects as $key => $project)
                     <tr>
-                        <td>{{$student->id}}</td>
-                        <td>{{$student->firstname_ar}}</td>
-                        <td>{{$student->lastname_ar}}</td>
+                        <td>{{$project->id}}</td>
+                        <td>{{$project->code}}</td>
+                        <td>{{$project->name}}</td>
                     </tr>
                 @endforeach
             @else

@@ -245,8 +245,8 @@ class DataTablesController extends Controller {
           return '
             <a class="btn btn-icon border-info text-info bg-white" onclick="editCommission(' . $commission->id . ')"><i class="mdi mdi-pencil-outline text-info"></i></a>
             <a href="javascript:void(0)" class="btn btn-icon border-danger text-danger bg-white" onclick="deleteCommission(' . $commission->id . ')"><i class="mdi mdi-trash-can-outline text-danger"></i></a>
+            <a class="btn btn-icon bg-white border border-success" onclick="printCommission(' . $commission->id . ')" ><i class="mdi mdi-printer text-success"></i></a>
             ';
-            // <a class="btn btn-icon bg-white border border-success" onclick="printCommission(' . $commission->id . ')" ><i class="mdi mdi-printer text-success"></i></a>
         })
         ->rawColumns(['actions'])
         ->make(true);
@@ -310,55 +310,55 @@ class DataTablesController extends Controller {
                     return '<a href="' . url('dashboard/project/' . $project->id) . '">' . $project->name . '</a>';
                 })
                 ->addColumn('status', function ($project) {
-
                   $statuses = [
                     0 => trans('project.status_project.rejected'),
                     1 => trans('project.status_project.under_studying'),
                     2 => trans('project.status_project.accepted'),
                     3 => trans('project.status_project.complete_project')
                   ];
-                return $statuses[$project->status] ?? '';
+                  return $statuses[$project->status] ?? '';
                 })
                 ->addColumn('manager_name', function ($project) {
                     return $project->faculty->manager->full_name;
                 })
                 ->addColumn('bcm_status', function ($project) {
                   if (auth('manager')->check()) {
-                      if ($project->project_classification != null) {
-                          if (in_array($project->project_classification, [1, 2, 4]) && $project->status == 2) {
-                              if ($project->statusAdministrative->isNotEmpty()) {
-                                      if ($project->statusAdministrative->contains('status', 2)) {
-                                          return trans('project.status_project.missing');
-                                      } elseif ($project->statusAdministrative->contains('status', 0)) {
-                                          return trans('auth/project.Your administrative file is being studied');
-                                      } else { // all state is 1
-                                          if ($project->project_tracking == 2 && $project->status_project_tracking == 1) {
-                                              if ($project->bmc_status == 0) {
-                                                  return trans('project.status_project.enter_bmc_file');
-                                              } elseif ($project->bmc_status == 1) {
-                                                  return trans('project.status_project.under_studying');
-                                              } elseif ($project->bmc_status == 2) {
-                                                  return trans('project.status_project.bmc_accepted');
-                                              } elseif ($project->bmc_status == 3) {
-                                                  return trans('project.status_project.bmc_reformat');
-                                              } else {
-                                                  return trans('project.administrative.add');
-                                              }
-                                          } elseif ($project->project_tracking == 2 && $project->status_project_tracking == 2) {
-                                              return trans('project.status_project.bmc_accepted');
-                                          } else {
-                                              return trans('project.administrative.add');
-                                          }
-                                      }
-                              } else {
-                                  return trans('project.administrative.add');
-                              }
-                          } else {
-                              return trans('project.classification.not_eligible');
-                          }
-                      } else {
-                          return trans('project.classification.no_classifi');
-                      }
+                    return $this->getBmcState($project);
+                      // if ($project->project_classification != null) {
+                      //     if (in_array($project->project_classification, [1, 2, 4]) && $project->status == 2) {
+                      //         if ($project->statusAdministrative->isNotEmpty()) {
+                      //                 if ($project->statusAdministrative->contains('status', 2)) {
+                      //                     return trans('project.status_project.missing');
+                      //                 } elseif ($project->statusAdministrative->contains('status', 0)) {
+                      //                     return trans('auth/project.Your administrative file is being studied');
+                      //                 } else { // all state is 1
+                      //                     if ($project->project_tracking == 2 && $project->status_project_tracking == 1) {
+                      //                         if ($project->bmc_status == 0) {
+                      //                             return trans('project.status_project.enter_bmc_file');
+                      //                         } elseif ($project->bmc_status == 1) {
+                      //                             return trans('project.status_project.under_studying');
+                      //                         } elseif ($project->bmc_status == 2) {
+                      //                             return trans('project.status_project.bmc_accepted');
+                      //                         } elseif ($project->bmc_status == 3) {
+                      //                             return trans('project.status_project.bmc_reformat');
+                      //                         } else {
+                      //                             return trans('project.administrative.add');
+                      //                         }
+                      //                     } elseif ($project->project_tracking == 2 && $project->status_project_tracking == 2) {
+                      //                         return trans('project.status_project.bmc_accepted');
+                      //                     } else {
+                      //                         return trans('project.administrative.add');
+                      //                     }
+                      //                 }
+                      //         } else {
+                      //             return trans('project.administrative.add');
+                      //         }
+                      //     } else {
+                      //         return trans('project.classification.not_eligible');
+                      //     }
+                      // } else {
+                      //     return trans('project.classification.no_classifi');
+                      // }
                   }
                   return 'No';
                 })
@@ -498,7 +498,7 @@ class DataTablesController extends Controller {
                 ->editColumn('created_at', function ($project) {
                     return $project->created_at->format('Y-m-d');
                 })
-                ->rawColumns(['checkbox','administrative_file','bmc_status', 'name', 'status', 'manager_name', 'students', 'supervisors', 'commission_name', 'actions'])
+                ->rawColumns(['checkbox','bcm_status','administrative_file','bmc_status', 'name', 'status', 'manager_name', 'students', 'supervisors', 'commission_name', 'actions'])
                 ->make(true);
         }
 

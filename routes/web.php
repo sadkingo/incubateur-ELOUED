@@ -186,10 +186,10 @@ Route::middleware('auth:admin,teacher,manager,student')->group(function () {
 
   Route::get('project/administrative/{id}/add', [ProjectController::class, 'administrative'])->name('project.administrative.add');
   Route::post('project/administrative/{id}/store', [ProjectController::class, 'storeAdministrative'])->name('project.administrative.store');
-  Route::get('student/project/{id}/addBmc', [ProjectController::class, 'addBmcFile'])->name('student.project.addBmc');
-  Route::post('student/project/{id}/storeBmc', [ProjectController::class, 'storeBmcFile'])->name('student.project.storeBmcFile');
-  Route::get('student/project/{id}/reformatBmc', [ProjectController::class, 'reformatBmcFile'])->name('student.project.reformatBmc');
-  Route::post('student/project/{id}/reformatBmc', [ProjectController::class, 'updateBmcFile'])->name('student.project.updateBmc');
+  // Route::get('student/project/{id}/addBmc', [ProjectController::class, 'addBmcFile'])->name('student.project.addBmc');
+  Route::post('student/project/storeBmc', [ProjectController::class, 'storeBmcFile'])->name('student.project.storeBmcFile');
+  // Route::get('student/project/{id}/reformatBmc', [ProjectController::class, 'reformatBmcFile'])->name('student.project.reformatBmc');
+  Route::post('student/project/reformatBmc', [ProjectController::class, 'updateBmcFile'])->name('student.project.updateBmc');
 
 
   
@@ -247,7 +247,7 @@ Route::middleware('auth:admin')->group(function () {
   Route::post('/commission/create', [CommissionController::class, 'create'])->name('commission.create');
   Route::delete('/commission/{id}', [CommissionController::class, 'delete'])->name('commission.delete');
   Route::post('/commission/update', [CommissionController::class, 'update'])->name('commission.update');
-  // Route::get('commission/{id}/students', [CommissionController::class, 'getStudentsInCommission'])->name('commission.students');
+  Route::get('commission/{id}/students', [CommissionController::class, 'getStudentsInCommission'])->name('commission.students');
 
 });
 

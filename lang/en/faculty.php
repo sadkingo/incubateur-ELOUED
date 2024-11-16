@@ -1,9 +1,9 @@
 <?php
 
     return [
-        'title' => 'Professors',
+        'title' => 'faculties',
         'dashboard' => 'control panel',
-        'teachers' => 'professors',
+        'teachers' => 'facultys',
 
         'name' => 'name',
         'birthday' => 'date of birth',
@@ -13,17 +13,17 @@
         'phone' => 'phone number',
         'email' => 'email',
         'faculty' => 'faculty',
-        'create' => 'add professor',
-        'edit' => 'Edit professor data',
-        'delete' => 'delete professor',
-        'delete_confirmation' => 'Are you sure you want to delete this professor?',
+        'create' => 'add faculty',
+        'edit' => 'Edit faculty data',
+        'delete' => 'delete faculty',
+        'delete_confirmation' => 'Are you sure you want to delete this faculty?',
         'label' =>[
             'name' => 'name',
-            'firstname_ar' => 'Name in Arabic',
-            'lastname_ar' => 'Lastname in Arabic',
             'faculty' => 'faculty',
             'phone' => 'phone number',
             'email' => 'email',
+            'name_ar' => 'Name in Arabic',
+            'name_fr' => 'Name in French',    
         ],
 
         'name_ar' => 'Name in Arabic',
@@ -32,8 +32,6 @@
         'faculties' => 'faculties',
 
         'select_gender' => 'select gender',
-        'gender_female' => 'female',
-        'gender_male' => 'male',
         'address' => 'address',
         'password' => 'password',
         'confirme_password' => 'confirm password',
@@ -42,12 +40,9 @@
         'placeholder' => [
             'name' => 'Search by name',
 
-            'firstname_ar' => 'Enter the name in Arabic',
-            'lastname_ar' => 'Enter last name in Arabic',
-
-            'firstname_fr' => 'Entrez le prenom en français',
-            'lastname_fr' => 'Entrez le family name in français',
-
+            'name_ar' => 'Name in Arabic',
+            'name_fr' => 'Name in French',
+    
             'birthday' => 'date of birth',
             'gender' => 'sex',
             'address' => 'Enter address',

@@ -87,7 +87,7 @@
                       <div class="row mb-4">
                         <div class="col">
                             <label for="name_fr" class="form-label">{{ trans('commission.label.name_fr') }}</label>
-                            <input type="text" class="form-control @error('name_fr') is-invalid @enderror" name="name_fr" value="{{ old('lastname_ar') }}" placeholder="{{ trans('commission.placeholder.name_fr') }}" required>
+                            <input type="text" class="form-control @error('name_fr') is-invalid @enderror" name="name_fr" value="{{ old('name_fr') }}" placeholder="{{ trans('commission.placeholder.name_fr') }}" required>
                         </div>
                     </div>
                       <div class="text-end">
@@ -180,11 +180,11 @@
     }  
 
     // Rejected
-    // function printCommission(id) {
-    //       var url = 'commission/' + id + '/students'
-    //       var printWindow = window.open(url, '_blank', 'height=auto,width=auto');
-    //       printWindow.print();
-    // }
+    function printCommission(id) {
+          var url = 'commission/' + id + '/students'
+          var printWindow = window.open(url, '_blank', 'height=auto,width=auto');
+          printWindow.print();
+    }
 
     function deleteCommission(id) {
       Swal.fire({
@@ -229,7 +229,7 @@
 
       var contextMenu = $('<ul class="context-menu" dir="{{ app()->isLocale("ar") ? "rtl" : "" }}"></ul>')
           .append('<li><a onclick="editCommission(' + id + ')"><i class="tf-icons mdi mdi-pencil-outline mx-1"></i>{{ trans("app.edit") }}</a></li>')
-          // .append('<li><a onclick="printCommission(' + id +')"><i class="tf-icons mdi mdi-printer-outline mx-1"></i>{{ trans("app.print") }}</a></li>')
+          .append('<li><a onclick="printCommission(' + id +')"><i class="tf-icons mdi mdi-printer-outline mx-1"></i>{{ trans("app.print") }}</a></li>')
           .append('<li class="px-0 pe-none"><div class="divider border-top my-0"></div></li>')
           .append('<li><a onclick="deleteCommission(' + id + ')"><i class="tf-icons mdi mdi-trash-can-outline mx-1"></i>{{ trans("app.delete") }}</a></li>');
 

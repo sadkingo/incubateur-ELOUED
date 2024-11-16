@@ -84,14 +84,16 @@ class CommissionController extends Controller {
 
   }
 
-  // public function getStudentsInCommission($commissionId){
+  public function getStudentsInCommission($commissionId){
 
-  //   $commission = Commission::findOrFail($commissionId);
-  //   $students = $commission->students();
-  //   return view('dashboard.commission.students')
-  //   ->with('students',$students)
-  //   ->with('commission',$commission);
-  // }
+    $commission = Commission::findOrFail($commissionId);
+    // $students = $commission->students();
+    $projects = $commission->projects;
+    return view('dashboard.commission.students')
+    ->with('projects',$projects)
+    // ->with('students',$students)
+    ->with('commission',$commission);
+  }
 
   public function delete($id) {
     $commission = Commission::find($id);
