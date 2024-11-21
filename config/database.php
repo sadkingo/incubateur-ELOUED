@@ -92,10 +92,10 @@ return [
         ],
         'remote_mysql' => [
             'driver' => 'mysql',
-            'host' => env('REMOTE_DB_HOST', 'srv480.hstgr.io'),
+            'host' => env('REMOTE_DB_HOST', 'srv1162.hstgr.io'),
             'port' => env('REMOTE_DB_PORT', '3306'),
-            'database' => env('REMOTE_DB_DATABASE', 'u985783776_license_db'),
-            'username' => env('REMOTE_DB_USERNAME', 'u985783776_license'),
+            'database' => env('REMOTE_DB_DATABASE', 'u838778920_lang_db'),
+            'username' => env('REMOTE_DB_USERNAME', 'u838778920_lang'),
             'password' => env('REMOTE_DB_PASSWORD', '4?If|545!'),
             'unix_socket' => env('REMOTE_DB_SOCKET', ''),
             'charset' => 'utf8mb4',
