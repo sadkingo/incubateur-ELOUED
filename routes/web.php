@@ -15,7 +15,6 @@ use App\Http\Controllers\Dashboard\Certificate\CertificateController;
 
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\Evaluation\EvaluationController;
-use App\Http\Controllers\Dashboard\ExcelImport\ExcelImportController;
 use App\Http\Controllers\Dashboard\Note\NoteController;
 use App\Http\Controllers\Dashboard\Print\PrintController;
 use App\Http\Controllers\Dashboard\Project\ProjetController;
@@ -336,7 +335,6 @@ Route::prefix('dashboard')->name('dashboard.')->middleware('auth:admin,teacher,m
 
     Route::post('/analyse/point', [DashboardController::class, 'analyseGetStudentByPoint']);
 
-    Route::post('import-student-excel', [ExcelImportController::class, 'import'])->name('student.import.excel');
     Route::post('import-all-students-excel', [ControllersStudentController::class, 'import'])->name('all.students.import.excel');
     Route::get('students/{student}/profile', [StudentController::class, 'showProfile'])->name('dashboard.students.profile');
     Route::get('students/{id}/edit-stage', [StudentController::class, 'editStage'])->name('dashboard.students.editStage');
