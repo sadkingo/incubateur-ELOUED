@@ -7,7 +7,7 @@
 @endsection
 
 @section('content')
-@include('dashboard.setting.import.student')
+{{-- @include('dashboard.setting.import.student') --}}
     <h4 class="fw-bold py-3 mb-4">
         <span class="text-muted fw-light">{{ trans('setting.dashboard') }} /</span> {{ trans('setting.settings') }}
     </h4>
