@@ -13,7 +13,7 @@
             <div class="authentication-inner">
                 <!-- Register -->
                 <div class="card">
-                    <div class="card-body" dir="rtl">
+                    <div class="card-body">
                         <!-- Logo -->
                         <div class="app-brand justify-content-center">
                             <a href="{{ url('/') }}" class="app-brand-link">
@@ -50,7 +50,7 @@
                                         <small>{{ trans('auth/auth.forgot_password') }}</small>
                                     </a> --}}
                                 {{-- </div> --}}
-                                <div class="input-group mb-2"  dir="{{ app()->isLocale('ar') ? 'rtl' : (app()->isLocale('en') ? 'ltr' : 'ltr')}}">
+                                <div class="input-group mb-2">
                                     <input type="password" id="password"
                                         class="form-control @error('password') is-invalid @enderror" name="password"
                                         placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"

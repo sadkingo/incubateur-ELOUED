@@ -26,16 +26,6 @@ class DataTablesController extends Controller {
 
         $query = Manager::query();
 
-        // if ($request->has('type') && $request->type != 'all') {
-        //     if ($request->type == 'expired') {
-        //         $query->where('expired_date', '<', now());
-        //     } elseif ($request->type == 'active') {
-        //         $query->where('status', 'active');
-        //     } elseif ($request->type == 'inactive') {
-        //         $query->where('status', 'inactive');
-        //     }
-        // }
-
         $managers = $query->get();
 
         if($request->ajax()) {
@@ -53,13 +43,6 @@ class DataTablesController extends Controller {
           ->addColumn('faculty', function ($manager) {
             return Str::limit($manager->faculty->name_ar, 25);
           })
-          // ->editColumn('status', function ($coupon) {
-          //   if ($coupon->status == 'active') {
-          //     return '<span class="badge rounded-pill bg-label-success">'. __('Active') .'</span>';
-          //   } else {
-          //     return '<span class="badge rounded-pill bg-label-secondary">'. __('In Active') .'</span>';
-          //   }
-          // })
           ->editColumn('created_at', function ($manager) {
             return $manager->created_at->format('Y-m-d');
           })
@@ -108,7 +91,7 @@ class DataTablesController extends Controller {
 
       return view('dashboard.faculties.list');
 
-  }
+    }
 
     public function admins(Request $request) {
         $admins = Admin::all();
@@ -300,14 +283,20 @@ class DataTablesController extends Controller {
 
           $projects = $projects->get();
             return DataTables::of($projects)
-                ->addColumn('checkbox', function ($project) {
-                    return '<input type="checkbox" class="form-check-input project-checkbox" value="' . $project->id . '">';
+                ->addColumn('checkbox', function ($project) use ($request) {
+                  if ($request->has('archived') && $request->archived == 1) {
+                    return '';
+                  } else {
+                    return '<input type="checkbox" class="form-check-input rounded-2 project-checkbox"  value="' . $project->id . '">';
+                  }
+                    // return '<input type="checkbox" class="form-check-input rounded-2 project-checkbox"  value="' . $project->id . '">';
                 })
                 ->addColumn('id', function ($project) {
                     return (string) $project->id;
                 })
                 ->addColumn('name', function ($project) {
-                    return '<a href="' . url('dashboard/project/' . $project->id) . '">' . $project->name . '</a>';
+                    // return '<a href="' . url('dashboard/project/' . $project->id) . '">' . $project->name . '</a>';
+                    return $project->name;
                 })
                 ->addColumn('status', function ($project) {
                   $statuses = [
@@ -318,8 +307,8 @@ class DataTablesController extends Controller {
                   ];
                   return $statuses[$project->status] ?? '';
                 })
-                ->addColumn('manager_name', function ($project) {
-                    return $project->faculty->manager->full_name;
+                ->addColumn('faculty', function ($project) {
+                    return Str::limit($project->faculty->name_ar, 25);
                 })
                 ->addColumn('bcm_status', function ($project) {
                   if (auth('manager')->check()) {
@@ -362,26 +351,26 @@ class DataTablesController extends Controller {
                   }
                   return 'No';
                 })
-                ->addColumn('administrative_file', function ($project) {
-                    if (auth('manager')->check()) {
-                        if (in_array($project->project_classification, [1, 2, 4]) && $project->status == 2) {
-                            if ($project->statusAdministrative->isNotEmpty()) {
-                                    if ($project->statusAdministrative->contains('status', 2)) {
-                                    return '<a href="' . url('project/administrative/' . $project->id . '/add') . '" class="btn btn-primary text-white">' . trans('project.administrative.edit') . '</a>';
-                                    } elseif ($project->statusAdministrative->contains('status', 0)) {
-                                        return trans('auth/project.Your administrative file is being studied');
-                                    } else { // all 1
-                                        return trans('project.administrative.ok');
-                                    }
-                            } else {
-                                return '<a href="' . url('project/administrative/' . $project->id . '/add') . '" class="btn btn-primary text-white">' . trans('project.administrative.add') . '</a>';
-                            }
-                        } else {
-                            return trans('project.administrative.emty');
-                        }
-                    }
-                    return 'No';
-                })
+                // ->addColumn('administrative_file', function ($project) {
+                //     if (auth('manager')->check()) {
+                //         if (in_array($project->project_classification, [1, 2, 4]) && $project->status == 2) {
+                //             if ($project->statusAdministrative->isNotEmpty()) {
+                //                     if ($project->statusAdministrative->contains('status', 2)) {
+                //                     return '<a href="' . url('project/administrative/' . $project->id . '/add') . '" class="btn btn-primary text-white">' . trans('project.administrative.edit') . '</a>';
+                //                     } elseif ($project->statusAdministrative->contains('status', 0)) {
+                //                         return trans('auth/project.Your administrative file is being studied');
+                //                     } else { // all 1
+                //                         return trans('project.administrative.ok');
+                //                     }
+                //             } else {
+                //                 return '<a href="' . url('project/administrative/' . $project->id . '/add') . '" class="btn btn-primary text-white">' . trans('project.administrative.add') . '</a>';
+                //             }
+                //         } else {
+                //             return trans('project.administrative.emty');
+                //         }
+                //     }
+                //     return 'No';
+                // })
                 ->addColumn('students', function ($project) {
                     if ($project->students->isEmpty()) {
                         return '<a>' . trans('project.no_members') . '</a>';
@@ -431,9 +420,7 @@ class DataTablesController extends Controller {
                           <i class="bx bx-dots-vertical-rounded"></i>
                       </button>
                       <div class="dropdown-menu">';
-                      $html .= '<a class="dropdown-item" href="javascript:void(0);" onclick="deleteProject(' . $project->id . ')">
-                      <i class="mdi mdi-trash-can-outline me-2"></i>' . trans('project.delete') . '</a>';
-
+                      
                       if ($currentDate < $startDate) {
                           $html .= '<span class="text-info dropdown-item">' . trans('project.edit_soon') . '</span>';
                       } elseif ($currentDate >= $startDate && $currentDate <= $endDate) {
@@ -442,6 +429,10 @@ class DataTablesController extends Controller {
                       } else {
                           $html .= '<span class="text-danger dropdown-item">' . trans('project.edit_closed') . '</span>';
                       }
+
+                      $html .= '<a class="dropdown-item" href="javascript:void(0);" onclick="deleteProject(' . $project->id . ')">
+                      <i class="mdi mdi-trash-can-outline me-2"></i>' . trans('project.delete') . '</a>';
+
                       $html .= '</div></div>';
                       return $html;
                     } else {
@@ -451,8 +442,7 @@ class DataTablesController extends Controller {
                       ';
                     }
 
-                  } else {
-                    if (auth('admin')->check() || auth('teacher')->check()) {
+                  } elseif (auth('admin')->check() || auth('teacher')->check()) {
                     
                       $html = '<div class="dropdown">
                       <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
@@ -467,19 +457,22 @@ class DataTablesController extends Controller {
                       }
 
                       if (is_null($project->project_classification)) {
-                          $html .= '<button class="dropdown-item" onclick="addProjectClassification(' . $project->id . ')">' . trans('project.add_project_classification') . '</button>';
+                        $html .= '<button class="dropdown-item" onclick="addProjectClassification(' . $project->id . ')">' . trans('project.add_project_classification') . '</button>';
                       } else {
                         $html .= '<button class="dropdown-item" onclick="editProjectClassification(' . $project->id . ',' . $project->project_classification .')">' . trans('project.edit_project_classification') . '</button>';
                       }
 
                       if ($project->project_classification && $project->type_project) {
-                          $html .= '<a class="dropdown-item" href="' . url('dashboard/project/' . $project->id) . '/add-project-tracking">' . trans('project.project_tracking') . '</a>';
+                        $html .= '<a class="dropdown-item" href="' . url('dashboard/project/' . $project->id) . '/add-project-tracking">' . trans('project.project_tracking') . '</a>';
                       }
 
-                      if (in_array($project->project_classification, [1, 2, 4])) {
-                          $html .= '<button class="dropdown-item" onclick="editBmcStuding(' . $project->id . ', \'' . addslashes($project->bmc_status) . '\' , \'' . addslashes($project->bmc) . '\')">' . trans('project.bmc_tracking') . '</button>
-                                    <a class="dropdown-item" href="' . url('dashboard/administrative/' . $project->id) . '">' . trans('project.administrative_tracking') . '</a>';
-                      }
+                      // if (in_array($project->project_classification, [1, 2, 4])) {
+                      //     $html .= '<button class="dropdown-item" onclick="editBmcStuding(' . $project->id . ', \'' . addslashes($project->bmc_status) . '\' , \'' . addslashes($project->bmc) . '\')">' . trans('project.bmc_tracking') . '</button>
+                      //               <a class="dropdown-item" href="' . url('dashboard/administrative/' . $project->id) . '">' . trans('project.administrative_tracking') . '</a>';
+                      // }
+
+                      $html .= '<a href="' . route('project.edit', $project->id) . '" class="dropdown-item">
+                      <i class="bx bx-edit-alt me-2"></i>' . trans('project.edit_project') . '</a>';
 
                       if ($project->archived == '1') {
                         $html .= '<button class="dropdown-item" onclick="archiveProject(' . $project->id . ')">' . trans('project.restore') . '</button>';
@@ -489,11 +482,10 @@ class DataTablesController extends Controller {
 
                       $html .= '</div></div>';
                       return $html;
-                    } else {
-                      return '';
-                    }
-                    
+                  } else {
+                    return '';
                   }
+                    
                 })
                 ->editColumn('created_at', function ($project) {
                     return $project->created_at->format('Y-m-d');
@@ -670,16 +662,19 @@ class DataTablesController extends Controller {
               })
               ->addColumn('actions', function ($project) {
                 if (auth('admin')->check() || auth('teacher')->check()) {
-                    $editLink = '<button class="dropdown-item" href="' . url('dashboard/project/'.$project->id.'/edit-project-tracking') . '" onclick="editProjectTracking('. $project->id .','. $project->project_tracking .')">'
+
+                    $edit_project_tracking = '<button class="dropdown-item" onclick="editProjectTracking('. $project->project_classification .','. $project->project_tracking .')" data-bs-toggle="modal" data-bs-target="#editProjectTrackingModal">'
                     . ($project->project_tracking == 0 ? trans('project.project_tracking') : trans('project.edit_project_tracking'))
                     . '</button>';
-                    $statusLink = '<button class="dropdown-item" href="' . url('dashboard/project/'.$project->id.'/edit-status-project-tracking') . '" onclick="addStatusProjectTracking(id,classification)">' 
+
+                    $edit_status_project_tracking = '<button class="dropdown-item" onclick="editStatusProjectTracking('. $project->project_classification .','. $project->project_tracking . ','. $project->status_project_tracking . ')" data-bs-toggle="modal" data-bs-target="#editStatusProjectTrackingModal">' 
                     . trans('project.edit_status_project_tracking') . '</button>';
+
                     return '<div class="dropdown">
                     <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
                     <i class="bx bx-dots-vertical-rounded"></i>
                     </button>
-                    <div class="dropdown-menu">' . $editLink . $statusLink . '</div>
+                    <div class="dropdown-menu">' . $edit_project_tracking . $edit_status_project_tracking . '</div>
                     </div>';
                 }
                 return '';

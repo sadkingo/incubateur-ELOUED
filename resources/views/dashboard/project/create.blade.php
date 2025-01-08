@@ -250,7 +250,7 @@ function debounce(func, delay) {
 
 
 
-              $('.repeater2').repeater({
+          $('.repeater2').repeater({
             initEmpty: false,
 
             show: function () {

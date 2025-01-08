@@ -166,20 +166,20 @@
             </a>
         </li> --}}
 
-        @if (auth('admin')->check())
+        {{-- @if (auth('admin')->check()) --}}
             {{-- <li class="menu-item {{ request()->routeIs('certificates.index') ? 'active' : '' }}">
                 <a href="{{ route('certificates.index') }}" class="menu-link">
                     <i class="text-dark menu-icon bx bxs-certification" aria-hidden="true"></i>
                     <div>{{ trans('menu.certificates') }}</div>
                 </a>
             </li> --}}
-            <li class="menu-item {{ request()->routeIs('settings.index') ? 'active' : '' }}">
+            {{-- <li class="menu-item {{ request()->routeIs('settings.index') ? 'active' : '' }}">
                 <a href="{{ route('settings.index') }}" class="menu-link">
                     <i class="menu-icon bx bxs-cog" aria-hidden="true"></i>
                     <div>{{ trans('menu.settings') }}</div>
                 </a>
-            </li>
-        @endif
+            </li> --}}
+        {{-- @endif --}}
 
     </ul>
 

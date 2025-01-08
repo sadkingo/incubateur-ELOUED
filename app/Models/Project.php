@@ -86,4 +86,12 @@ class Project extends Authenticatable
       return $this->hasMany(AdministrativeFiles::class);
     }
 
+    public function getPitchDeckUrlAttribute() {
+        if ($this->pitch_deck) {
+            return asset('storage/public/projects/pitch_deck/' . $this->pitch_deck);
+        }
+
+        return null;
+    }
+
 }

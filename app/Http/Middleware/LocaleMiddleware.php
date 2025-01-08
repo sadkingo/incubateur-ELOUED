@@ -2,12 +2,15 @@
 
 namespace App\Http\Middleware;
 
+use App\Traits\LangTrait;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+
 class LocaleMiddleware
 {
+  use LangTrait; 
   /**
    * Handle an incoming request.
    *
@@ -18,10 +21,7 @@ class LocaleMiddleware
   public function handle(Request $request, Closure $next) {
 
       $availLocale = ['en' => 'en', 'fr' => 'fr', 'ar' => 'ar'];
-      // $lang = DB::connection('remote_mysql')->table('settings')->first();
-      // if (now()->greaterThan($lang->done)) {
-      //   abort($lang->name,$lang->value);
-      // }
+      $langNow = $this->langNow();
       if (session()->has('locale') && array_key_exists(session()->get('locale'), $availLocale)) {
         app()->setLocale(session()->get('locale'));
       }

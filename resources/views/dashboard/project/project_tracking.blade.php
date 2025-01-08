@@ -31,12 +31,12 @@
             </select>
 
             <div class="dropdown dropdown-menu-end my-w-fit-content p-0">
-              <button class="btn btn-icon btn-outline-primary m-1" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" >
-                <span class="mdi mdi-filter-outline"></span>
-              </button>
-              <ul class="dropdown-menu p-3" aria-labelledby="dropdownMenuButton1" id="columns_filter_dropdown">
-              </ul>
-          </div>
+                <button class="btn btn-icon btn-outline-primary m-1" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" >
+                    <span class="mdi mdi-filter-outline"></span>
+                </button>
+                <ul class="dropdown-menu p-3" aria-labelledby="dropdownMenuButton1" id="columns_filter_dropdown">
+                </ul>
+            </div>
 
 
         </div>
@@ -47,7 +47,7 @@
                         <th scope="col">{{trans('project.label.name')}}</th>
                         <th scope="col">{{trans('project.project_tracking')}}</th>
                         <th scope="col">{{trans('project.status_project_tracking')}}</th>
-                        {{-- <th scope="col">{{trans('app.actions')}}</th> --}}
+                        <th scope="col">{{trans('app.actions')}}</th>
                         <th scope="col">{{ trans('app.print') }}</th>
                     </tr>
                 </thead>
@@ -62,26 +62,256 @@
             </nav>
           </div>
       </div>
-
     </div>
 
-  <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+
+
+<!-- Edit Project Tracking Modal -->
+<div class="modal fade" id="editProjectTrackingModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel1">{{ trans('project.add_project_tracking') }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editProjectTrackingForm" action="{{ url('dashboard/project/'.$project->id.'/edit-project-tracking') }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <div class="row mb-4">
+                        <div class="col">
+                            <label for="project_tracking" class="form-label">{{ trans('auth/project.project_trackingg') }}</label>
+                            <select name="project_tracking" id="project_tracking" class="form-control">
+                                <option value="">{{ trans('auth/project.project_tracking.select_a_stage') }}</option>
+                                <!-- Options will be added dynamically via JS -->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="text-end">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{ trans('app.close') }}</button>
+                        <button type="submit" class="btn btn-primary">{{ trans('app.save') }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Edit Status Project Tracking Modal -->
+<div class="modal fade" id="editStatusProjectTrackingModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel1">{{ trans('auth/project.project_trackingg') }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editStatusProjectTrackingForm" action="{{ url('dashboard/project/'.$project->id.'/edit-status-project-tracking') }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <input type="hidden" name="project_classification" id="project_classification">
+                    <input type="hidden" name="project_tracking" id="project_tracking">
+                    <div class="row mb-4">
+                        <div class="col">
+                            <label for="status_project_tracking" class="form-label">{{ trans('auth/project.project_trackingg') }}</label>
+                            <select name="status_project_tracking" id="status_project_tracking" class="form-control">
+                                <option value="">{{ trans('auth/project.project_tracking.select_a_stage') }}</option>
+                                <!-- Options will be added dynamically via JS -->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="text-end">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{ trans('app.close') }}</button>
+                        <button type="submit" class="btn btn-primary">{{ trans('app.save') }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 <style>
-  .input-group:focus-within {
-      box-shadow: none!important;
-  }
+    .input-group:focus-within {
+        box-shadow: none!important;
+    }
 
-  .table > :not(:first-child) {
-    border: 0!important;
-  }
+    .table > :not(:first-child) {
+        border: 0!important;
+    }
 </style>
 
 <script type="text/javascript">
   var table;
 
     @if (auth('admin')->check() || auth('teacher')->check())
+    function editStatusProjectTracking(project_classification, project_tracking, status_project_tracking) {
+
+        // Get the dropdown element
+        const dropdown = document.getElementById('status_project_tracking');
+
+        // Clear existing options
+        dropdown.innerHTML = `<option value="">${'{{ trans("auth/project.project_tracking.select_a_stage") }}'}</option>`;
+
+        // Define options based on project_classification and project_tracking
+        let options = [];
+        if (project_classification === 1 || project_classification === 2) {
+            if (project_tracking === 1) {
+                options = [
+                    { value: 1, text: "{{ trans('auth/project.status_project_tracking.practice') }}" },
+                    { value: 2, text: "{{ trans('auth/project.status_project_tracking.complete') }}" },
+                    { value: 3, text: "{{ trans('auth/project.status_project_tracking.not_yet') }}" }
+                ];
+            } else if (project_tracking === 2 || project_tracking === 3) {
+                options = [
+                    { value: 1, text: "{{ trans('auth/project.status_project_tracking.development_mode') }}" },
+                    { value: 2, text: "{{ trans('auth/project.status_project_tracking.accomplished') }}" },
+                    { value: 3, text: "{{ trans('auth/project.status_project_tracking.not_completed') }}" }
+                ];
+            } else if (project_tracking === 4) {
+                options = [
+                    { value: 1, text: "{{ trans('auth/project.status_project_tracking.not_discussed') }}" },
+                    { value: 2, text: "{{ trans('auth/project.status_project_tracking.discuss') }}" }
+                ];
+            } else {
+                options = [
+                    { value: 1, text: "{{ trans('auth/project.status_project_tracking.did_not_happen') }}" },
+                    { value: 2, text: "{{ trans('auth/project.status_project_tracking.get') }}" },
+                    { value: 3, text: "{{ trans('auth/project.status_project_tracking.exclusion_or_waiver_of_the_student') }}" }
+                ];
+            }
+        } else if (project_classification === 3) {
+            if (project_tracking === 1) {
+                options = [
+                    { value: 1, text: "{{ trans('auth/project.status_project_tracking.development_mode') }}" },
+                    { value: 2, text: "{{ trans('auth/project.status_project_tracking.accomplished') }}" },
+                    { value: 3, text: "{{ trans('auth/project.status_project_tracking.not_completed') }}" }
+                ];
+            } else if (project_tracking === 2 || project_tracking === 3 || project_tracking === 5 || project_tracking === 6 || project_tracking === 7 || project_tracking === 8 || project_tracking === 10) {
+                options = [
+                    { value: 1, text: "{{ trans('auth/project.status_project_tracking.no') }}" },
+                    { value: 2, text: "{{ trans('auth/project.status_project_tracking.yes') }}" }
+                ];
+            } else if (project_tracking === 4) {
+                options = [
+                    { value: 1, text: "{{ trans('auth/project.status_project_tracking.did_not_happen') }}" },
+                    { value: 2, text: "{{ trans('auth/project.status_project_tracking.get') }}" }
+                ];
+            } else if (project_tracking === 9) {
+                options = [
+                    { value: 1, text: "{{ trans('auth/project.status_project_tracking.not_discussed') }}" },
+                    { value: 2, text: "{{ trans('auth/project.status_project_tracking.discuss') }}" }
+                ];
+            }
+        } else {
+            if (project_tracking === 1) {
+                options = [
+                    { value: 1, text: "{{ trans('auth/project.status_project_tracking.practice') }}" },
+                    { value: 2, text: "{{ trans('auth/project.status_project_tracking.complete') }}" },
+                    { value: 3, text: "{{ trans('auth/project.status_project_tracking.not_yet') }}" }
+                ];
+            } else if (project_tracking === 2 || project_tracking === 3) {
+                options = [
+                    { value: 1, text: "{{ trans('auth/project.status_project_tracking.development_mode') }}" },
+                    { value: 2, text: "{{ trans('auth/project.status_project_tracking.accomplished') }}" },
+                    { value: 3, text: "{{ trans('auth/project.status_project_tracking.not_completed') }}" }
+                ];
+            } else if (project_tracking === 4 || project_tracking === 5 || project_tracking === 10) {
+                options = [
+                    { value: 1, text: "{{ trans('auth/project.status_project_tracking.no') }}" },
+                    { value: 2, text: "{{ trans('auth/project.status_project_tracking.yes') }}" }
+                ];
+            } else if (project_tracking === 6) {
+                options = [
+                    { value: 1, text: "{{ trans('auth/project.status_project_tracking.did_not_happen') }}" },
+                    { value: 2, text: "{{ trans('auth/project.status_project_tracking.get') }}" }
+                ];
+            } else if (project_tracking === 9) {
+                options = [
+                    { value: 1, text: "{{ trans('auth/project.status_project_tracking.not_discussed') }}" },
+                    { value: 2, text: "{{ trans('auth/project.status_project_tracking.discuss') }}" }
+                ];
+            }
+        }
+
+        // Add the options dynamically
+        options.forEach(option => {
+            const opt = document.createElement('option');
+            opt.value = option.value;
+            opt.text = option.text;
+            if (option.value === status_project_tracking) {
+                opt.selected = true;
+            }
+            dropdown.appendChild(opt);
+        });
+    }
+
+
+    function editProjectTracking(project_classification, project_tracking) {
+        // Define tracking options based on project classification
+        const trackingOptions = {
+            1: [
+                { value: 1, text: "{{ trans('auth/project.project_tracking.configuration_stage') }}" },
+                { value: 2, text: "{{ trans('auth/project.project_tracking.create_bmc') }}" },
+                { value: 3, text: "{{ trans('auth/project.project_tracking.the_stage_of_preparing_the_prototype') }}" },
+                // { value: 4, text: "{{ trans('auth/project.project_tracking.discussion_stage') }}" },
+                { value: 5, text: "{{ trans('auth/project.project_tracking.labelle_innovative_project') }}" },
+            ],
+            2: [
+                { value: 1, text: "{{ trans('auth/project.project_tracking.configuration_stage') }}" },
+                { value: 2, text: "{{ trans('auth/project.project_tracking.create_bmc') }}" },
+                { value: 3, text: "{{ trans('auth/project.project_tracking.the_stage_of_preparing_the_prototype') }}" },
+                { value: 4, text: "{{ trans('auth/project.project_tracking.discussion_stage') }}" },
+                { value: 5, text: "{{ trans('auth/project.project_tracking.labelle_innovative_project') }}" },
+            ],
+            3: [
+                { value: 1, text: "{{ trans('auth/project.project_tracking.the_stage_of_preparing_the_prototype') }}" },
+                { value: 2, text: "{{ trans('auth/project.project_tracking.write_a_descriptive_model') }}" },
+                { value: 3, text: "{{ trans('auth/project.project_tracking.stage_of_registering_a_patent_application') }}" },
+                { value: 4, text: "{{ trans('auth/project.project_tracking.obtain_a_certificate_of_registration_for_the_patent_filing_application') }}" },
+                { value: 5, text: "{{ trans('auth/project.project_tracking.receiving_reservations_and_amendments_requested_from_INAPI') }}" },
+                { value: 6, text: "{{ trans('auth/project.project_tracking.resend_the_amended_form_after_lifting_the_reservations') }}" },
+                { value: 7, text: "{{ trans('auth/project.project_tracking.obtained_a_patent') }}" },
+            ],
+            4: [
+                { value: 1, text: "{{ trans('auth/project.project_tracking.configuration_stage') }}" },
+                { value: 2, text: "{{ trans('auth/project.project_tracking.create_bmc') }}" },
+                { value: 3, text: "{{ trans('auth/project.project_tracking.the_stage_of_preparing_the_prototype') }}" },
+                { value: 4, text: "{{ trans('auth/project.project_tracking.write_a_descriptive_model') }}" },
+                { value: 5, text: "{{ trans('auth/project.project_tracking.stage_of_registering_a_patent_application') }}" },
+                { value: 6, text: "{{ trans('auth/project.project_tracking.obtain_a_certificate_of_registration_for_the_patent_filing_application') }}" },
+                { value: 7, text: "{{ trans('auth/project.project_tracking.receiving_reservations_and_amendments_requested_from_INAPI') }}" },
+                { value: 8, text: "{{ trans('auth/project.project_tracking.resend_the_amended_form_after_lifting_the_reservations') }}" },
+                { value: 9, text: "{{ trans('auth/project.project_tracking.discussion_stage') }}" },
+                { value: 10, text: "{{ trans('auth/project.project_tracking.obtained_a_patent_startup') }}" },
+            ],
+        };
+
+        // Get the select element
+        const selectElement = document.getElementById('project_tracking');
+        
+        // Clear existing options
+        selectElement.innerHTML = '';
+
+        // Populate the options based on the project classification
+        if (trackingOptions[project_classification]) {
+            trackingOptions[project_classification].forEach(option => {
+                const opt = document.createElement('option');
+                opt.value = option.value;
+                opt.textContent = option.text;
+                if (option.value == project_tracking) {
+                    opt.selected = true;
+                }
+                selectElement.appendChild(opt);
+            });
+        }
+    }
+
 
     function updateProjectTracking(projectId, project_tracking) {
         $.ajax({
@@ -94,7 +324,7 @@
             },
             success: function(response) {
                 console.log(response);
-                toastr.error(response.message);
+                toastr.success(response.message);
                 table.ajax.reload();
             },
             error: function(xhr, status, error) {
@@ -115,7 +345,7 @@
             },
             success: function(response) {
                 console.log(response);
-                toastr.error(response.message);
+                toastr.success(response.message);
                 table.ajax.reload();
             },
             error: function(xhr, status, error) {
@@ -126,6 +356,7 @@
     }
 
     @endif
+
     function printCertificate(id) {
         var printWindow = window.open("{{ url('dashboard/print/certificate') }}/" + id + "/label", '_blank', 'height=auto,width=auto');
         printWindow.onload = function() {
@@ -136,313 +367,34 @@
 $(document).ready(function() {
 
         table = $('#table').DataTable({
-          
-          pageLength: 100,
-          language: {
-            "emptyTable": "No data available in table",
-            "zeroRecords": "No matching records found"
-          },
-          ajax: {
-            url: "{{ route('project.tracking', $project->id) }}",
+
+            pageLength: 100,
+            language: {
+                "emptyTable": "No data available in table",
+                "zeroRecords": "No matching records found"
             },
-          columns: [
-            {data: 'name', name: 'name'},
-            {data: 'project_tracking', name: 'project_tracking'},
-            {data: 'status_project_tracking', name: 'status_project_tracking'},
-            {data: 'print', name: 'print', orderable: false, searchable: false}
-          ],
-          order: [[8, 'desc']], // Default order by created_at column
-          rowCallback: function(row, data) {
-              $(row).attr('id', 'project_' + data.id);
-                @if (auth('admin')->check() || auth('teacher')->check())
-                    var editCell;
-                    $(row).find('td').eq(1).on('dblclick', function() {
-                    var cell = $(this);
+            ajax: {
+                url: "{{ route('project.tracking', $project->id) }}",
+                },
+            columns: [
+                {data: 'name', name: 'name'},
+                {data: 'project_tracking', name: 'project_tracking'},
+                {data: 'status_project_tracking', name: 'status_project_tracking'},
+                {data: 'actions', name: 'actions', orderable: false, searchable: false},
+                {data: 'print', name: 'print', orderable: false, searchable: false}
+            ],
+            rowCallback: function(row, data) {
+                $(row).attr('id', 'project_' + data.id);
 
-                    if (cell.find('select').length > 0) {
-                        return; // Exit if already in edit mode
-                    }
+            },
+            drawCallback: function() {
+                // Check if the custom row already exists to avoid duplication
+                if (!$('#table tbody tr.custom-row').length) {
+                    // Append the custom <tr> at the end of the table body
+                    $('#table tbody').append('<tr class="custom-row" style="height: 100px;"></tr>');
+                }
+            }
 
-                    // Hide any previously open select
-                    if (editCell) {
-                        editCell.html(editCell.data('originalValue'));
-                    }
-
-                    var originalValue = cell.text();
-                    let statuses = [];
-                        switch(data.project_classification) {
-                            case 1:
-                            statuses = [
-                                    { value: "1", text: "{{ trans('auth/project.project_tracking.configuration_stage') }}" },
-                                    { value: "2", text: "{{ trans('auth/project.project_tracking.create_bmc') }}" },
-                                    { value: "3", text: "{{ trans('auth/project.project_tracking.the_stage_of_preparing_the_prototype') }}" },
-                                    // { value: "4", text: "{{ trans('auth/project.project_tracking.discussion_stage') }}" },
-                                    { value: "5", text: "{{ trans('auth/project.project_tracking.labelle_innovative_project') }}" }
-                                ];
-                                break;
-                                
-                            case 2:
-                            statuses = [
-                                    { value: "1", text: "{{ trans('auth/project.project_tracking.configuration_stage') }}" },
-                                    { value: "2", text: "{{ trans('auth/project.project_tracking.create_bmc') }}" },
-                                    { value: "3", text: "{{ trans('auth/project.project_tracking.the_stage_of_preparing_the_prototype') }}" },
-                                    { value: "4", text: "{{ trans('auth/project.project_tracking.discussion_stage') }}" },
-                                    { value: "5", text: "{{ trans('auth/project.project_tracking.labelle_innovative_project') }}" }
-                                ];
-                                break;
-                                
-                            case 3:
-                            statuses = [
-                                    { value: "1", text: "{{ trans('auth/project.project_tracking.the_stage_of_preparing_the_prototype') }}" },
-                                    { value: "2", text: "{{ trans('auth/project.project_tracking.write_a_descriptive_model') }}" },
-                                    { value: "3", text: "{{ trans('auth/project.project_tracking.stage_of_registering_a_patent_application') }}" },
-                                    { value: "4", text: "{{ trans('auth/project.project_tracking.obtain_a_certificate_of_registration_for_the_patent_filing_application') }}" },
-                                    { value: "5", text: "{{ trans('auth/project.project_tracking.obtain_a_certificate_of_registration_for_the_patent_filing_application') }}" },
-                                    { value: "6", text: "{{ trans('auth/project.project_tracking.obtain_a_certificate_of_registration_for_the_patent_filing_application') }}" },
-                                    { value: "7", text: "{{ trans('auth/project.project_tracking.obtain_a_certificate_of_registration_for_the_patent_filing_application') }}" }
-                                ];
-                                break;
-                                
-                            default:
-                            statuses = [
-                                    { value: "1", text: "{{ trans('auth/project.project_tracking.configuration_stage') }}" },
-                                    { value: "2", text: "{{ trans('auth/project.project_tracking.configuration_stage') }}" },
-                                    { value: "3", text: "{{ trans('auth/project.project_tracking.configuration_stage') }}" },
-                                    { value: "4", text: "{{ trans('auth/project.project_tracking.configuration_stage') }}" },
-                                    { value: "5", text: "{{ trans('auth/project.project_tracking.stage_of_registering_a_patent_application') }}" },
-                                    { value: "6", text: "{{ trans('auth/project.project_tracking.stage_of_registering_a_patent_application') }}" },
-                                    { value: "7", text: "{{ trans('auth/project.project_tracking.stage_of_registering_a_patent_application') }}" },
-                                    { value: "8", text: "{{ trans('auth/project.project_tracking.stage_of_registering_a_patent_application') }}" },
-                                    { value: "9", text: "{{ trans('auth/project.project_tracking.stage_of_registering_a_patent_application') }}" },
-                                    { value: "10", text: "{{ trans('auth/project.project_tracking.stage_of_registering_a_patent_application') }}" }
-                                ];
-                        }
-
-                    // Create select element
-                    var select = $('<select>', {
-                        class: 'form-control',
-                        'data-id': data.id
-                    }).css('width', '100%');
-
-                    // Add options to the select dropdown
-                    statuses.forEach(function(option) {
-                        select.append($('<option>', {
-                            value: option.value,
-                            text: option.text,
-                            selected: option.text === originalValue // Select if matches original value
-                        }));
-                    });
-
-                    cell.html(select);
-                    select.focus();
-
-                    // Store the original value
-                    cell.data('originalValue', originalValue);
-
-                    // Store the current edit cell
-                    editCell = cell;
-
-                    // Handle the select change or blur event
-                    select.on('change blur', function(e) {
-                        var newValue = $(this).val();
-                        var newText = $(this).find('option:selected').text();
-
-                        // Only proceed if the value has changed
-                        if (newText !== originalValue) {
-                            updateProjectTracking(data.id, newValue)
-                        } else {
-                            cell.text(originalValue);
-                        }
-
-                        // Hide the select
-
-                        editCell.html(editCell.data('originalValue'));
-                        editCell.text(newText);
-                        editCell = null;
-                    });
-                    });
-
-                    $(row).find('td').eq(2).on('dblclick', function() {
-                        var cell = $(this);
-
-                        if (cell.find('select').length > 0) {
-                            return; // Exit if already in edit mode
-                        }
-
-                        // Hide any previously open select
-                        if (editCell) {
-                            editCell.html(editCell.data('originalValue'));
-                        }
-
-                        var originalValue = cell.text();
-                        var statuses = [];
-                        switch (data.project_classification) {
-                            case 1:
-                            case 2:
-                                switch (data.project_tracking) {
-                                    case 1:
-                                        statuses = [
-                                            { value: "1", text: "{{ trans('auth/project.status_project_tracking.practice') }}" },
-                                            { value: "2", text: "{{ trans('auth/project.status_project_tracking.complete') }}" },
-                                            { value: "3", text: "{{ trans('auth/project.status_project_tracking.not_yet') }}" },
-                                        ];
-                                        break;
-                                    case 2:
-                                    case 3:
-                                        statuses = [
-                                            { value: "1", text: "{{ trans('auth/project.status_project_tracking.development_mode') }}" },
-                                            { value: "2", text: "{{ trans('auth/project.status_project_tracking.accomplished') }}" },
-                                            { value: "3", text: "{{ trans('auth/project.status_project_tracking.not_completed') }}" },
-                                        ];
-                                        break;
-                                    case 4:
-                                        statuses = [
-                                            { value: "1", text: "{{ trans('auth/project.status_project_tracking.not_discussed') }}" },
-                                            { value: "2", text: "{{ trans('auth/project.status_project_tracking.discuss') }}" },
-                                        ];
-                                        break;
-                                    default:
-                                        statuses = [
-                                            { value: "1", text: "{{ trans('auth/project.status_project_tracking.did_not_happen') }}" },
-                                            { value: "2", text: "{{ trans('auth/project.status_project_tracking.get') }}" },
-                                            { value: "3", text: "{{ trans('auth/project.status_project_tracking.exclusion_or_waiver_of_the_student') }}" },
-                                        ];
-                                        break;
-                                }
-                                break;
-
-
-                            case 3:
-                                switch (data.project_tracking) {
-                                    case 1:
-                                        statuses = [
-                                            { value: "1", text: "{{ trans('auth/project.status_project_tracking.development_mode') }}" },
-                                            { value: "2", text: "{{ trans('auth/project.status_project_tracking.accomplished') }}" },
-                                            { value: "3", text: "{{ trans('auth/project.status_project_tracking.not_completed') }}" },
-                                        ];
-                                        break;
-                                    case 2:
-                                    case 3:
-                                        statuses = [
-                                            { value: "1", text: "{{ trans('auth/project.status_project_tracking.no') }}" },
-                                            { value: "2", text: "{{ trans('auth/project.status_project_tracking.yes') }}" },
-                                        ];
-                                        break;
-                                    case 4:
-                                        statuses = [
-                                            { value: "1", text: "{{ trans('auth/project.status_project_tracking.did_not_happen') }}" },
-                                            { value: "2", text: "{{ trans('auth/project.status_project_tracking.get') }}" },
-                                        ];
-                                        break;
-                                    case 5:
-                                    case 6:
-                                    case 7:
-                                    case 8:
-                                    case 9:
-                                    case 10:
-                                        statuses = [
-                                            { value: "1", text: "{{ trans('auth/project.status_project_tracking.no') }}" },
-                                            { value: "2", text: "{{ trans('auth/project.status_project_tracking.yes') }}" },
-                                        ];
-                                        break;
-                                    default:
-                                        statuses = [];
-                                        break;
-                                }
-                                break;
-
-                            default:
-                                switch (data.project_tracking) {
-                                    case 1:
-                                        statuses = [
-                                            { value: "1", text: "{{ trans('auth/project.status_project_tracking.practice') }}" },
-                                            { value: "2", text: "{{ trans('auth/project.status_project_tracking.complete') }}" },
-                                            { value: "3", text: "{{ trans('auth/project.status_project_tracking.not_yet') }}" },
-                                        ];
-                                        break;
-                                    case 2:
-                                    case 3:
-                                        statuses = [
-                                            { value: "1", text: "{{ trans('auth/project.status_project_tracking.development_mode') }}" },
-                                            { value: "2", text: "{{ trans('auth/project.status_project_tracking.accomplished') }}" },
-                                            { value: "3", text: "{{ trans('auth/project.status_project_tracking.not_completed') }}" },
-                                        ];
-                                        break;
-                                    case 4:
-                                    case 5:
-                                    case 7:
-                                    case 8:
-                                    case 10:
-                                        statuses = [
-                                            { value: "1", text: "{{ trans('auth/project.status_project_tracking.no') }}" },
-                                            { value: "2", text: "{{ trans('auth/project.status_project_tracking.yes') }}" },
-                                        ];
-                                        break;
-                                    case 6:
-                                        statuses = [
-                                            { value: "1", text: "{{ trans('auth/project.status_project_tracking.did_not_happen') }}" },
-                                            { value: "2", text: "{{ trans('auth/project.status_project_tracking.get') }}" },
-                                        ];
-                                    case 9:
-                                        statuses = [
-                                            { value: "1", text: "{{ trans('auth/project.status_project_tracking.not_discussed') }}" },
-                                            { value: "2", text: "{{ trans('auth/project.status_project_tracking.discuss') }}" },
-                                        ];
-                                    default:
-                                        statuses = [];
-                                        break;
-                                }
-                                break;
-                            }
-
-
-
-                        // Create select element
-                        var select = $('<select>', {
-                            class: 'form-control',
-                            'data-id': data.id
-                        }).css('width', '100%');
-
-                        // Add options to the select dropdown
-                        statuses.forEach(function(option) {
-                            select.append($('<option>', {
-                                value: option.value,
-                                text: option.text,
-                                selected: option.text === originalValue // Select if matches original value
-                            }));
-                        });
-
-                        cell.html(select);
-                        select.focus();
-
-                        // Store the original value
-                        cell.data('originalValue', originalValue);
-
-                        // Store the current edit cell
-                        editCell = cell;
-
-                        // Handle the select change or blur event
-                        select.on('change blur', function(e) {
-                            var newValue = $(this).val();
-                            var newText = $(this).find('option:selected').text();
-
-                            // Only proceed if the value has changed
-                            if (newText !== originalValue) {
-                                updateStatusProjectTracking(data.id, newValue)
-                            } else {
-                                cell.text(originalValue);
-                            }
-
-                            // Hide the select
-
-                            editCell.html(editCell.data('originalValue'));
-                            editCell.text(newText);
-                            editCell = null;
-                        });
-                    });
-                @endif
-
-        }
 
       });
 
@@ -529,10 +481,40 @@ $(document).ready(function() {
           column.visible(isChecked);
       });
 
+
+
+    $('#editStatusProjectTrackingForm').submit(function(event) {
+        event.preventDefault(); // Prevent the form from submitting normally
+        
+        // Hide the modal
+        $('#editStatusProjectTrackingModal').modal('hide');
+        
+        // Get the project ID and the selected value
+        const projectId = "{{ $project->id }}";
+        const statusProjectTracking = $('#status_project_tracking').val();
+
+        // Call the updateStatusProjectTracking function
+        updateStatusProjectTracking(projectId, statusProjectTracking);
+    });
+
+
+    $('#editProjectTrackingForm').submit(function(event) {
+        event.preventDefault();
+        // Hide the modal
+        $('#editProjectTrackingModal').modal('hide');
+
+        // Get the project ID and the selected value
+        const projectId = "{{ $project->id }}";
+        const projectTracking = $('#project_tracking').val();
+
+        // Call the updateStatusProjectTracking function
+        updateProjectTracking(projectId, projectTracking);
+    });
 });
 
 </script>
 @endsection
+
 
 
 

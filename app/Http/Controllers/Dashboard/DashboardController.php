@@ -44,6 +44,10 @@ class DashboardController extends Controller
      */
     public function index(Request $request){
 
+        if (!auth('admin')->check()) {
+            return redirect()->route('dashboard.projects');
+        }
+
         $today = now();
         $selectedYear = $request->input('year', $today->year);
         $years = [];

@@ -87,10 +87,10 @@
                             </small>
                             @enderror
                         </div> --}}
-                        <div class="col-sm-12 col-md-6 mb-2">
-                            <label for="project_image" class="form-label">{{ trans('auth/project.project_images') }}</label>
-                            <input type="file" class="form-control @error('project_image.*') is-invalid @enderror"
-                                   name="project_image[]" dir="ltr" multiple
+                        {{-- <div class="col-sm-12 col-md-6 mb-2">
+                          <label for="project_image" class="form-label">{{ trans('auth/project.project_images') }}</label>
+                          <input type="file" class="form-control @error('project_image.*') is-invalid @enderror"
+                          name="project_image[]" dir="ltr" multiple
                                    placeholder="{{ trans('auth/project.placeholder.project_image') }}">
 
                             <!-- Display images -->
@@ -107,6 +107,26 @@
                                 {{ $message }}
                             </small>
                             @enderror
+                        </div> --}}
+                        
+                        {{-- ملف Pitch Deck   --}}
+                        <div class="col-sm-12 col-md-6 mb-2">
+                            <label for="pitch_deck" class="form-label">{{ trans('auth/project.pitch_deck') }}</label>
+                            <input type="file" class="form-control @error('pitch_deck') is-invalid @enderror"
+                                  name="pitch_deck" dir="ltr" accept=".pptx" 
+                                  placeholder="{{ trans('auth/project.placeholder.pitch_deck') }}">
+                                  @if(isset($project->pitch_deck))
+                                      <div class="mb-3">
+                                          <a href="{{ $project->pitch_deck_url }}" target="_blank" class="d-block mb-2">
+                                              {{ trans('auth/project.download') }}
+                                          </a>
+                                      </div>
+                                  @endif
+                            @error('pitch_deck')
+                            <small class="text-danger d-block">
+                                {{ $message }}
+                            </small>
+                            @enderror
                         </div>
 
                         <div class="col-sm-12 col-md-6 mb-2">
@@ -115,7 +135,14 @@
                                    name="video" value="{{ old('video') }}"
                                    placeholder="{{ trans('auth/project.placeholder.video') }}">
                             <div class="col-lg-4 col-md-4 col-sm-6 mb-4">
-                                <a href="{{ $project->video ? url($project->video) : '' }}" class="text-black" target="_blank">{{ trans('project.label.download_video')}}</a>
+                              @if(isset($project->video))
+                                  <div class="mb-3">
+                                      <a href="{{ $project->video }}" target="_blank" class="d-block mb-2">
+                                          {{ trans('auth/project.view') }}
+                                      </a>
+                                  </div>
+                              @endif
+                                {{-- <a href="{{ $project->video ? url($project->video) : '' }}" class="text-black" target="_blank">{{ trans('project.label.download_video')}}</a> --}}
                                 {{-- <video controls class="w-100 shadow-1-strong rounded mb-4">
                                     <source src="{{ url($project->video) }}" type="video/mp4">
                                     <source src="{{ url($project->video) }}" type="video/ogg">
@@ -132,8 +159,8 @@
                         {{-- <div class="col-sm-12 col-md-6 mb-2">
                             <label for="bmc" class="form-label">{{ trans('auth/project.bmc') }}</label>
                             <input type="file" dir="ltr" class="form-control @error('bmc') is-invalid @enderror"
-                                   name="bmc" value="{{ old('bmc') }}"
-                                   placeholder="{{ trans('auth/project.placeholder.bmc') }}">
+                                  name="bmc" value="{{ old('bmc') }}"
+                                  placeholder="{{ trans('auth/project.placeholder.bmc') }}">
 
                             @if($project->bmc != null)
                                 <a href="{{ asset('storage/public/projects/bmc/'.$project->bmc) }}" class="text-black" target="_blank">{{ trans('project.label.download_bmc')}}</a>
@@ -148,6 +175,11 @@
 
 
                         <div class="row mt-4">
+                          @error('group-a.*')
+                          <small class="text-danger d-block">
+                              {{ $message }}
+                          </small>
+                          @enderror
                           <div class="repeater">
                               <div data-repeater-list="group-a">
                                 @if($students && $students->isNotEmpty())
@@ -205,6 +237,11 @@
                       </div>
 
                       <div class="row mt-4">
+                        @error('group-b.*')
+                        <small class="text-danger d-block">
+                            {{ $message }}
+                        </small>
+                        @enderror
                         <div class="repeater2">
                           <div data-repeater-list="group-b">
                             @if ($allSupervisors->isNotEmpty())

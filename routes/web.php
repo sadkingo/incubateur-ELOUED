@@ -136,7 +136,8 @@ Route::middleware('auth:admin,teacher,manager,student')->group(function () {
   Route::delete('/project/{id}', [ProjectController::class, 'destroy'])->name('project.destroy');
   Route::get('/project/{id}/archive', [ProjectController::class, 'archive'])->name('project.archive');
   Route::get('/project/{id}/restore', [ProjectController::class, 'restore'])->name('project.restore');
-
+  
+  Route::post('/projects/archive', [ProjectController::class, 'archiveProjects'])->name('projects.archive');
   Route::get('projects/track/{id?}',[DataTablesController::class, 'project_tracking'])->name('project.tracking');
 
   // account
@@ -241,6 +242,13 @@ Route::middleware('auth:admin')->group(function () {
   Route::put('/teacher/{id}', [TeacherController::class, 'update'])->name('teacher.update');
   Route::delete('/teacher/{id}', [TeacherController::class, 'destroy'])->name('teacher.destroy');
 
+  // students
+  Route::get('/student/{id}', [ControllersStudentController::class, 'get'])->name('students.get');
+  Route::get('/students/create', [ControllersStudentController::class, 'create'])->name('students.create');
+  Route::post('/students/store', [ControllersStudentController::class, 'store'])->name('students.store');
+  Route::delete('/students/{id}', [ControllersStudentController::class, 'delete'])->name('students.delete');
+  Route::post('/students/update', [ControllersStudentController::class, 'update'])->name('students.update');
+
   // commissions
   Route::get('/commission/{id}', [CommissionController::class, 'get'])->name('commission.get');
   Route::post('/commission/create', [CommissionController::class, 'create'])->name('commission.create');
@@ -341,7 +349,8 @@ Route::prefix('dashboard')->name('dashboard.')->middleware('auth:admin,teacher,m
     Route::post('students/{id}/updateStage', [StudentController::class, 'updateStage'])->name('dashboard.students.updateStage');
 
     Route::get('/student/{id}', [ControllersStudentController::class, 'get'])->name('student.get');
-    Route::post('/student/create', [ControllersStudentController::class, 'create'])->name('student.create');
+    Route::get('/student/create', [ControllersStudentController::class, 'create'])->name('student.create');
+    Route::post('/student/store', [ControllersStudentController::class, 'store'])->name('student.store');
     Route::delete('/student/{id}', [ControllersStudentController::class, 'delete'])->name('student.delete');
     Route::post('/student/update', [ControllersStudentController::class, 'update'])->name('student.update');
 

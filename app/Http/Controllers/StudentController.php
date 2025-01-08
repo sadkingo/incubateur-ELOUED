@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Imports\StudentsImport;
+use App\Models\Departement;
 use App\Models\Faculty;
 use App\Models\Manager;
 use App\Models\Student;
@@ -101,7 +102,15 @@ class StudentController extends Controller {
     ->with('student',$student);
   }
 
-  public function create(Request $request) {
+  public function create() {
+    $faculties = Faculty::all();
+    $departments = Departement::all();
+  return view('dashboard.student.create')
+    ->with('departments',$departments)
+    ->with('faculties',$faculties);
+  }
+  
+  public function store(Request $request) {
     $validator = Validator::make($request->all(), [
       'firstname_fr' => 'required|string',
       'lastname_fr' => 'required|string',
@@ -111,7 +120,7 @@ class StudentController extends Controller {
       'gender' => 'required|numeric|between:1,2',
       'state_of_birth' => 'required|string',
       'place_of_birth' => 'required|string',
-      'photo' => 'required',
+      'photo' => 'nullable',
       'status' => 'nullable|numeric|between:1,2',
       'registration_number' => 'required|numeric|unique:students,registration_number',
       'group' => 'required|numeric',
@@ -126,28 +135,17 @@ class StudentController extends Controller {
     ]);
 
     if ($validator->fails()) {
-        return response()->json([
-        'icon' => 'error',
-        'state' => __("Error"),
-        'message' => $validator->errors()->first()
-        ], 422);
+      return back()->withErrors($validator)->withInput();
     }
 
     try{
 
       Student::create($request->all());
-
-      return response()->json([
-        'icon' => 'success',
-        'state' => __("Success"),
-        'message' => __("Student Created successfully")
-      ], 200);
+      toastr()->success(trans('message.success.create'));
+      return redirect()->route('dashboard.students');
     } catch (\Exception $e) {
-      return response()->json([
-        'icon' => 'error',
-        'state' => __("Error"),
-        'message' => $e->getMessage()
-      ]);
+      toastr()->warning($e->getMessage());
+      return redirect()->route('dashboard.students');
     }
 
   }
@@ -177,8 +175,8 @@ class StudentController extends Controller {
       'end_date' => 'date|after:start_date',
       'phone'        => 'required|numeric|unique:students,phone,' . $student->id . '|unique:teachers,phone|unique:admins,phone|unique:supervising_teachers,phone|unique:managers,phone',
       'email'        => 'required|email|unique:students,email,' . $student->id . '|unique:teachers,email|unique:admins,email|unique:supervising_teachers,email|unique:managers,email',
-      'password' => 'sometimes|string|nullable|min:8|max:255',
-      'password_confirmation' => 'sometimes|string|nullable|same:password|min:8|max:255'
+      // 'password' => 'sometimes|string|nullable|min:8|max:255',
+      // 'password_confirmation' => 'sometimes|string|nullable|same:password|min:8|max:255'
     ]);
 
     if ($validator->fails()) {
@@ -210,7 +208,8 @@ class StudentController extends Controller {
   }
 
   public function getUserDetailsFromRegisterdId(Request $request) {
-    $student = Student::where('id_faculty', auth('manager')->user()->faculty_id)->where('registration_number', $request->registerd_id)->first();
+    // $student = Student::where('id_faculty', auth('manager')->user()->faculty_id)->where('registration_number', $request->registerd_id)->first();
+    $student = Student::where('registration_number', $request->registerd_id)->first();
     if($student) {
       return response()->json([
         'success' => true,

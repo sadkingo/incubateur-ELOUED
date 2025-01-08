@@ -32,7 +32,16 @@
                 <option value="50">50</option>
                 <option value="100" selected>100</option>
             </select>
-
+            
+            @if (auth('admin')->check())
+              <a type="button" class="btn btn-outline-primary btn-icon m-1" href="{{ route('students.create') }}">
+                <span class="mdi mdi-plus"></span>
+              </a>
+              <button type="button" class="btn btn-outline-primary btn-icon m-1" data-bs-toggle="modal" data-bs-target="#importAllStudentsFileModal">
+                <span class="mdi mdi-upload-outline"></span>
+              </button>
+            @endif
+  
             <div class="dropdown my-w-fit-content p-0">
               <button class="btn btn-icon btn-outline-primary m-1" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" >
                 <span class="mdi mdi-filter-outline"></span>
@@ -96,6 +105,27 @@
 
 
 
+      {{-- upload all students modal --}}
+  <div class="modal fade" id="importAllStudentsFileModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel1">{{ trans('student.import') }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="dropzone" class="dropzone"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{ trans('app.close') }}</button>
+                    <button type="submit" class="btn btn-primary" id="uploadAllFileStudentsButton" data-bs-dismiss>{{ trans('app.import') }}</button>
+                </div>
+            </div>
+    </div>
+</div>
+
+
+
 <style>
   .input-group:focus-within {
       box-shadow: none!important;
@@ -113,6 +143,26 @@
 <script type="text/javascript">
   var table;
   var lang = "{{ app()->getLocale() }}";
+
+    Dropzone.autoDiscover = false;
+    var myDropzone = new Dropzone("#dropzone", {
+        url: "{{ route('dashboard.all.students.import.excel') }}",
+        autoProcessQueue: false,
+        acceptedFiles: '.xlsx,.xls',
+        addRemoveLinks: true,
+        dictDefaultMessage: "{{ __('Drag and drop Excel files here or click to upload') }}",
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        }
+    });
+
+    myDropzone.on("success", function(file, response) {
+        console.log("Success uploading file");
+    });
+
+    myDropzone.on("error", function(file, errorMessage) {
+        console.error('Error uploading file:', errorMessage);
+    });
 
     function editStudent(id) {
       window.location.href = "{{ route('dashboard.student.get', ':id') }}".replace(':id', id);
@@ -334,6 +384,19 @@ $(document).ready(function() {
             });
           }
         });
+      });
+
+      $('#uploadAllFileStudentsButton').click(function(event) {
+          if (myDropzone.getQueuedFiles().length > 0) {
+              myDropzone.processQueue();
+          } else {
+              Swal.fire({
+                  icon: 'warning',
+                  title: "Error",
+                  text: "No files to upload",
+                  confirmButtonText: "Ok"
+              });
+          }
       });
 
 });

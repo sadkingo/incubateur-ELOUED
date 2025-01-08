@@ -148,4 +148,34 @@
         </div>
     </div>
 
+
+
+    <script>
+        $(document).ready(function () {
+            $('#faculty_id').on('change', function () {
+                let facultyId = $(this).val(); // Get selected faculty ID
+                
+                // Clear existing departments
+                $('#departement_id').empty().append('<option value="">{{ trans('auth/student.select.department') }}</option>');
+    
+                if (facultyId) {
+                    $.ajax({
+                        url: '/dashboard/get-departments/' + facultyId, // Endpoint to fetch departments
+                        type: 'GET',
+                        success: function (departments) {
+                            $.each(departments, function (key, department) {
+                                $('#departement_id').append(
+                                    `<option value="${department.id}">${department.name_ar}</option>`
+                                );
+                            });
+                        },
+                        error: function () {
+                            alert('{{ trans('auth/student.error.fetch_departments') }}');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+    
 @endsection

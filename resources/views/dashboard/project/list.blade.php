@@ -84,13 +84,13 @@
                 <thead>
                     <tr class="text-nowrap">
                       @if (auth('admin')->check())
-                        <th scope="col">{{ trans('project.select') }}</th>
+                      <th scope="col"><input class="form-check-input" type="checkbox" id="check-all"></th>
                       @endif
                       <th scope="col">#</th>
                       <th scope="col">{{trans('project.label.name')}}</th>
                       <th scope="col">{{trans('auth/auth.code')}}</th>
                       <th scope="col">{{ trans('project.status_project.status')}}</th>
-                      <th scope="col">{{trans('student.firstname')}} & {{trans('student.lastname')}}</th>
+                      <th scope="col">{{ trans('manager.faculty') }}</th>
                       <th scope="col">{{trans('student.groups')}}</th>
                       <th scope="col">{{trans('supervisor.supervisors')}}</th>
 
@@ -98,7 +98,7 @@
                         <th scope="col">{{trans('commission.commission')}}</th>
                       @elseif(auth('manager')->check())
                         <th scope="col">{{ trans('project.status_project.bcm_status') }}</th>
-                        <th scope="col">{{ trans('project.administrative_file') }}</th>
+                        {{-- <th scope="col">{{ trans('project.administrative_file') }}</th> --}}
                       @endif
 
                         <th scope="col">{{trans('app.created')}}</th>
@@ -111,16 +111,22 @@
             </table>
           </div>
           <div class="row d-flex align-items-center justify-content-end mt-3">
-            <div class="my-w-fit-content" id="dataTables_my_info">
-            </div>
+            <div class="my-w-fit-content" id="dataTables_my_info"></div>
+            @if (auth('admin')->check())
+              <button type="button" class="btn btn-outline-danger btn-icon m-1" onclick="archiveSelected()">
+                <span class="mdi mdi-archive-outline"></span>
+              </button>
+            @endif
             <nav class="my-w-fit-content" aria-label="Page navigation">
               <ul class="pagination mb-0" id="dataTables_my_paginate" dir="ltr">
               </ul>
             </nav>
+
           </div>
       </div>
 
     </div>
+
 
 
 {{-- add commission modal --}}
@@ -437,9 +443,14 @@
   var table;
   var lang = "{{ app()->getLocale() }}";
 
+
+
+
     function exportProjectExcel() {
         var status = document.getElementById("status").value;
-        var url = '{{ route("dashboard.projects.export") }}' + '?status=' + encodeURIComponent(status);
+        var archived = $('#archived-button').data('archived');
+
+        var url = '{{ route("dashboard.projects.export") }}' + '?status=' + encodeURIComponent(status) + '&archived=' + encodeURIComponent(archived);
         window.location.href = url;
     }
 
@@ -484,6 +495,35 @@
                     _token: '{{ csrf_token() }}',
                     project_ids: selectedProjects,
                     status: status
+                },
+                success: function(response) {
+                    console.log(response);
+                    toastr.success('{{ trans('project.status_updated') }}');
+                    location.reload();
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                    toastr.error('{{ trans('project.status_update_failed') }}');
+                }
+            });
+        } else {
+            toastr.warning('{{ trans('project.no_projects_selected') }}');
+        }
+    }
+
+    function archiveSelected() {
+        var selectedProjects = [];
+        $('.project-checkbox:checked').each(function() {
+            selectedProjects.push($(this).val());
+        });
+
+        if (selectedProjects.length > 0) {
+            $.ajax({
+                type: 'POST',
+                url: '{{ url("projects/archive") }}',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    project_ids: selectedProjects
                 },
                 success: function(response) {
                     console.log(response);
@@ -715,14 +755,14 @@ $(document).ready(function() {
             { data: 'name', name: '{{trans("project.label.name")}}' },
             { data: 'code', name: '{{trans("auth/auth.code")}}' },
             { data: 'status', name: '{{trans("project.status_project.status")}}' },
-            { data: 'manager_name', name: '{{trans("student.firstname")}} & {{trans("student.lastname")}}' },
+            { data: 'faculty', name: '{{ trans("manager.faculty") }}' },
             { data: 'students', name: '{{trans("student.groups")}}' },
             { data: 'supervisors', name: '{{trans("supervisor.supervisors")}}' },
             @if(auth('admin')->check())
             { data: 'commission_name', name: '{{trans("commission.commission")}}' },
             @elseif(auth('manager')->check())
               { data: 'bcm_status', name: '{{ trans("project.status_project.bcm_status") }}' },
-              { data: 'administrative_file', name: '{{ trans("project.administrative_file") }}' },
+              // { data: 'administrative_file', name: '{{ trans("project.administrative_file") }}' },
             @endif
 
             { data: 'created_at', name: '{{trans("app.created")}}' },
@@ -731,7 +771,7 @@ $(document).ready(function() {
               { data: 'actions', name: '{{trans("app.actions")}}', orderable: false, searchable: false }
             @endif
           ],
-          order: [[8, 'desc']], // Default order by created_at column
+          order: [[9, 'desc']], // Default order by created_at column
           rowCallback: function(row, data) {
               $(row).attr('id', 'project_' + data.id);
 
@@ -832,6 +872,44 @@ $(document).ready(function() {
                   });
                 });
               @endif
+          },
+          drawCallback: function() {
+            // Start of checkboxes
+              $('#check-all').off('click').on('click', function() { // Unbind previous event and bind a new one
+                  $('.project-checkbox').prop('checked', this.checked);
+                  var totalCheckboxes = ids.length;
+                  var checkedCheckboxes = selectedIds.length;
+
+                  if (checkedCheckboxes === 0 || checkedCheckboxes < totalCheckboxes) { // if new all checked or some checked
+                      selectedIds = [];
+                      selectedIds = ids.slice();
+                  } else {
+                      selectedIds = [];
+                  }
+              });
+
+              $('.project-checkbox').on('change', function() {
+                  var itemId = parseInt($(this).val());
+
+                  if (this.checked) { // if new checked add to selected
+                      selectedIds.push(itemId);
+                  } else { // if remove checked remove from selected
+                      selectedIds = selectedIds.filter(id => id !== itemId);
+                  }
+
+                  var totalCheckboxes = ids.length;
+                  var checkedCheckboxes = selectedIds.length;
+                  if (checkedCheckboxes === totalCheckboxes) { // all checkboxes checked
+                      $('#check-all').prop('checked', true).prop('indeterminate', false);
+                      selectedIds = ids.slice();
+                  } else if (checkedCheckboxes > 0) { // not all checkboxes are checked
+                      $('#check-all').prop('checked', false).prop('indeterminate', true);
+                  } else {  // all checkboxes are not checked
+                      $('#check-all').prop('checked', false).prop('indeterminate', false);
+                      selectedIds = [];
+                  }
+              });
+            // End of checkboxes
           }
 
       });
@@ -1265,7 +1343,6 @@ $(document).ready(function() {
         });
       });
 
-      
 });
 
 </script>

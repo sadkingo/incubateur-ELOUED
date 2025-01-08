@@ -47,31 +47,43 @@ class ProjectController extends Controller {
     }
 
     public function create() {
-      $supervisors = SupervisingTeacher::all();
+        $supervisors = SupervisingTeacher::all();
         return view('dashboard.project.create')
         ->with('supervisors',$supervisors);
     }
 
     public function store(Request $request){
-        $manager = Manager::find(auth('manager')->id());
         $validator = Validator::make($request->all(), [
             'name_project' => 'required',
             'description' => 'required|max:500',
-            'project_image.*' => 'required|mimes:png,jpeg,jpg',
-            // 'bmc' => 'required|max:10000|mimes:pdf,ppt,pptx',
-            'video' => 'nullable|mimes:mp4,mov,avi',
-            // 'students' => ''
+            'pitch_deck' => 'required|mimes:pptx',
+            // 'video' => 'nullable|mimes:mp4,mov,avi',
+            'group-a' => 'required|array|min:1',
+            'group-a.*.registerd_id' => 'required', 
+            'group-b' => 'required|array|min:1',
+            'group-b.*.supervisor_id' => 'required',
+            'group-b.*.supervisor_role' => 'required|string',
         ], [
             'name_project.required' => "The name is required",
+            'pitch_deck.required' => "The Pitch Deck File is required",
+            'pitch_deck.mimes' => 'The pitch deck must be a .pptx file.',
             'description.required' => 'The description is required',
-            'video.max' => 'The video file must be less than 10MB.',
-            // 'bmc.max' => 'The BMC file must be less than 10MB.',
+            // 'video.max' => 'The video file must be less than 10MB.',
             'description.max' => 'The description may not be greater than 500 characters.',
+            'group-a.required' => 'You must include at least one student in group-a.',
+            'group-a.min' => 'Group-a must contain at least one student.',
+            'group-a.*.registerd_id.required' => 'Each student in group-a must have a registered ID.',
+            'group-b.required' => 'You must include at least one supervisor in group-b.',
+            'group-b.min' => 'Group-b must contain at least one supervisor.',
+            'group-b.*.supervisor_id.required' => 'Each supervisor in group-b must have an ID.',
+            'group-b.*.supervisor_role.required' => 'Each supervisor in group-b must have a role.',    
         ]);
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
+
+        $manager = Manager::find(auth('manager')->id());
 
         // Extract and count unique registered IDs in 'group-a'
         $registeredIds = array_column($request->input('group-a'), 'registerd_id');
@@ -91,22 +103,161 @@ class ProjectController extends Controller {
         $project->password = $currentYear . $uniqueCount . $count;
         $project->code = $currentYear . $uniqueCount . $count;
 
-
         $project->faculty_id = $manager->faculty_id;
-        // $project->id_student = $student->id;
-        $project->save();
 
         foreach ($request->input('group-a') as $studentData) {
             $registrationNumber = $studentData['registerd_id'];
 
-            $isStudent = Student::where('id_faculty', auth('manager')->user()->faculty_id)->where('registration_number', $registrationNumber)->first();
+            // $isStudent = Student::where('id_faculty', auth('manager')->user()->faculty_id)->where('registration_number', $registrationNumber)->first();
+            $isStudent = Student::where('registration_number', $registrationNumber)->first();
 
             if ($isStudent) {
                 $isExist = StudentGroup::where('project_id', $project->id)->where('student_id', $isStudent->id)->first();
                 if ($isExist) {
                     continue;
                 }
-                // Create a new StudentGroup record
+
+                $newStudentGroupItem = new StudentGroup();
+                $newStudentGroupItem->project_id = $project->id;
+                $newStudentGroupItem->student_id = $isStudent->id;
+                $newStudentGroupItem->save();
+            }
+        }
+
+        foreach ($request->input('group-b') as $supervisorData) {
+            $supervisorId = $supervisorData['supervisor_id'];
+
+            $isSupervisingTeacher = SupervisingTeacher::find($supervisorId);
+
+            if ($isSupervisingTeacher) {
+                $isExist = SupervisingTeacherGroups::where('project_id', $project->id)->where('supervising_teacher_id', $isSupervisingTeacher->id)->first();
+                if ($isExist) {
+                    continue;
+                }
+
+                $newSupervisingGroupItem = new SupervisingTeacherGroups();
+                $newSupervisingGroupItem->project_id = $project->id;
+                $newSupervisingGroupItem->supervising_teacher_id = $isSupervisingTeacher->id;
+                $newSupervisingGroupItem->role = $supervisorData['supervisor_role'];
+                $newSupervisingGroupItem->save();
+            }
+        }
+
+        if ($request->hasFile('pitch_deck')) {
+            $pitchDeckName = time() . '_pitch_deck.' . $request->file('pitch_deck')->getClientOriginalExtension();
+            $request->file('pitch_deck')->storeAs('public/public/projects/pitch_deck', $pitchDeckName);
+            $project->pitch_deck = $pitchDeckName;
+        }
+
+        $project->save();
+
+        // if ($request->hasFile('project_image')) {
+        //     foreach ($request->file('project_image') as $img) {
+        //         $validator = Validator::make(['image' => $img], [
+        //             'image' => 'required|max:1000|mimes:png,jpeg,jpg'
+        //         ]);
+
+        //         if ($validator->fails()) {
+        //             return back()->withErrors($validator)->withInput();
+        //         }
+
+        //         $image = new ProjectImage;
+        //         $imageName = time() . '_image.' . $img->getClientOriginalExtension();
+        //         $img->storeAs('public/public/projects/images', $imageName);
+        //         $image->image = $imageName;
+        //         $image->id_project = $project->id;
+        //         $image->save();
+        //     }
+        // }
+
+        toastr()->success(trans('message.success.create'));
+        return redirect()->route('dashboard.projects');
+        // return redirect()->route('student.index');
+    }
+
+    public function edit($id){
+        $project = Project::findOrFail($id);
+        $images = ProjectImage::where('id_project', $project->id)->get();
+        $students = StudentGroup::where('project_id', $project->id)->get();
+        $allSupervisors = SupervisingTeacherGroups::where('project_id', $project->id)->get();
+        $supervisors = SupervisingTeacher::all();
+        return view('dashboard.project.index')
+        ->with('project', $project)
+        ->with('students', $students)
+        ->with('allSupervisors', $allSupervisors)
+        ->with('supervisors', $supervisors)
+        ->with('images', $images);
+    }
+
+    public function update(Request $request, $id){
+        $validator = Validator::make($request->all(), [
+            'name_project' => 'required',
+            'description' => 'required|max:500',
+            // 'project_image.*' => 'mimes:png,jpeg,jpg',
+            'pitch_deck' => 'nullable|mimes:pptx',
+            // 'video' => 'nullable|mimes:mp4,mov,avi',
+            'group-a' => 'required|array|min:1',
+            'group-a.*.registerd_id' => 'required', 
+            'group-b' => 'required|array|min:1',
+            'group-b.*.supervisor_id' => 'required',
+            'group-b.*.supervisor_role' => 'required|string',
+
+            
+        ], [
+            'name_project.required' => "The name is required",
+            'description.required' => 'The description is required',
+            'description.max' => 'The description may not be greater than 500 characters.',
+            'pitch_deck.mimes' => 'The pitch deck must be a .pptx file.',
+            'group-a.required' => 'You must include at least one student in group-a.',
+            'group-a.min' => 'Group-a must contain at least one student.',
+            'group-a.*.registerd_id.required' => 'Each student in group-a must have a registered ID.',
+            'group-b.required' => 'You must include at least one supervisor in group-b.',
+            'group-b.min' => 'Group-b must contain at least one supervisor.',
+            'group-b.*.supervisor_id.required' => 'Each supervisor in group-b must have an ID.',
+            'group-b.*.supervisor_role.required' => 'Each supervisor in group-b must have a role.',    
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+
+        $project = Project::findOrFail($id);
+        $project->name = $request->input('name_project');
+        $project->description = $request->input('description');
+        $project->video = $request->input('video');
+
+        // if ($request->hasFile('video')) {
+        //     $video = $request->file('video');
+        //     if ($video->getSize() > 10240000) {
+        //         return back()->withErrors(['video' => 'The video file must be less than 10MB.'])->withInput();
+        //     }
+        //     $videoName = time() . '_video.' . $video->getClientOriginalExtension();
+        //     $video->storeAs("public/public/projects/videos", $videoName);
+        //     $project->video = $videoName;
+        // }
+
+        // if ($request->hasFile('bmc')) {
+        //     $bmc = $request->file('bmc');
+        //     if ($bmc->getSize() > 10000000) {
+        //         return back()->withErrors(['bmc' => 'The BMC file must be less than 10MB.'])->withInput();
+        //     }
+        //     $bmcName = time() . '_bmc.' . $bmc->getClientOriginalExtension();
+        //     $bmc->storeAs('public/public/projects/bmc/', $bmcName);
+        //     $project->bmc = $bmcName;
+        // }
+
+        $project->studentGroups()->delete();
+        $project->supervisingGroups()->delete();
+
+        foreach ($request->input('group-a') as $studentData) {
+            $registrationNumber = $studentData['registerd_id'];
+
+            $isStudent = Student::where('registration_number', $registrationNumber)->first();
+            if ($isStudent) {
+                $isExist = StudentGroup::where('project_id', $project->id)->where('student_id', $isStudent->id)->first();
+                if ($isExist) {
+                    continue;
+                }
                 $newStudentGroup = new StudentGroup();
                 $newStudentGroup->project_id = $project->id;
                 $newStudentGroup->student_id = $isStudent->id;
@@ -115,9 +266,9 @@ class ProjectController extends Controller {
         }
 
         foreach ($request->input('group-b') as $supervisorData) {
-            $supervisorId = $supervisorData['supervisor_id'];
+            $registrationNumber = $supervisorData['supervisor_id'];
 
-            $isSupervisingTeacher = SupervisingTeacher::find($supervisorId);
+            $isSupervisingTeacher = SupervisingTeacher::find($registrationNumber);
 
             if ($isSupervisingTeacher) {
                 $isExist = SupervisingTeacherGroups::where('project_id', $project->id)->where('supervising_teacher_id', $isSupervisingTeacher->id)->first();
@@ -133,169 +284,35 @@ class ProjectController extends Controller {
             }
         }
 
-        if ($request->hasFile('project_image')) {
-            foreach ($request->file('project_image') as $img) {
-                $validator = Validator::make(['image' => $img], [
-                    'image' => 'required|max:1000|mimes:png,jpeg,jpg'
-                ]);
+        // if ($request->hasFile('project_image')) {
+        //     foreach ($request->file('project_image') as $img) {
+        //         $imageValidator = Validator::make(['image' => $img], [
+        //             'image' => 'max:1000|mimes:png,jpeg,jpg'
+        //         ]);
 
-                if ($validator->fails()) {
-                    return back()->withErrors($validator)->withInput();
-                }
+        //         if ($imageValidator->fails()) {
+        //             return back()->withErrors($imageValidator)->withInput();
+        //         }
 
-                $image = new ProjectImage;
-                $imageName = time() . '_image.' . $img->getClientOriginalExtension();
-                $img->storeAs('public/public/projects/images', $imageName);
-                $image->image = $imageName;
-                $image->id_project = $project->id;
-                $image->save();
-            }
-        }
-        $supervisor = SupervisingTeacher::where('faculty_id', $manager->faculty_id)->first();
-        // $supervisor = SupervisingTeacher::where('id_student', $student->id)->first();
-        if ($supervisor) {
-            // $supervisorProject = SupervisingTeacherProject::where('id_student', $student->id)
-            $supervisorProject = SupervisingTeacherProject::where('faculty_id', $manager->faculty_id)
-                                                        ->where('id_supervisor', $supervisor->id)
-                                                        ->first();
-            if ($supervisorProject) {
-                $supervisorProject->id_project = $project->id;
-                $supervisorProject->save();
-            } else {
-                $supervisorProject = new SupervisingTeacherProject;
-                $supervisorProject->faculty_id = $manager->faculty_id;
-                $supervisorProject->id_project = $project->id;
-                $supervisorProject->save();
-            }
-        } else {
-            toastr()->success(trans('message.success.create'));
-            toastr()->warning(trans('message.warning.project'));
-            return redirect()->route('manager.index');
-            // return redirect()->route('student.index');
-        }
-
-        toastr()->success(trans('message.success.create'));
-        return redirect()->route('manager.index');
-        // return redirect()->route('student.index');
-    }
-
-    public function edit($id){
-        $project = Project::findOrFail($id);
-        $images = ProjectImage::where('id_project', $project->id)->get();
-        $students = StudentGroup::where('project_id', $project->id)->get();
-        $allSupervisors = SupervisingTeacherGroups::where('project_id', $project->id)->get();
-        $supervisors = SupervisingTeacher::all();
-       // dd($images);
-        return view('dashboard.project.index')
-        ->with('project', $project)
-        ->with('students', $students)
-        ->with('allSupervisors', $allSupervisors)
-        ->with('supervisors', $supervisors)
-        ->with('images', $images);
-        // return view('student-project.edit', compact('project','images'));
-    }
-
-    public function update(Request $request, $id){
-        $validator = Validator::make($request->all(), [
-            'name_project' => 'required',
-            'description' => 'required|max:500',
-            'project_image.*' => 'mimes:png,jpeg,jpg',
-            // 'bmc' => 'max:10000|mimes:pdf,ppt,pptx',
-            'video' => 'nullable|mimes:mp4,mov,avi',
-        ]);
-
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
-        }
-
-        $project = Project::findOrFail($id);
-        $project->name = $request->input('name_project');
-        $project->description = $request->input('description');
-        // $project->type_project = $request->input('project_type');
-
-
-        if ($request->hasFile('video')) {
-            $video = $request->file('video');
-            if ($video->getSize() > 10240000) {
-                return back()->withErrors(['video' => 'The video file must be less than 10MB.'])->withInput();
-            }
-            $videoName = time() . '_video.' . $video->getClientOriginalExtension();
-            $video->storeAs("public/public/projects/videos", $videoName);
-            $project->video = $videoName;
-        }
-
-        // if ($request->hasFile('bmc')) {
-        //     $bmc = $request->file('bmc');
-        //     if ($bmc->getSize() > 10000000) {
-        //         return back()->withErrors(['bmc' => 'The BMC file must be less than 10MB.'])->withInput();
+        //         $image = new ProjectImage;
+        //         $imageName = time() . '_image.' . $img->getClientOriginalExtension();
+        //         $img->storeAs('public/public/projects/images', $imageName);
+        //         $image->image = $imageName;
+        //         $image->id_project = $project->id;
+        //         $image->save();
         //     }
-        //     $bmcName = time() . '_bmc.' . $bmc->getClientOriginalExtension();
-        //     $bmc->storeAs('public/public/projects/bmc/', $bmcName);
-        //     $project->bmc = $bmcName;
         // }
+
+        if ($request->hasFile('pitch_deck')) {
+            $pitchDeckName = time() . '_pitch_deck.' . $request->file('pitch_deck')->getClientOriginalExtension();
+            $request->file('pitch_deck')->storeAs('public/public/projects/pitch_deck', $pitchDeckName);
+            $project->pitch_deck = $pitchDeckName;
+        }
 
         $project->save();
 
-        $project->studentGroups()->delete();
-        $project->supervisingGroups()->delete();
-
-        foreach ($request->input('group-a') as $studentData) {
-          $registrationNumber = $studentData['registerd_id'];
-
-          $isStudent = Student::where('id_faculty', auth('manager')->user()->faculty_id)->where('registration_number', $registrationNumber)->first();
-          if ($isStudent) {
-            $isExist = StudentGroup::where('project_id', $project->id)->where('student_id', $isStudent->id)->first();
-            if ($isExist) {
-                continue;
-            }
-              $newStudentGroup = new StudentGroup();
-              $newStudentGroup->project_id = $project->id;
-              $newStudentGroup->student_id = $isStudent->id;
-              $newStudentGroup->save();
-          }
-        }
-
-        foreach ($request->input('group-b') as $supervisorData) {
-          $registrationNumber = $supervisorData['supervisor_id'];
-
-          $isSupervisingTeacher = SupervisingTeacher::find($registrationNumber);
-
-          if ($isSupervisingTeacher) {
-            $isExist = SupervisingTeacherGroups::where('project_id', $project->id)->where('supervising_teacher_id', $isSupervisingTeacher->id)->first();
-            if ($isExist) {
-                continue;
-            }
-              // Create a new StudentGroup record
-              $newStudentGroup = new SupervisingTeacherGroups();
-              $newStudentGroup->project_id = $project->id;
-              $newStudentGroup->supervising_teacher_id = $isSupervisingTeacher->id;
-              $newStudentGroup->role = $supervisorData['supervisor_role'];
-              $newStudentGroup->save();
-          }
-        }
-
-        if ($request->hasFile('project_image')) {
-            foreach ($request->file('project_image') as $img) {
-                $imageValidator = Validator::make(['image' => $img], [
-                    'image' => 'max:1000|mimes:png,jpeg,jpg'
-                ]);
-
-                if ($imageValidator->fails()) {
-                    return back()->withErrors($imageValidator)->withInput();
-                }
-
-                $image = new ProjectImage;
-                $imageName = time() . '_image.' . $img->getClientOriginalExtension();
-                $img->storeAs('public/public/projects/images', $imageName);
-                $image->image = $imageName;
-                $image->id_project = $project->id;
-                $image->save();
-            }
-        }
-
         toastr()->success(trans('message.success.update'));
-        return redirect()->route('manager.index');
-        // return redirect()->route('student.index');
+        return redirect()->route('dashboard.projects');
     }
 
     public function destroy($id) {
@@ -627,14 +644,35 @@ class ProjectController extends Controller {
 
     public function export(Request $request) {
         $status = $request->query('status');
+        $archived = $request->query('archived');
         
         $query = Project::query();
         if ($status !== null) {
-            $query->where('status', $status);
+            $query->where('status', $status)
+            ->where('archived', $archived);
+        } else {
+            $query->where('archived', $archived);
         }
         $projects = $query->get();
 
         return Excel::download(new ProjectsExport($projects), 'projects.xlsx');
     }
 
+    
+
+    public function archiveProjects(Request $request){
+        $projectIds = $request->input('project_ids', []);
+        foreach ($projectIds as $projectId) {
+            $project = Project::find($projectId);
+            if ($project->archived == '0') {
+                $project->archived = '1';
+                $project->save();
+            } else {
+                $project->archived = '0';
+                $project->save();
+            }
+        }
+
+        return response()->json(['status' => 'success']);
+    }
 }

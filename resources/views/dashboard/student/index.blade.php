@@ -123,11 +123,52 @@
                             </small>
                         @enderror
                     </div>
+
                     <div class="col-sm-12 col-md-6 mb-2">
                         <label for="group" class="form-label">{{ trans('app.label.group') }}</label>
                         <input type="text" class="form-control @error('group') is-invalid @enderror" name="group"
                             value="{{ $student->group }}" placeholder="{{ trans('app.placeholder.group') }}">
                         @error('group')
+                            <small class="text-danger d-block">
+                                {{ $message }}
+                            </small>
+                        @enderror
+                    </div>
+
+                    <div class="col-sm-12 col-md-6 mb-2">
+                        <label for="faculty" class="form-label">{{ trans('manager.label.faculty') }}</label>
+                        <select class="form-select" name="faculty" required>
+                            <option value="">{{ trans('manager.select.faculty') }}</option>
+                            @foreach ($facultys as $faculty)
+                                @if ($faculty->id == $student->faculty->id)
+                                    <option value="{{ $faculty->id }}" selected>{{ $faculty->name_ar }}</option>
+                                @else
+                                    <option value="{{ $faculty->id }}">{{ $faculty->name_ar }}</option>
+                                @endif
+                            @endforeach
+                        </select>
+                        @error('faculty')
+                            <small class="text-danger d-block">
+                                {{ $message }}
+                            </small>
+                        @enderror
+                        {{-- <label for="faculty"
+                            class="form-label">{{ trans('auth/student.faculty') }}</label>
+                        <input type="text" class="form-control @error('faculty') is-invalid @enderror"
+                            name="faculty" value="{{ $student->faculty->name_ar }}"
+                            placeholder="{{ trans('app.placeholder.faculty') }}">
+                        @error('faculty')
+                            <small class="text-danger d-block">
+                                {{ $message }}
+                            </small>
+                        @enderror --}}
+                    </div>
+
+                    <div class="col-sm-12 col-md-6 mb-2">
+                        <label for="specialty" class="form-label">{{ trans('auth/student.specialty') }}</label>
+                        <input type="text" class="form-control @error('specialty') is-invalid @enderror" name="specialty"
+                            value="{{ $student->specialty }}" placeholder="{{ trans('app.placeholder.specialty') }}">
+                        @error('specialty')
                             <small class="text-danger d-block">
                                 {{ $message }}
                             </small>
@@ -154,7 +195,7 @@
                             </small>
                         @enderror
                     </div>
-                    <div class="col-sm-12 col-md-6 mb-2">
+                    {{-- <div class="col-sm-12 col-md-6 mb-2">
                         <label for="password" class="form-label">{{ trans('app.label.password') }}</label>
                         <input type="password" class="form-control @error('password') is-invalid @enderror"
                             name="password">
@@ -174,7 +215,7 @@
                                 {{ $message }}
                             </small>
                         @enderror
-                    </div>
+                    </div> --}}
 
                     <div class="col-sm-12 mt-3 d-flex">
                         <div class="col d-flex justify-content-end">

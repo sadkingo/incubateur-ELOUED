@@ -134,6 +134,7 @@
                         @enderror
                     </div>
 
+
                     <div class="col-sm-12 col-md-6 mb-2">
                         <label for="email" class="form-label">{{ trans('app.label.email') }}</label>
                         <input type="text" class="form-control @error('email') is-invalid @enderror" name="email"

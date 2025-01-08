@@ -41,23 +41,6 @@
                 <ul class="dropdown-menu p-3" aria-labelledby="dropdownMenuButton1" id="columns_filter_dropdown">
                 </ul>
             </div>
-            {{-- <div class="form-group col-md-4" dir="{{ config('app.locale') == 'ar' ? 'rtl' : 'ltr' }}">
-                <form action="" method="GET" id="filterTeacherForm">
-                    <label for="search" class="form-label">{{ trans('teacher.label.name') }}</label>
-                    <input type="text" id="search" name="search" value="{{ Request::get('search') }}"
-                        class="form-control input-solid"
-                        placeholder="{{ Request::get('search') != '' ? '' : trans('teacher.placeholder.name') }}">
-                </form>
-            </div>
-            <div class="form-group col-md-2 mr-5 mt-4">
-                @if (count($teachers))
-                    <button target="_blank" id="printTeacher" data-url="{{ route('dashboard.print.teachers') }}"
-                        class="btn
-                    btn-primary text-white">
-                        <span class="bx bxs-printer"></span>&nbsp; {{ trans('app.print') }}
-                    </button>
-                @endif
-            </div> --}}
         </div>
         <div class="table-responsive text-nowrap">
             <table class="table table-borderless table-striped table-hover mb-2" id="table">
