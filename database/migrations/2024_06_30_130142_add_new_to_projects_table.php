@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('projects', function (Blueprint $table) {
-            $table->tinyInteger('new')->default(1)->after('status');
+            $table->tinyInteger('new')->default(1)->after('academic_year');
         });
     }
 

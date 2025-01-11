@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('students', function (Blueprint $table) {
-            $table->tinyInteger('project_stage')->after('created_by')->default(1)->nullable();
+            $table->tinyInteger('project_stage')->after('created_at')->default(1)->nullable();
         });
     }
 
