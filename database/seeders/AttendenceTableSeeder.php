@@ -8,7 +8,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Support\Facades\Hash;
 
-class AttendencesTableSeeder extends Seeder
+class AttendenceTableSeeder extends Seeder
 {
   /**
    * Run the database seeds.

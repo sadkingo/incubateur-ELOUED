@@ -420,7 +420,7 @@ class DataTablesController extends Controller {
                           <i class="bx bx-dots-vertical-rounded"></i>
                       </button>
                       <div class="dropdown-menu">';
-                      
+
                       if ($currentDate < $startDate) {
                           $html .= '<span class="text-info dropdown-item">' . trans('project.edit_soon') . '</span>';
                       } elseif ($currentDate >= $startDate && $currentDate <= $endDate) {
@@ -443,13 +443,13 @@ class DataTablesController extends Controller {
                     }
 
                   } elseif (auth('admin')->check() || auth('teacher')->check()) {
-                    
+
                       $html = '<div class="dropdown">
                       <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
                       <i class="bx bx-dots-vertical-rounded"></i>
                       </button>
                       <div class="dropdown-menu">';
-                    
+
                       if (is_null($project->type_project)) {
                           $html .= '<button class="dropdown-item" onclick="addProjectType(' . $project->id . ')">' . trans('project.add_project_type') . '</button>';
                       } else {
@@ -485,7 +485,7 @@ class DataTablesController extends Controller {
                   } else {
                     return '';
                   }
-                    
+
                 })
                 ->editColumn('created_at', function ($project) {
                     return $project->created_at->format('Y-m-d');
@@ -667,7 +667,7 @@ class DataTablesController extends Controller {
                     . ($project->project_tracking == 0 ? trans('project.project_tracking') : trans('project.edit_project_tracking'))
                     . '</button>';
 
-                    $edit_status_project_tracking = '<button class="dropdown-item" onclick="editStatusProjectTracking('. $project->project_classification .','. $project->project_tracking . ','. $project->status_project_tracking . ')" data-bs-toggle="modal" data-bs-target="#editStatusProjectTrackingModal">' 
+                    $edit_status_project_tracking = '<button class="dropdown-item" onclick="editStatusProjectTracking('. $project->project_classification .','. $project->project_tracking . ','. $project->status_project_tracking . ')" data-bs-toggle="modal" data-bs-target="#editStatusProjectTrackingModal">'
                     . trans('project.edit_status_project_tracking') . '</button>';
 
                     return '<div class="dropdown">
@@ -695,7 +695,7 @@ class DataTablesController extends Controller {
               ->rawColumns(['name', 'project_tracking', 'status_project_tracking', 'actions', 'print'])
               ->make(true);
       }
-      
+
 
       return view('dashboard.project.project_tracking')
       ->with('project',$project);
@@ -779,8 +779,8 @@ class DataTablesController extends Controller {
           </a>
           ';
         })
-      
-      
+
+
         ->rawColumns(['actions'])
         ->make(true);
       }

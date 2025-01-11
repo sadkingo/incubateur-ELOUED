@@ -6,7 +6,7 @@ use App\Models\Faculty;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class FacultiesTableSeeder extends Seeder
+class FacultyTableSeeder extends Seeder
 {
   /**
    * Run the database seeds.
@@ -25,7 +25,9 @@ class FacultiesTableSeeder extends Seeder
       ['name_ar' => 'كلية العلوم الدقيقة', 'name_fr' => 'Faculté des Sciences Exactes'],
       ['name_ar' => 'معهد العلوم الاسلامية', 'name_fr' => 'Institut des Sciences Islamiques'],
     ];
-    
-    Faculty::insert($faculties);
+
+    foreach ($faculties as $faculty) {
+      Faculty::create($faculty);
+    }
   }
 }

@@ -21,25 +21,25 @@ class DatabaseSeeder extends Seeder
   {
     $staticSeeders = [
       AdminTableSeeder::class,
-      StudentsTableSeeder::class,
+      StudentTableSeeder::class,
     ];
     $developmentSeeders = [];
 
     if (App::environment('local')) {
       $developmentSeeders = [
-        AdministrativeFilesTableSeeder::class,
-        AttendencesTableSeeder::class,
-        DepartementsTableSeeder::class,
-        CommissionsTableSeeder::class,
-        SettingsTableSeeder::class,
-        FacultiesTableSeeder::class,
-        ManagersTableSeeder::class,
-        SubjectsTableSeeder::class,
-        SupervisingTeachersTableSeeder::class,
-        CertificatesTableSeeder::class,
-        ProjectsTableSeeder::class,
+        AdministrativeFileTableSeeder::class,
+        AttendenceTableSeeder::class,
+        DepartementTableSeeder::class,
+        CommissionTableSeeder::class,
+        SettingTableSeeder::class,
+        FacultyTableSeeder::class,
+        ManagerTableSeeder::class,
+        SubjectTableSeeder::class,
+        SupervisingTeacherTableSeeder::class,
+        CertificateTableSeeder::class,
+        ProjectTableSeeder::class,
         TeacherTableSeeder::class,
-        SupervisingTeacherProjectsTableSeeder::class,
+        SupervisingTeacherProjectTableSeeder::class,
 //        sql data given does not much migration
 //        StudentGroupsTableSeeder::class,
       ];

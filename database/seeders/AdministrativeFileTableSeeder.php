@@ -7,7 +7,7 @@ use App\Models\Departement;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class AdministrativeFilesTableSeeder extends Seeder
+class AdministrativeFileTableSeeder extends Seeder
 {
   /**
    * Run the database seeds.

@@ -7,7 +7,7 @@ use App\Models\SupervisingTeacher;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class SupervisingTeachersTableSeeder extends Seeder
+class SupervisingTeacherTableSeeder extends Seeder
 {
   /**
    * Run the database seeds.

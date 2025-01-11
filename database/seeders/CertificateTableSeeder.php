@@ -11,7 +11,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Support\Facades\Hash;
 
-class CertificatesTableSeeder extends Seeder
+class CertificateTableSeeder extends Seeder
 {
   /**
    * Run the database seeds.

@@ -12,7 +12,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Support\Facades\Hash;
 
-class ProjectsTableSeeder extends Seeder
+class ProjectTableSeeder extends Seeder
 {
   /**
    * Run the database seeds.

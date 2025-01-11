@@ -12,7 +12,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Support\Facades\Hash;
 
-class CommissionsTableSeeder extends Seeder
+class CommissionTableSeeder extends Seeder
 {
   /**
    * Run the database seeds.

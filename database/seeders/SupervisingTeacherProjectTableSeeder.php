@@ -10,7 +10,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Support\Facades\Hash;
 
-class SupervisingTeacherProjectsTableSeeder extends Seeder
+class SupervisingTeacherProjectTableSeeder extends Seeder
 {
   /**
    * Run the database seeds.

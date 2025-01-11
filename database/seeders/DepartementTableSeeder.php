@@ -6,7 +6,7 @@ use App\Models\Departement;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class DepartementsTableSeeder extends Seeder
+class DepartementTableSeeder extends Seeder
 {
   /**
    * Run the database seeds.
@@ -47,6 +47,8 @@ class DepartementsTableSeeder extends Seeder
       ['name_ar' => 'قسم الحضارة الإسلامية', 'name_fr' => 'Département de la Civilisation Islamique', 'id_faculty' => 8],
       ['name_ar' => 'قسم الشريعة', 'name_fr' => 'Département de la Charia', 'id_faculty' => 8],
     ];
-    Departement::insert($departments);
+    foreach ($departments as $department){
+      Departement::create($department);
+    }
   }
 }
