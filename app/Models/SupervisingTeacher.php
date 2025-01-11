@@ -13,7 +13,7 @@ class SupervisingTeacher extends Model
 
    // protected $table = 'supervising_teachers';
     protected $fillable = [
-        // 'faculty_id',
+//        'faculty_id',
         'departement_id',
         'firstname_ar',
         'firstname_fr',
@@ -24,7 +24,6 @@ class SupervisingTeacher extends Model
         'phone',
         'email',
         'speciality',
-        'grade',
     ];
 
     public function getNameArAttribute(){
