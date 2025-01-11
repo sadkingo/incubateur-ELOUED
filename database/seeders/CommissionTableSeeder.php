@@ -2,15 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Admin;
-use App\Models\Attendence;
-use App\Models\Certificate;
-use App\Models\Certificates;
 use App\Models\Commission;
-use App\Models\Student;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Support\Facades\Hash;
 
 class CommissionTableSeeder extends Seeder
 {

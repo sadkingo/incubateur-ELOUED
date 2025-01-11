@@ -3,8 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\AdministrativeFiles;
-use App\Models\Departement;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class AdministrativeFileTableSeeder extends Seeder

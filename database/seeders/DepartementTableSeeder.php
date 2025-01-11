@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Departement;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DepartementTableSeeder extends Seeder
@@ -47,7 +46,7 @@ class DepartementTableSeeder extends Seeder
       ['name_ar' => 'قسم الحضارة الإسلامية', 'name_fr' => 'Département de la Civilisation Islamique', 'id_faculty' => 8],
       ['name_ar' => 'قسم الشريعة', 'name_fr' => 'Département de la Charia', 'id_faculty' => 8],
     ];
-    foreach ($departments as $department){
+    foreach ($departments as $department) {
       Departement::create($department);
     }
   }

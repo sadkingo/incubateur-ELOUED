@@ -2,15 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Admin;
-use App\Models\Attendence;
-use App\Models\Manager;
-use App\Models\Setting;
-use App\Models\Student;
-use App\Models\StudentGroup;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Support\Facades\Hash;
 
 class StudentGroupsTableSeeder extends Seeder
 {
